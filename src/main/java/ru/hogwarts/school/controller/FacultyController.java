@@ -57,16 +57,28 @@ public class FacultyController {
     }
 
     @PostMapping
+    @Operation(
+            summary = "Добавить факультет",
+            description = "Позволяет добавить факультет"
+    )
     public Faculty addFaculty(@RequestParam String name, @RequestParam String color) {
         return facultyService.addFaculty(name, color);
     }
 
     @PatchMapping
+    @Operation(
+            summary = "Исправить данные факультета",
+            description = "Позволяет изменить данные факультета"
+    )
     public Faculty updateFaculty(@RequestParam Long id, @RequestParam String name, @RequestParam String color) {
         return facultyService.updateFaculty(id, name, color);
     }
 
     @DeleteMapping
+    @Operation(
+            summary = "Уничтожить факультета",
+            description = "Позволяет удалить опорочивший свою честь факультет с лица человечества"
+    )
     public void deleteFaculty(@RequestParam Long id) {
         facultyService.deleteFaculty(id);
     }

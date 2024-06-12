@@ -1,5 +1,6 @@
 package ru.hogwarts.school.service;
 
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 
@@ -8,6 +9,15 @@ import java.util.Optional;
 
 @Service
 public class FacultyService {
+
+    public FacultyService() {
+        faculties.put(0L, new Faculty(0L, "Гриффиндор", "Красный"));
+        faculties.put(1L, new Faculty(1L, "Слизерин", "Зеленый"));
+        faculties.put(2L, new Faculty(2L, "Пуффендуй", "Желтый"));
+        faculties.put(3L, new Faculty(3L, "Когтевран", "Синий"));
+        faculties.put(4L, new Faculty(4L, "Гриффиндор", "Оранжевый"));
+        faculties.put(5L, new Faculty(5L, "Волжский политехнический техникум", "Серый"));
+    }
 
     private static HashMap<Long, Faculty> faculties = new HashMap<>();
 

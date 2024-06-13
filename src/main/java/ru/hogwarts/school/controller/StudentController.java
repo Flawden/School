@@ -8,7 +8,6 @@ import ru.hogwarts.school.service.StudentService;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/student")
@@ -70,7 +69,7 @@ public class StudentController {
             description = "Переписать биографию студента с чистого листа"
     )
     public Student updateStudents(Long id, String name, Integer age) {
-        return studentService.updateFaculty(id, name, age);
+        return studentService.updateStudent(id, name, age);
     }
 
     @DeleteMapping

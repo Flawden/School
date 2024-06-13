@@ -1,7 +1,6 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
-import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 
 import java.util.ArrayList;
@@ -12,7 +11,17 @@ import java.util.Optional;
 @Service
 public class StudentService {
 
-    private static HashMap<Long, Student> students = new HashMap<>();
+    public StudentService() {
+        students = new HashMap<>();
+        students.put(0L, new Student(0L, "Валера", 20));
+        students.put(1L, new Student(1L, "Сережа", 15));
+        students.put(2L, new Student(2L, "Вова", 14));
+        students.put(3L, new Student(3L, "Стас", 20));
+        students.put(4L, new Student(4L, "Боб", 43));
+        students.put(5L, new Student(5L, "Авраам", 56));
+    }
+
+    private static HashMap<Long, Student> students;
 
     public HashMap<Long, Student> getStudents() {
         return students;
@@ -54,20 +63,20 @@ public class StudentService {
 
     public Student addStudents(String name, Integer age) {
         Student student = new Student(students.size() + 1L, name, age);
-        checkFacultyToDuplicate(student);
+        checkStudentToDuplicate(student);
         students.put(students.size() + 1L, student);
         return students.get((long) students.size());
     }
 
-    private void checkFacultyToDuplicate(Student student) {
-        for (Student ExistingFaculty: students.values()) {
-            if (ExistingFaculty.getName().equals(student.getName())) {
+    private void checkStudentToDuplicate(Student student) {
+        for (Student ExistingStudent: students.values()) {
+            if (ExistingStudent.getName().equals(student.getName())) {
                 throw new IllegalArgumentException("Ошибка! Факультет с данным названием уже существует!");
             }
         }
     }
 
-    public Student updateFaculty(Long id, String name, Integer age) {
+    public Student updateStudent(Long id, String name, Integer age) {
         Student student = new Student(id, name, age);
         students.put(id, student);
         return students.get(id);

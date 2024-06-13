@@ -11,7 +11,7 @@ public class FacultyServiceTest {
 
     private FacultyService facultyService;
 
-    private static HashMap<Long, Faculty> faculties = new HashMap<>();
+    private static HashMap<Long, Faculty> faculties;
 
     @BeforeEach
     public void setUp() {
@@ -20,12 +20,12 @@ public class FacultyServiceTest {
 
     @BeforeEach
     public void reposInit() {
+        faculties = new HashMap<>();
         faculties.put(0L, new Faculty(0L, "Гриффиндор", "Красный"));
         faculties.put(1L, new Faculty(1L, "Слизерин", "Зеленый"));
         faculties.put(2L, new Faculty(2L, "Пуффендуй", "Желтый"));
         faculties.put(3L, new Faculty(3L, "Когтевран", "Синий"));
-        faculties.put(4L, new Faculty(4L, "Гриффиндор", "Оранжевый"));
-        faculties.put(5L, new Faculty(5L, "Волжский политехнический техникум", "Серый"));
+        faculties.put(4L, new Faculty(4L, "Волжский политехнический техникум", "Серый"));
     }
 
 
@@ -58,7 +58,7 @@ public class FacultyServiceTest {
 
     @Test
     public void getFacultiesById() {
-
+        Assertions.assertEquals(faculties.get(0L), facultyService.getFacultiesById(0L));
     }
 
     @Test

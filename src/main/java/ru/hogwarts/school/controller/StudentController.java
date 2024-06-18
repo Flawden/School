@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -60,7 +59,7 @@ public class StudentController {
             description = "Записать имя человека в студенты школы магии и волшебства"
     )
     public Student addStudents(String name, Integer age) {
-        return studentService.addStudents(name, age);
+        return studentService.addStudent(name, age);
     }
 
     @PatchMapping

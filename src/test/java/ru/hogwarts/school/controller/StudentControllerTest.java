@@ -10,7 +10,6 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
@@ -74,7 +73,7 @@ public class StudentControllerTest {
     @Test
     public void addStudents() {
         Student testStudent = new Student(students.size() + 1L, "Сережа", 25);
-        when(studentService.addStudents("Сережа", 25)).thenReturn(testStudent);
+        when(studentService.addStudent("Сережа", 25)).thenReturn(testStudent);
         Assertions.assertEquals(testStudent, studentController.addStudents("Сережа", 25));
     }
 

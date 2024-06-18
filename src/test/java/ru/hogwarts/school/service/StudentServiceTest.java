@@ -7,11 +7,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
+
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class StudentServiceTest {
@@ -21,7 +21,7 @@ public class StudentServiceTest {
     @Mock
     private StudentRepository studentRepository;
 
-    private static HashMap<Long, Student> students;
+    private static List<Student> students;
 
     @BeforeEach
     public void setUp() {
@@ -32,74 +32,83 @@ public class StudentServiceTest {
 
     @BeforeEach
     public void reposInit() {
-        students = new HashMap<>();
-        students.put(0L, new Student(0L, "Валера", 20));
-        students.put(1L, new Student(1L, "Сережа", 15));
-        students.put(2L, new Student(2L, "Вова", 14));
-        students.put(3L, new Student(3L, "Стас", 20));
-        students.put(4L, new Student(4L, "Боб", 43));
-        students.put(5L, new Student(5L, "Авраам", 56));
+        students = new ArrayList<>();
+        students.add(new Student(0L, "Валера", 20));
+        students.add(new Student(1L, "Сережа", 15));
+        students.add(new Student(2L, "Вова", 14));
+        students.add(new Student(3L, "Стас", 20));
+        students.add(new Student(4L, "Боб", 43));
+        students.add(new Student(5L, "Авраам", 56));
     }
 
 
     @Test
     public void getStudents() {
+        when(studentRepository.findAll()).thenReturn(students);
         Assertions.assertEquals(students, studentService.getStudents());
     }
 
     @Test
     public void getStudentsByName() {
-        Assertions.assertEquals(students.get(0L), studentService.getStudentsByName(students.get(0L).getName()).getFirst());
+        List<Student> testStudents = students.stream().filter(s -> Objects.equals(s.getName(), students.getFirst().getName())).toList();
+        when(studentRepository.findStudentsByName(students.getFirst().getName())).thenReturn(testStudents);
+        Assertions.assertEquals(testStudents, studentService.getStudentsByName(students.getFirst().getName()));
     }
 
     @Test
     public void getStudentsByNameWithException() {
+        when(studentRepository.findStudentsByName("Абвывав")).thenReturn(new ArrayList<>());
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> studentService.getStudentsByName("Абвывав"));
-        Assertions.assertEquals("Ошибка! Факультета с данным названием не существует", exception.getMessage());
+        Assertions.assertEquals("Ошибка! Студентов с данным именем не найдено.", exception.getMessage());
     }
 
     @Test
     public void getStudentsByAge() {
-        ArrayList<Student> testList = new ArrayList<>();
-        testList.add(students.get(0L));
-        testList.add(students.get(3L));
-        Assertions.assertEquals(testList, studentService.getStudentsByAge(20));
+        List<Student> testStudents = students.stream().filter(s -> s.getAge().equals(20)).toList();
+        when(studentRepository.findStudentsByAge(20)).thenReturn(testStudents);
+        Assertions.assertEquals(testStudents, studentService.getStudentsByAge(20));
     }
 
     @Test
     public void getStudentsByAgeWithException() {
+        when(studentRepository.findStudentsByAge(999)).thenReturn(new ArrayList<>());
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> studentService.getStudentsByAge(999));
-        Assertions.assertEquals("Ошибка! Факультета с данным названием не существует", exception.getMessage());
+        Assertions.assertEquals("Ошибка! Студентов с данным возрастом не найдено.", exception.getMessage());
     }
 
     @Test
     public void getStudentsById() {
-        Assertions.assertEquals(students.get(0L), studentService.getStudentsById(0L));
+        when(studentRepository.findStudentById(0L)).thenReturn(Optional.ofNullable(students.getFirst()));
+        Assertions.assertEquals(students.getFirst(), studentService.getStudentsById(0L));
     }
 
     @Test
     public void getStudentsByIdWithException() {
+        when(studentRepository.findStudentById(students.size() + 1L)).thenReturn(Optional.empty());
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> studentService.getStudentsById(students.size() + 1L));
-        Assertions.assertEquals("Ошибка! Факультета с данным id не существует", exception.getMessage());
+        Assertions.assertEquals("Ошибка! Факультета с данным id не найдено", exception.getMessage());
     }
 
     @Test
     public void addStudent() {
-        Student testStudent = new Student(students.size() + 1L, "Глеб", 12);
-        Assertions.assertEquals(testStudent, studentService.addStudents("Глеб", 12));
+        Student testStudent = new Student("Глеб", 12);
+        when(studentRepository.save(testStudent)).thenReturn(testStudent);
+        Assertions.assertEquals(testStudent, studentService.addStudent("Глеб", 12));
     }
 
     @Test
     public void updateStudent() {
         Student testStudent = new Student(1L, "Стеблехвост", 21);
+        when(studentRepository.findStudentById(1L)).thenReturn(Optional.ofNullable(students.get(1)));
+        when(studentRepository.save(testStudent)).thenReturn(testStudent);
         Assertions.assertEquals(testStudent, studentService.updateStudent(1L, "Стеблехвост", 21));
     }
 
     @Test
-    public void deleteStudent() {
-        studentService.deleteStudent(0L);
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> studentService.getStudentsById(0L));
-        Assertions.assertEquals("Ошибка! Факультета с данным id не существует", exception.getMessage());
+    public void deleteStudentWithException() {
+        when(studentRepository.findStudentById(0L)).thenReturn(Optional.empty());
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> studentService.deleteStudent(0L));
+        Assertions.assertEquals("Ошибка! Студента с данным id не существует", exception.getMessage());
     }
 
 }

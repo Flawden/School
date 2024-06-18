@@ -4,8 +4,6 @@ import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,7 +44,7 @@ public class StudentService {
         return student.get();
     }
 
-    public Student addStudents(String name, Integer age) {
+    public Student addStudent(String name, Integer age) {
         return studentRepository.save(new Student(name, age));
     }
 
@@ -61,7 +59,12 @@ public class StudentService {
     }
 
     public void deleteStudent(Long id) {
-        studentRepository.deleteById(id);
+        Optional<Student> isStudentExist = studentRepository.findStudentById(id);
+        if(isStudentExist.isPresent()) {
+            studentRepository.deleteById(id);
+        } else {
+            throw new IllegalArgumentException("Ошибка! Студента с данным id не существует");
+        }
     }
 
 

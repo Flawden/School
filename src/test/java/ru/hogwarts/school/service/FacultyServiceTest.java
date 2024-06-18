@@ -7,7 +7,9 @@ import org.mockito.Mock;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class FacultyServiceTest {
 
@@ -16,7 +18,7 @@ public class FacultyServiceTest {
     @Mock
     private FacultyRepository facultyRepository;
 
-    private static HashMap<Long, Faculty> faculties;
+    private static List<Faculty> faculties;
 
     @BeforeEach
     public void setUp() {
@@ -25,12 +27,12 @@ public class FacultyServiceTest {
 
     @BeforeEach
     public void reposInit() {
-        faculties = new HashMap<>();
-        faculties.put(0L, new Faculty(0L, "Гриффиндор", "Красный"));
-        faculties.put(1L, new Faculty(1L, "Слизерин", "Зеленый"));
-        faculties.put(2L, new Faculty(2L, "Пуффендуй", "Желтый"));
-        faculties.put(3L, new Faculty(3L, "Когтевран", "Синий"));
-        faculties.put(4L, new Faculty(4L, "Волжский политехнический техникум", "Серый"));
+        faculties = new ArrayList<>();
+        faculties.add(new Faculty(0L, "Гриффиндор", "Красный"));
+        faculties.add(new Faculty(1L, "Слизерин", "Зеленый"));
+        faculties.add(new Faculty(2L, "Пуффендуй", "Желтый"));
+        faculties.add(new Faculty(3L, "Когтевран", "Синий"));
+        faculties.add(new Faculty(4L, "Волжский политехнический техникум", "Серый"));
     }
 
 
@@ -41,18 +43,18 @@ public class FacultyServiceTest {
 
     @Test
     public void getFacultiesByName() {
-        Assertions.assertEquals(faculties.get(0L), facultyService.getFacultiesByName(faculties.get(0L).getName()));
+        Assertions.assertEquals(faculties.getFirst(), facultyService.getFacultyByName(faculties.getFirst().getName()));
     }
 
     @Test
     public void getFacultiesByNameWithException() {
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> facultyService.getFacultiesByName("Фламма"));
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> facultyService.getFacultyByName("Фламма"));
         Assertions.assertEquals("Ошибка! Факультета с данным названием не существует", exception.getMessage());
     }
 
     @Test
     public void getFacultiesByColor() {
-        Assertions.assertEquals(faculties.get(0L), facultyService.getFacultiesByColor(faculties.get(0L).getColor()));
+        Assertions.assertEquals(faculties.getFirst(), facultyService.getFacultiesByColor(faculties.getFirst().getColor()));
     }
 
     @Test
@@ -63,7 +65,7 @@ public class FacultyServiceTest {
 
     @Test
     public void getFacultiesById() {
-        Assertions.assertEquals(faculties.get(0L), facultyService.getFacultiesById(0L));
+        Assertions.assertEquals(faculties.getFirst(), facultyService.getFacultiesById(0L));
     }
 
     @Test
@@ -80,8 +82,8 @@ public class FacultyServiceTest {
 
     @Test
     public void addFacultyWithExceptions() {
-        IllegalArgumentException exceptionByName = Assertions.assertThrows(IllegalArgumentException.class, () -> facultyService.addFaculty(faculties.get(0L).getName(), "Фиолетовый"));
-        IllegalArgumentException exceptionByColor = Assertions.assertThrows(IllegalArgumentException.class, () -> facultyService.addFaculty("Стеблкрон", faculties.get(0L).getColor()));
+        IllegalArgumentException exceptionByName = Assertions.assertThrows(IllegalArgumentException.class, () -> facultyService.addFaculty(faculties.getFirst().getName(), "Фиолетовый"));
+        IllegalArgumentException exceptionByColor = Assertions.assertThrows(IllegalArgumentException.class, () -> facultyService.addFaculty("Стеблкрон", faculties.getFirst().getColor()));
         Assertions.assertEquals("Ошибка! Факультет с данным названием уже существует!", exceptionByName.getMessage());
         Assertions.assertEquals("Ошибка! Факультет с таким цветом уже существует!", exceptionByColor.getMessage());
     }

@@ -16,7 +16,7 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    private StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
 
     public List<Student> getStudents() {
         return studentRepository.findAll();
@@ -27,7 +27,7 @@ public class StudentService {
         if (!studentsByName.isEmpty()) {
             return studentsByName;
         }
-        throw new IllegalArgumentException("Ошибка! Факультета с данным названием не существует");
+        throw new IllegalArgumentException("Ошибка! Студентов с данным именем не найдено.");
     }
 
     public List<Student> getStudentsByAge(Integer age) {
@@ -35,40 +35,33 @@ public class StudentService {
         if (!studentsByAge.isEmpty()) {
             return studentsByAge;
         }
-        throw new IllegalArgumentException("Ошибка! Факультета с данным названием не существует");
+        throw new IllegalArgumentException("Ошибка! Студентов с данным возрастом не найдено.");
     }
 
     public Student getStudentsById(Long id) {
         Optional<Student> student = studentRepository.findStudentById(id);
         if (student.isEmpty()) {
-            throw new IllegalArgumentException("Ошибка! Факультета с данным id не существует");
+            throw new IllegalArgumentException("Ошибка! Факультета с данным id не найдено");
         }
         return student.get();
     }
 
     public Student addStudents(String name, Integer age) {
-        Student student = new Student(name, age);
-        checkStudentToDuplicate(student);
-        student = studentRepository.save(student);
-        return student;
-    }
-
-    private void checkStudentToDuplicate(Student student) {
-        for (Student ExistingStudent: students.values()) {
-            if (ExistingStudent.getName().equals(student.getName())) {
-                throw new IllegalArgumentException("Ошибка! Факультет с данным названием уже существует!");
-            }
-        }
+        return studentRepository.save(new Student(name, age));
     }
 
     public Student updateStudent(Long id, String name, Integer age) {
-        Student student = new Student(id, name, age);
-        students.put(id, student);
-        return students.get(id);
+        Optional<Student> student = studentRepository.findStudentById(id);
+        if(student.isEmpty()) {
+            throw new IllegalArgumentException("Ошибка! Студента с данным id не найдено.");
+        }
+        student.get().setName(name);
+        student.get().setAge(age);
+        return studentRepository.save(student.get());
     }
 
     public void deleteStudent(Long id) {
-        students.remove(id);
+        studentRepository.deleteById(id);
     }
 
 

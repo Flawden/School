@@ -3,7 +3,9 @@ package ru.hogwarts.school.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
@@ -11,6 +13,7 @@ import ru.hogwarts.school.repository.StudentRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@ExtendWith(MockitoExtension.class)
 public class StudentServiceTest {
 
     private StudentService studentService;

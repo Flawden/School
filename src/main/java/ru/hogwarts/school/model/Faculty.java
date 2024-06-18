@@ -1,7 +1,6 @@
 package ru.hogwarts.school.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +12,11 @@ import java.util.Objects;
 @NoArgsConstructor
 @Getter
 @Setter
+@Entity
 public class Faculty {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)

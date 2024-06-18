@@ -1,5 +1,7 @@
 package ru.hogwarts.school.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +16,17 @@ import java.util.Objects;
 public class Faculty {
 
     private Long id;
+
+    @Column(unique = true)
     private String name;
+
+    @Column(unique = true)
     private String color;
+
+    public Faculty(String name, String color) {
+        this.name = name;
+        this.color = color;
+    }
 
     @Override
     public boolean equals(Object o) {

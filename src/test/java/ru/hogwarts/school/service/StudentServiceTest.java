@@ -3,7 +3,10 @@ package ru.hogwarts.school.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.FacultyRepository;
+import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,11 +15,14 @@ public class StudentServiceTest {
 
     private StudentService studentService;
 
+    @Mock
+    private StudentRepository studentRepository;
+
     private static HashMap<Long, Student> students;
 
     @BeforeEach
     public void setUp() {
-        studentService = new StudentService();
+        studentService = new StudentService(studentRepository);
     }
 
 

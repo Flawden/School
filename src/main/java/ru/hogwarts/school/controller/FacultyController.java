@@ -7,6 +7,7 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -25,7 +26,7 @@ public class FacultyController {
             summary = "Получить все факультеты",
             description = "Позволяет получить все факультеты"
     )
-    public HashMap<Long, Faculty> getFaculties() {
+    public List<Faculty> getFaculties() {
         return facultyService.getFaculties();
     }
 
@@ -35,7 +36,7 @@ public class FacultyController {
             description = "Позволяет получить факультет по названию"
     )
     public Faculty getFacultiesByName(@RequestParam String facultyName) {
-        return facultyService.getFacultiesByName(facultyName);
+        return facultyService.getFacultyByName(facultyName);
     }
 
     @GetMapping("/color")

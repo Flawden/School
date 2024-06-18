@@ -23,7 +23,7 @@ public class StudentController {
 
 
     @GetMapping
-    public HashMap<Long, Student> getStudents() {
+    public List<Student> getStudents() {
         return studentService.getStudents();
     }
 

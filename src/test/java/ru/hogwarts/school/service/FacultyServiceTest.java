@@ -3,7 +3,9 @@ package ru.hogwarts.school.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.HashMap;
 
@@ -11,11 +13,14 @@ public class FacultyServiceTest {
 
     private FacultyService facultyService;
 
+    @Mock
+    private FacultyRepository facultyRepository;
+
     private static HashMap<Long, Faculty> faculties;
 
     @BeforeEach
     public void setUp() {
-        facultyService = new FacultyService();
+        facultyService = new FacultyService(facultyRepository);
     }
 
     @BeforeEach

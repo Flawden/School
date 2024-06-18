@@ -2,6 +2,7 @@ package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,50 +12,34 @@ import java.util.Optional;
 @Service
 public class StudentService {
 
-    public StudentService() {
-        students = new HashMap<>();
-        students.put(0L, new Student(0L, "Валера", 20));
-        students.put(1L, new Student(1L, "Сережа", 15));
-        students.put(2L, new Student(2L, "Вова", 14));
-        students.put(3L, new Student(3L, "Стас", 20));
-        students.put(4L, new Student(4L, "Боб", 43));
-        students.put(5L, new Student(5L, "Авраам", 56));
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
     }
 
-    private static HashMap<Long, Student> students;
+    private StudentRepository studentRepository;
 
-    public HashMap<Long, Student> getStudents() {
-        return students;
+    public List<Student> getStudents() {
+        return studentRepository.findAll();
     }
 
     public List<Student> getStudentsByName(String name) {
-        ArrayList<Student> studentsByName = new ArrayList<>();
-        for (Student student: students.values()) {
-            if (student.getName().equals(name)) {
-                studentsByName.add(student);
-            }
-        }
-        if (studentsByName.size() > 0) {
+        List<Student> studentsByName = studentRepository.findStudentsByName(name);
+        if (!studentsByName.isEmpty()) {
             return studentsByName;
         }
         throw new IllegalArgumentException("Ошибка! Факультета с данным названием не существует");
     }
 
     public List<Student> getStudentsByAge(Integer age) {
-        ArrayList<Student> studentsByAge = new ArrayList<>();
-        for (Student student: students.values()) {
-            if (student.getAge().equals(age)) {
-                studentsByAge.add(student);
-            }
-        }
-        if (studentsByAge.size() > 0) {
+        List<Student> studentsByAge = studentRepository.findStudentsByAge(age);
+        if (!studentsByAge.isEmpty()) {
             return studentsByAge;
         }
         throw new IllegalArgumentException("Ошибка! Факультета с данным названием не существует");
     }
 
     public Student getStudentsById(Long id) {
-        Optional<Student> student = Optional.ofNullable(students.get(id));
+        Optional<Student> student = studentRepository.findStudentById(id);
         if (student.isEmpty()) {
             throw new IllegalArgumentException("Ошибка! Факультета с данным id не существует");
         }
@@ -62,10 +47,10 @@ public class StudentService {
     }
 
     public Student addStudents(String name, Integer age) {
-        Student student = new Student(students.size() + 1L, name, age);
+        Student student = new Student(name, age);
         checkStudentToDuplicate(student);
-        students.put(students.size() + 1L, student);
-        return students.get((long) students.size());
+        student = studentRepository.save(student);
+        return student;
     }
 
     private void checkStudentToDuplicate(Student student) {

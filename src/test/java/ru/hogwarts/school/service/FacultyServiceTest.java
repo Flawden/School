@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.mockito.Mockito.when;
 
@@ -78,7 +79,7 @@ public class FacultyServiceTest {
     @Test
     public void getFacultiesById() {
         Optional<Faculty> testFaculty = Optional.ofNullable(faculties.getFirst());
-        when(facultyRepository.getFacultyById(faculties.getFirst().getId())).thenReturn(testFaculty);
+        when(facultyRepository.findById(faculties.getFirst().getId())).thenReturn(testFaculty);
         Assertions.assertEquals(faculties.getFirst(), facultyService.getFacultiesById(0L));
     }
 
@@ -92,15 +93,18 @@ public class FacultyServiceTest {
     public void addFaculty() {
         Faculty testFaculty = new Faculty("Стеблехвост", "Черный");
         when(facultyRepository.save(testFaculty)).thenReturn(testFaculty);
-        when(facultyRepository.getFacultyByName("Стеблехвост")).thenReturn(Optional.empty());
-        when(facultyRepository.getFacultyByColor("Черный")).thenReturn(Optional.empty());
+        when(facultyRepository.findByNameOrColor("Стеблехвост", "Черный")).thenReturn(new ArrayList<>());
         Assertions.assertEquals(testFaculty, facultyService.addFaculty("Стеблехвост", "Черный"));
     }
 
     @Test
     public void addFacultyWithExceptions() {
-        when(facultyRepository.getFacultyByName(faculties.getFirst().getName())).thenReturn(Optional.ofNullable(faculties.getFirst()));
-        when(facultyRepository.getFacultyByColor(faculties.getFirst().getColor())).thenReturn(Optional.ofNullable(faculties.getFirst()));
+        List<Faculty> testFaculties = faculties.stream().
+                filter(s -> s.getColor().equals("Фиолетовый") || s.getName().equals(faculties.getFirst().getName())).toList();
+        List<Faculty> testFaculties2 = faculties.stream().
+                filter(s -> s.getColor().equals(faculties.getFirst().getColor()) || s.getName().equals("Стеблкрон")).toList();
+        when(facultyRepository.findByNameOrColor(faculties.getFirst().getName(), "Фиолетовый")).thenReturn(testFaculties);
+        when(facultyRepository.findByNameOrColor("Стеблкрон", faculties.getFirst().getColor())).thenReturn(testFaculties2);
         IllegalArgumentException exceptionByName = Assertions.assertThrows(IllegalArgumentException.class, () -> facultyService.addFaculty(faculties.getFirst().getName(), "Фиолетовый"));
         IllegalArgumentException exceptionByColor = Assertions.assertThrows(IllegalArgumentException.class, () -> facultyService.addFaculty("Стеблкрон", faculties.getFirst().getColor()));
         Assertions.assertEquals("Ошибка! Факультет с данным названием уже существует!", exceptionByName.getMessage());
@@ -111,13 +115,46 @@ public class FacultyServiceTest {
     public void updateFaculty() {
         Faculty testFaculty = new Faculty(1L, "Стеблехвост", "Черный");
         when(facultyRepository.save(testFaculty)).thenReturn(testFaculty);
-        when(facultyRepository.getFacultyById(1L)).thenReturn(Optional.ofNullable(faculties.get(1)));
+        when(facultyRepository.findById(1L)).thenReturn(Optional.ofNullable(faculties.get(1)));
         Assertions.assertEquals(testFaculty, facultyService.updateFaculty(1L, "Стеблехвост", "Черный"));
     }
 
     @Test
+    public void updateFacultyWithExceptionByName() {
+        Faculty testFacultyNameEquals = new Faculty(0L, faculties.getFirst().getName(), "Фиолетовый");
+        List<Faculty> testFaculties = faculties.stream().
+                filter(s -> s.getColor().equals(testFacultyNameEquals.getColor()) || s.getName().equals(testFacultyNameEquals.getName())).toList();
+        when(facultyRepository.findById(0L)).thenReturn(Optional.ofNullable(faculties.getFirst())).thenReturn(Optional.of(testFacultyNameEquals));
+        when(facultyRepository.findByNameOrColor(testFacultyNameEquals.getName(), "Красный")).thenReturn(testFaculties);
+        IllegalArgumentException illegalArgumentException = Assertions.assertThrows(IllegalArgumentException.class, () -> facultyService.updateFaculty(0L, testFacultyNameEquals.getName(), testFacultyNameEquals.getColor()));
+        Assertions.assertEquals("Ошибка! Факультет с таким цветом уже существует!", illegalArgumentException.getMessage());
+    }
+
+    @Test
+    public void updateFacultyWithExceptionByColor() {
+        Faculty testFacultyColorEquals = new Faculty(0L, "Стеблкрон", faculties.getFirst().getColor());
+        List<Faculty> testFaculties = faculties.stream().
+                filter(s -> s.getColor().equals(testFacultyColorEquals.getColor()) || s.getName().equals(testFacultyColorEquals.getName())).toList();
+
+        when(facultyRepository.findById(0L)).thenReturn(Optional.ofNullable(faculties.getFirst())).thenReturn(Optional.of(testFacultyColorEquals));
+        when(facultyRepository.findByNameOrColor("Гриффиндор", "Красный")).thenReturn(testFaculties);
+        IllegalArgumentException illegalArgumentException = Assertions.assertThrows(IllegalArgumentException.class, () -> facultyService.updateFaculty(0L, testFacultyColorEquals.getName(), testFacultyColorEquals.getColor()));
+        Assertions.assertEquals("Ошибка! Факультет с данным названием уже существует!", illegalArgumentException.getMessage());
+    }
+
+    @Test
+    public void updateFacultyWithExceptionWhereAllMatch() {
+        Faculty testFacultyAllMatch = new Faculty(0L, faculties.getFirst().getName(), faculties.getFirst().getColor());
+        List<Faculty> testFaculties = faculties.stream().
+                filter(s -> s.getColor().equals(testFacultyAllMatch.getColor()) || s.getName().equals(testFacultyAllMatch.getName())).toList();
+        when(facultyRepository.findById(0L)).thenReturn(Optional.ofNullable(faculties.getFirst())).thenReturn(Optional.of(testFacultyAllMatch));
+        IllegalArgumentException illegalArgumentException = Assertions.assertThrows(IllegalArgumentException.class, () -> facultyService.updateFaculty(0L, testFacultyAllMatch.getName(), testFacultyAllMatch.getColor()));
+        Assertions.assertEquals("Ошибка! Исходные данные равны изменяемым", illegalArgumentException.getMessage());
+    }
+
+    @Test
     public void deleteFacultyWithException() {
-        when(facultyRepository.getFacultyById(0L)).thenReturn(Optional.empty());
+        when(facultyRepository.findById(0L)).thenReturn(Optional.empty());
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> facultyService.deleteFaculty(0L));
         Assertions.assertEquals("Ошибка! Факультета с данным id не существует", exception.getMessage());
     }

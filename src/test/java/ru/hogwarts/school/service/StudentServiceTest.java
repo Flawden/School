@@ -78,13 +78,13 @@ public class StudentServiceTest {
 
     @Test
     public void getStudentsById() {
-        when(studentRepository.findStudentById(0L)).thenReturn(Optional.ofNullable(students.getFirst()));
+        when(studentRepository.findById(0L)).thenReturn(Optional.ofNullable(students.getFirst()));
         Assertions.assertEquals(students.getFirst(), studentService.getStudentsById(0L));
     }
 
     @Test
     public void getStudentsByIdWithException() {
-        when(studentRepository.findStudentById(students.size() + 1L)).thenReturn(Optional.empty());
+        when(studentRepository.findById(students.size() + 1L)).thenReturn(Optional.empty());
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> studentService.getStudentsById(students.size() + 1L));
         Assertions.assertEquals("Ошибка! Факультета с данным id не найдено", exception.getMessage());
     }
@@ -99,14 +99,14 @@ public class StudentServiceTest {
     @Test
     public void updateStudent() {
         Student testStudent = new Student(1L, "Стеблехвост", 21);
-        when(studentRepository.findStudentById(1L)).thenReturn(Optional.ofNullable(students.get(1)));
+        when(studentRepository.findById(1L)).thenReturn(Optional.ofNullable(students.get(1)));
         when(studentRepository.save(testStudent)).thenReturn(testStudent);
         Assertions.assertEquals(testStudent, studentService.updateStudent(1L, "Стеблехвост", 21));
     }
 
     @Test
     public void deleteStudentWithException() {
-        when(studentRepository.findStudentById(0L)).thenReturn(Optional.empty());
+        when(studentRepository.findById(0L)).thenReturn(Optional.empty());
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> studentService.deleteStudent(0L));
         Assertions.assertEquals("Ошибка! Студента с данным id не существует", exception.getMessage());
     }

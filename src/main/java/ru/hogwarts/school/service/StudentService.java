@@ -37,7 +37,7 @@ public class StudentService {
     }
 
     public Student getStudentsById(Long id) {
-        Optional<Student> student = studentRepository.findStudentById(id);
+        Optional<Student> student = studentRepository.findById(id);
         if (student.isEmpty()) {
             throw new IllegalArgumentException("Ошибка! Факультета с данным id не найдено");
         }
@@ -49,7 +49,7 @@ public class StudentService {
     }
 
     public Student updateStudent(Long id, String name, Integer age) {
-        Optional<Student> student = studentRepository.findStudentById(id);
+        Optional<Student> student = studentRepository.findById(id);
         if(student.isEmpty()) {
             throw new IllegalArgumentException("Ошибка! Студента с данным id не найдено.");
         }
@@ -59,7 +59,7 @@ public class StudentService {
     }
 
     public void deleteStudent(Long id) {
-        Optional<Student> isStudentExist = studentRepository.findStudentById(id);
+        Optional<Student> isStudentExist = studentRepository.findById(id);
         if(isStudentExist.isPresent()) {
             studentRepository.deleteById(id);
         } else {

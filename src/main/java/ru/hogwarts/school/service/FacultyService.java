@@ -2,9 +2,11 @@ package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -38,7 +40,7 @@ public class FacultyService {
     }
 
     public Faculty getFacultiesById(Long id) {
-        Optional<Faculty> faculty = facultyRepository.getFacultyById(id);
+        Optional<Faculty> faculty = facultyRepository.findById(id);
         if (faculty.isEmpty()) {
             throw new IllegalArgumentException("Ошибка! Факультета с данным id не существует");
         }
@@ -51,22 +53,58 @@ public class FacultyService {
         return facultyRepository.save(faculty);
     }
 
-    private void checkFacultyToDuplicate(Faculty faculty) {
-        Optional<Faculty> isFacultyExist = facultyRepository.getFacultyByName(faculty.getName());
-            if (isFacultyExist.isPresent()) {
+    private void checkFacultyToDuplicate(Faculty checkingFaculty) {
+          List<Faculty> isFacultyExist = facultyRepository.findByNameOrColor(checkingFaculty.getName(), checkingFaculty.getColor());
+          if (isFacultyExist.isEmpty()) {
+              return;
+        }
+          for (Faculty facultyEntity: isFacultyExist) {
+              if (facultyEntity.getName().equals(checkingFaculty.getName())) {
+                  throw new IllegalArgumentException("Ошибка! Факультет с данным названием уже существует!");
+              }
+              if (facultyEntity.getColor().equals(checkingFaculty.getColor())) {
+                  throw new IllegalArgumentException("Ошибка! Факультет с таким цветом уже существует!");
+              }
+          }
+    }
+
+    private void checkNameToDuplicate(Faculty checkingFaculty) {
+        List<Faculty> isFacultyExist = facultyRepository.findByNameOrColor(checkingFaculty.getName(), checkingFaculty.getColor());
+        if (isFacultyExist.isEmpty()) {
+            return;
+        }
+        for (Faculty facultyEntity: isFacultyExist) {
+            if (facultyEntity.getName().equals(checkingFaculty.getName())) {
                 throw new IllegalArgumentException("Ошибка! Факультет с данным названием уже существует!");
             }
-       isFacultyExist = facultyRepository.getFacultyByColor(faculty.getColor());
-            if (isFacultyExist.isPresent()) {
+        }
+    }
+
+    private void checkColorToDuplicate(Faculty checkingFaculty) {
+        List<Faculty> isFacultyExist = facultyRepository.findByNameOrColor(checkingFaculty.getName(), checkingFaculty.getColor());
+        if (isFacultyExist.isEmpty()) {
+            return;
+        }
+        for (Faculty facultyEntity: isFacultyExist) {
+            if (facultyEntity.getColor().equals(checkingFaculty.getColor())) {
                 throw new IllegalArgumentException("Ошибка! Факультет с таким цветом уже существует!");
             }
-
+        }
     }
 
     public Faculty updateFaculty(Long id, String name, String color) {
-        Optional<Faculty> faculty = facultyRepository.getFacultyById(id);
+        Optional<Faculty> faculty = facultyRepository.findById(id);
         if(faculty.isEmpty()) {
             throw new IllegalArgumentException("Ошибка! Факультета с данным id не существует");
+        }
+        if (name.equals(faculty.get().getName()) || color.equals(faculty.get().getColor())) {
+            if (name.equals(faculty.get().getName()) && color.equals(faculty.get().getColor())) {
+                throw new IllegalArgumentException("Ошибка! Исходные данные равны изменяемым");
+            } else if (name.equals(faculty.get().getName())) {
+                checkColorToDuplicate(faculty.get());
+            } else {
+                checkNameToDuplicate(faculty.get());
+            }
         }
         faculty.get().setName(name);
         faculty.get().setColor(color);
@@ -74,7 +112,7 @@ public class FacultyService {
     }
 
     public void deleteFaculty(Long id) {
-        Optional<Faculty> isFacultyExist = facultyRepository.getFacultyById(id);
+        Optional<Faculty> isFacultyExist = facultyRepository.findById(id);
         if(isFacultyExist.isPresent()) {
             facultyRepository.deleteById(id);
         } else {

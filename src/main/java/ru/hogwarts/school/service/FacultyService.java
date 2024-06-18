@@ -112,13 +112,7 @@ public class FacultyService {
     }
 
     public void deleteFaculty(Long id) {
-        Optional<Faculty> isFacultyExist = facultyRepository.findById(id);
-        if(isFacultyExist.isPresent()) {
-            facultyRepository.deleteById(id);
-        } else {
-            throw new IllegalArgumentException("Ошибка! Факультета с данным id не существует");
-        }
-
+        facultyRepository.delete(getFacultiesById(id));
     }
 
 }

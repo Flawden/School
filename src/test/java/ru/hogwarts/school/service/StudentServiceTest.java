@@ -86,7 +86,7 @@ public class StudentServiceTest {
     public void getStudentsByIdWithException() {
         when(studentRepository.findById(students.size() + 1L)).thenReturn(Optional.empty());
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> studentService.getStudentsById(students.size() + 1L));
-        Assertions.assertEquals("Ошибка! Факультета с данным id не найдено", exception.getMessage());
+        Assertions.assertEquals("Ошибка! Студента с данным id не найдено", exception.getMessage());
     }
 
     @Test
@@ -108,7 +108,7 @@ public class StudentServiceTest {
     public void deleteStudentWithException() {
         when(studentRepository.findById(0L)).thenReturn(Optional.empty());
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> studentService.deleteStudent(0L));
-        Assertions.assertEquals("Ошибка! Студента с данным id не существует", exception.getMessage());
+        Assertions.assertEquals("Ошибка! Студента с данным id не найдено", exception.getMessage());
     }
 
 }

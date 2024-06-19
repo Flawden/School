@@ -7,7 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.service.StudentService;
+import ru.hogwarts.school.service.implementation.StudentServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 public class StudentControllerTest {
 
     @Mock
-    private StudentService studentService;
+    private StudentServiceImpl studentServiceImpl;
 
     private static List<Student> students;
 
@@ -27,7 +27,7 @@ public class StudentControllerTest {
 
     @BeforeEach
     public void setUp() {
-        studentController = new StudentController(studentService);
+        studentController = new StudentController(studentServiceImpl);
     }
 
     @BeforeEach
@@ -43,7 +43,7 @@ public class StudentControllerTest {
 
     @Test
     public void getStudents() {
-        when(studentService.getStudents()).thenReturn(students);
+        when(studentServiceImpl.getStudents()).thenReturn(students);
         Assertions.assertEquals(students, studentController.getStudents());
     }
 
@@ -51,7 +51,7 @@ public class StudentControllerTest {
     public void getStudentsByName() {
         List<Student> testStudents = new ArrayList<>();
         testStudents.add(students.getFirst());
-        when(studentService.getStudentsByName("Валера")).thenReturn(testStudents);
+        when(studentServiceImpl.getStudentsByName("Валера")).thenReturn(testStudents);
         Assertions.assertEquals(testStudents, studentController.getStudentsByName("Валера"));
     }
 
@@ -60,27 +60,27 @@ public class StudentControllerTest {
         ArrayList<Student> testStudents = new ArrayList<>();
         testStudents.add(students.getFirst());
         testStudents.add(students.get(3));
-        when(studentService.getStudentsByAge(20)).thenReturn(testStudents);
+        when(studentServiceImpl.getStudentsByAge(20)).thenReturn(testStudents);
         Assertions.assertEquals(testStudents, studentController.getStudentsByAge(20));
     }
 
     @Test
     public void getStudentsById() {
-        when(studentService.getStudentsById(0L)).thenReturn(students.getFirst());
+        when(studentServiceImpl.getStudentsById(0L)).thenReturn(students.getFirst());
         Assertions.assertEquals(students.getFirst(), studentController.getStudentsById(0L));
     }
 
     @Test
     public void addStudents() {
         Student testStudent = new Student(students.size() + 1L, "Сережа", 25);
-        when(studentService.addStudent("Сережа", 25)).thenReturn(testStudent);
+        when(studentServiceImpl.addStudent("Сережа", 25)).thenReturn(testStudent);
         Assertions.assertEquals(testStudent, studentController.addStudents("Сережа", 25));
     }
 
     @Test
     public void updateStudents() {
         Student testStudent = new Student(0L, "Сережа", 25);
-        when(studentService.updateStudent(0L, "Сережа", 25)).thenReturn(testStudent);
+        when(studentServiceImpl.updateStudent(0L, "Сережа", 25)).thenReturn(testStudent);
         Assertions.assertEquals(testStudent, studentController.updateStudents(0L, "Сережа", 25));
     }
 

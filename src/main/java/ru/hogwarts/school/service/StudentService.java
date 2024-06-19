@@ -1,66 +1,24 @@
 package ru.hogwarts.school.service;
 
-import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.List;
-import java.util.Optional;
 
-@Service
-public class StudentService {
+public interface StudentService {
 
-    public StudentService(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
-    }
+    List<Student> getStudents();
 
-    private final StudentRepository studentRepository;
+    List<Student> getStudentsByName(String name);
 
-    public List<Student> getStudents() {
-        return studentRepository.findAll();
-    }
+    List<Student> getStudentsByAge(Integer age);
 
-    public List<Student> getStudentsByName(String name) {
-        List<Student> studentsByName = studentRepository.findStudentsByName(name);
-        if (!studentsByName.isEmpty()) {
-            return studentsByName;
-        }
-        throw new IllegalArgumentException("Ошибка! Студентов с данным именем не найдено.");
-    }
+    Student getStudentsById(Long id);
 
-    public List<Student> getStudentsByAge(Integer age) {
-        List<Student> studentsByAge = studentRepository.findStudentsByAge(age);
-        if (!studentsByAge.isEmpty()) {
-            return studentsByAge;
-        }
-        throw new IllegalArgumentException("Ошибка! Студентов с данным возрастом не найдено.");
-    }
+    Student addStudent(String name, Integer age);
 
-    public Student getStudentsById(Long id) {
-        Optional<Student> student = studentRepository.findById(id);
-        if (student.isEmpty()) {
-            throw new IllegalArgumentException("Ошибка! Студента с данным id не найдено");
-        }
-        return student.get();
-    }
+    Student updateStudent(Long id, String name, Integer age);
 
-    public Student addStudent(String name, Integer age) {
-        return studentRepository.save(new Student(name, age));
-    }
-
-    public Student updateStudent(Long id, String name, Integer age) {
-        Optional<Student> student = studentRepository.findById(id);
-        if(student.isEmpty()) {
-            throw new IllegalArgumentException("Ошибка! Студента с данным id не найдено.");
-        }
-        student.get().setName(name);
-        student.get().setAge(age);
-        return studentRepository.save(student.get());
-    }
-
-    public void deleteStudent(Long id) {
-        studentRepository.delete(getStudentsById(id));
-    }
+    void deleteStudent(Long id);
 
 
 }

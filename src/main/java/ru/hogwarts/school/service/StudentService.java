@@ -16,7 +16,7 @@ public interface StudentService {
 
     Student addStudent(String name, Integer age);
 
-    Student updateStudent(Long id, String name, Integer age);
+    Student updateStudent(Long id, Student student);
 
     void deleteStudent(Long id);
 

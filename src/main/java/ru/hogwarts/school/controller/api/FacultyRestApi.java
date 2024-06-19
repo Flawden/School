@@ -39,14 +39,14 @@ public interface FacultyRestApi {
             summary = "Добавить факультет",
             description = "Позволяет добавить факультет"
     )
-    Faculty addFaculty(@RequestParam String name, @RequestParam String color);
+    Faculty addFaculty(@RequestBody Faculty faculty);
 
 
     @Operation(
             summary = "Исправить данные факультета",
             description = "Позволяет изменить данные факультета"
     )
-    Faculty updateFaculty(@RequestParam Long id, @RequestParam String name, @RequestParam String color);
+    Faculty updateFaculty(@RequestParam Long id, @RequestBody Faculty faculty);
 
     @Operation(
             summary = "Уничтожить факультета",

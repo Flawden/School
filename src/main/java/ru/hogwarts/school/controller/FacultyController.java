@@ -38,13 +38,13 @@ public class FacultyController implements FacultyRestApi {
     }
 
     @PostMapping
-    public Faculty addFaculty(@RequestParam String name, @RequestParam String color) {
-        return facultyService.addFaculty(name, color);
+    public Faculty addFaculty(@RequestBody Faculty faculty) {
+        return facultyService.addFaculty(faculty);
     }
 
     @PatchMapping
-    public Faculty updateFaculty(@RequestParam Long id, @RequestParam String name, @RequestParam String color) {
-        return facultyService.updateFaculty(id, name, color);
+    public Faculty updateFaculty(@RequestParam Long id, @RequestBody Faculty faculty) {
+        return facultyService.updateFaculty(id, faculty);
     }
 
     @DeleteMapping

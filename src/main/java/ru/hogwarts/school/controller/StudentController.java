@@ -43,8 +43,8 @@ public class StudentController {
     }
 
     @PatchMapping
-    public Student updateStudents(Long id, String name, Integer age) {
-        return studentService.updateStudent(id, name, age);
+    public Student updateStudents(Long id, Student student) {
+        return studentService.updateStudent(id, student);
     }
 
     @DeleteMapping

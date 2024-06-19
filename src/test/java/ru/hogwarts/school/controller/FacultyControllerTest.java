@@ -67,15 +67,15 @@ public class FacultyControllerTest {
     @Test
     public void addFaculty() {
         Faculty testFaculty = new Faculty(faculties.size() + 1L, "Светлодуй", "Голубой");
-        when(facultyServiceImpl.addFaculty("Светлодуй", "Голубой")).thenReturn(testFaculty);
-        Assertions.assertEquals(testFaculty, facultyController.addFaculty("Светлодуй", "Голубой"));
+        when(facultyServiceImpl.addFaculty(new Faculty("Светлодуй", "Голубой"))).thenReturn(testFaculty);
+        Assertions.assertEquals(testFaculty, facultyController.addFaculty(new Faculty("Светлодуй", "Голубой")));
     }
 
     @Test
     public void updateFaculty() {
         Faculty testFaculty = new Faculty(0L, "Светлодуй", "Голубой");
-        when(facultyServiceImpl.updateFaculty(0L, "Светлодуй", "Голубой")).thenReturn(testFaculty);
-        Assertions.assertEquals(testFaculty, facultyController.updateFaculty(0L, "Светлодуй", "Голубой"));
+        when(facultyServiceImpl.updateFaculty(0L, new Faculty("Светлодуй", "Голубой"))).thenReturn(testFaculty);
+        Assertions.assertEquals(testFaculty, facultyController.updateFaculty(0L, new Faculty("Светлодуй", "Голубой")));
     }
 
 }

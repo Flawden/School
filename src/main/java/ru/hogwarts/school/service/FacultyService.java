@@ -14,9 +14,9 @@ public interface FacultyService {
 
     Faculty getFacultiesById(Long id);
 
-    Faculty addFaculty(String name, String color);
+    Faculty addFaculty(Faculty faculty);
 
-    Faculty updateFaculty(Long id, String name, String color);
+    Faculty updateFaculty(Long id, Faculty faculty);
 
     void deleteFaculty(Long id);
 

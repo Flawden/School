@@ -102,7 +102,7 @@ public class StudentServiceImplTest {
         Student testStudent = new Student(1L, "Стеблехвост", 21);
         when(studentRepository.findById(1L)).thenReturn(Optional.ofNullable(students.get(1)));
         when(studentRepository.save(testStudent)).thenReturn(testStudent);
-        Assertions.assertEquals(testStudent, studentServiceImpl.updateStudent(1L, "Стеблехвост", 21));
+        Assertions.assertEquals(testStudent, studentServiceImpl.updateStudent(1L, new Student("Стеблехвост", 21)));
     }
 
     @Test

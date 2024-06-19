@@ -51,31 +51,18 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Transactional
-    public Faculty addFaculty(String name, String color) {
-        Faculty faculty = new Faculty(name, color);
-        checkFacultyToDuplicate(faculty);
-        return facultyRepository.save(faculty);
-    }
-
-    private void checkFacultyToDuplicate(Faculty checkingFaculty) {
-          List<Faculty> isFacultyExist = facultyRepository.findByNameOrColor(checkingFaculty.getName(), checkingFaculty.getColor());
-          if (isFacultyExist.isEmpty()) {
-              return;
+    public Faculty addFaculty(Faculty faculty) {
+        try {
+            return facultyRepository.save(faculty);
+        } catch (DataIntegrityViolationException e) {
+            throw new FacultyUpdateException("Ошибка! Факультет с переданными именем или цветом уже существуют");
         }
-          for (Faculty facultyEntity: isFacultyExist) {
-              if (facultyEntity.getName().equals(checkingFaculty.getName())) {
-                  throw new IllegalArgumentException("Ошибка! Факультет с данным названием уже существует!");
-              }
-              if (facultyEntity.getColor().equals(checkingFaculty.getColor())) {
-                  throw new IllegalArgumentException("Ошибка! Факультет с таким цветом уже существует!");
-              }
-          }
     }
 
-    public Faculty updateFaculty(Long id, String name, String color) {
+    public Faculty updateFaculty(Long id, Faculty changedFaculty) {
         Faculty faculty = facultyRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Ошибка! Факультета с данным id не существует"));
-        faculty.setName(name);
-        faculty.setColor(color);
+        faculty.setName(changedFaculty.getName());
+        faculty.setColor(changedFaculty.getColor());
         try {
             return facultyRepository.save(faculty);
         } catch (DataIntegrityViolationException e) {

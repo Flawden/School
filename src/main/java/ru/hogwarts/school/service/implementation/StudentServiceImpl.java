@@ -51,10 +51,10 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.save(new Student(name, age));
     }
 
-    public Student updateStudent(Long id, String name, Integer age) {
+    public Student updateStudent(Long id, Student changedStudent) {
         Student student = studentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Ошибка! Студента с данным id не найдено."));
-        student.setName(name);
-        student.setAge(age);
+        student.setName(changedStudent.getName());
+        student.setAge(changedStudent.getAge());
         return studentRepository.save(student);
     }
 

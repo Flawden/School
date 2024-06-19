@@ -46,7 +46,7 @@ public interface StudentRestApi {
             summary = "Обновить студента",
             description = "Переписать биографию студента с чистого листа"
     )
-    Student updateStudents(Long id, String name, Integer age);
+    Student updateStudents(Long id, Student student);
 
     @Operation(
             summary = "Удалить студента",

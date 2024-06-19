@@ -80,8 +80,8 @@ public class StudentControllerTest {
     @Test
     public void updateStudents() {
         Student testStudent = new Student(0L, "Сережа", 25);
-        when(studentServiceImpl.updateStudent(0L, "Сережа", 25)).thenReturn(testStudent);
-        Assertions.assertEquals(testStudent, studentController.updateStudents(0L, "Сережа", 25));
+        when(studentServiceImpl.updateStudent(0L, new Student("Сережа", 25))).thenReturn(testStudent);
+        Assertions.assertEquals(testStudent, studentController.updateStudents(0L, new Student("Сережа", 25)));
     }
 
 }

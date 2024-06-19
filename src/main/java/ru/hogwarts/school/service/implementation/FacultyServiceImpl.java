@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.exception.FacultySaveException;
 import ru.hogwarts.school.exception.FacultyUpdateException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
@@ -15,7 +16,7 @@ import java.util.Optional;
 @Service
 public class FacultyServiceImpl implements FacultyService {
 
-    private FacultyRepository facultyRepository;
+    private final FacultyRepository facultyRepository;
 
     public FacultyServiceImpl(FacultyRepository facultyRepository) {
         this.facultyRepository = facultyRepository;
@@ -30,7 +31,7 @@ public class FacultyServiceImpl implements FacultyService {
             if (faculty.isPresent()) {
                 return faculty.get();
             }
-        throw new IllegalArgumentException("Ошибка! Факультета с данным названием не существует");
+        throw new EntityNotFoundException("Ошибка! Факультета с данным названием не существует");
     }
 
     public Faculty getFacultiesByColor(String color) {
@@ -39,13 +40,13 @@ public class FacultyServiceImpl implements FacultyService {
                 return faculty.get();
             }
 
-        throw new IllegalArgumentException("Ошибка! Факультета с данным цветом не существует");
+        throw new EntityNotFoundException("Ошибка! Факультета с данным цветом не существует");
     }
 
     public Faculty getFacultiesById(Long id) {
         Optional<Faculty> faculty = facultyRepository.findById(id);
         if (faculty.isEmpty()) {
-            throw new IllegalArgumentException("Ошибка! Факультета с данным id не существует");
+            throw new EntityNotFoundException("Ошибка! Факультета с данным id не существует");
         }
         return faculty.get();
     }
@@ -55,7 +56,7 @@ public class FacultyServiceImpl implements FacultyService {
         try {
             return facultyRepository.save(faculty);
         } catch (DataIntegrityViolationException e) {
-            throw new FacultyUpdateException("Ошибка! Факультет с переданными именем или цветом уже существуют");
+            throw new FacultySaveException("Ошибка! Факультет с переданными именем или цветом уже существуют");
         }
     }
 

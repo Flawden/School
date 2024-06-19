@@ -1,5 +1,6 @@
 package ru.hogwarts.school.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,7 +60,7 @@ public class StudentServiceImplTest {
     @Test
     public void getStudentsByNameWithException() {
         when(studentRepository.findStudentsByName("Абвывав")).thenReturn(new ArrayList<>());
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> studentServiceImpl.getStudentsByName("Абвывав"));
+        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> studentServiceImpl.getStudentsByName("Абвывав"));
         Assertions.assertEquals("Ошибка! Студентов с данным именем не найдено.", exception.getMessage());
     }
 
@@ -73,7 +74,7 @@ public class StudentServiceImplTest {
     @Test
     public void getStudentsByAgeWithException() {
         when(studentRepository.findStudentsByAge(999)).thenReturn(new ArrayList<>());
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> studentServiceImpl.getStudentsByAge(999));
+        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> studentServiceImpl.getStudentsByAge(999));
         Assertions.assertEquals("Ошибка! Студентов с данным возрастом не найдено.", exception.getMessage());
     }
 
@@ -86,7 +87,7 @@ public class StudentServiceImplTest {
     @Test
     public void getStudentsByIdWithException() {
         when(studentRepository.findById(students.size() + 1L)).thenReturn(Optional.empty());
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> studentServiceImpl.getStudentsById(students.size() + 1L));
+        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> studentServiceImpl.getStudentsById(students.size() + 1L));
         Assertions.assertEquals("Ошибка! Студента с данным id не найдено", exception.getMessage());
     }
 
@@ -108,7 +109,7 @@ public class StudentServiceImplTest {
     @Test
     public void deleteStudentWithException() {
         when(studentRepository.findById(0L)).thenReturn(Optional.empty());
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> studentServiceImpl.deleteStudent(0L));
+        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> studentServiceImpl.deleteStudent(0L));
         Assertions.assertEquals("Ошибка! Студента с данным id не найдено", exception.getMessage());
     }
 

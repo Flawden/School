@@ -1,5 +1,6 @@
 package ru.hogwarts.school.service.implementation;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
@@ -27,7 +28,7 @@ public class StudentServiceImpl implements StudentService {
         if (!studentsByName.isEmpty()) {
             return studentsByName;
         }
-        throw new IllegalArgumentException("Ошибка! Студентов с данным именем не найдено.");
+        throw new EntityNotFoundException("Ошибка! Студентов с данным именем не найдено.");
     }
 
     public List<Student> getStudentsByAge(Integer age) {
@@ -35,13 +36,13 @@ public class StudentServiceImpl implements StudentService {
         if (!studentsByAge.isEmpty()) {
             return studentsByAge;
         }
-        throw new IllegalArgumentException("Ошибка! Студентов с данным возрастом не найдено.");
+        throw new EntityNotFoundException("Ошибка! Студентов с данным возрастом не найдено.");
     }
 
     public Student getStudentsById(Long id) {
         Optional<Student> student = studentRepository.findById(id);
         if (student.isEmpty()) {
-            throw new IllegalArgumentException("Ошибка! Студента с данным id не найдено");
+            throw new EntityNotFoundException("Ошибка! Студента с данным id не найдено");
         }
         return student.get();
     }

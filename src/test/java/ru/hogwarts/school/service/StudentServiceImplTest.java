@@ -53,14 +53,14 @@ public class StudentServiceImplTest {
     @Test
     public void getStudentsByName() {
         List<Student> testStudents = students.stream().filter(s -> Objects.equals(s.getName(), students.getFirst().getName())).toList();
-        when(studentRepository.findStudentsByName(students.getFirst().getName())).thenReturn(testStudents);
-        Assertions.assertEquals(testStudents, studentServiceImpl.getStudentsByName(students.getFirst().getName()));
+        when(studentRepository.findByNameIgnoreCase(students.getFirst().getName())).thenReturn(testStudents);
+        Assertions.assertEquals(testStudents, studentServiceImpl.findByNameIgnoreCase(students.getFirst().getName()));
     }
 
     @Test
     public void getStudentsByNameWithException() {
-        when(studentRepository.findStudentsByName("Абвывав")).thenReturn(new ArrayList<>());
-        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> studentServiceImpl.getStudentsByName("Абвывав"));
+        when(studentRepository.findByNameIgnoreCase("Абвывав")).thenReturn(new ArrayList<>());
+        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> studentServiceImpl.findByNameIgnoreCase("Абвывав"));
         Assertions.assertEquals("Ошибка! Студентов с данным именем не найдено.", exception.getMessage());
     }
 

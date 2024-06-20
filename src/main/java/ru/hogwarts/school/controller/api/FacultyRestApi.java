@@ -26,7 +26,7 @@ public interface FacultyRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Студента с данным именем не найдено"),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    Faculty getFacultiesByName(@PathParam("facultyName") String facultyName);
+    Faculty getByNameIgnoreCase(@PathVariable("facultyName") String facultyName);
 
 
     @Operation(
@@ -37,7 +37,7 @@ public interface FacultyRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Студента с данным цветом не найдено"),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    Faculty getFacultiesByColor(@PathParam("color") String color);
+    Faculty getByColorIgnoreCase(@PathVariable("color") String color);
 
 
     @Operation(
@@ -48,7 +48,7 @@ public interface FacultyRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Факультета с данным id не найдено"),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    Faculty getFacultiesById(@PathParam("id") Long id);
+    Faculty getFacultiesById(@PathVariable("id") Long id);
 
     @Operation(
             summary = "Добавить факультет",
@@ -69,7 +69,7 @@ public interface FacultyRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Факультета с переданными именем или цветом уже существуют"),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    Faculty updateFaculty(@PathParam("id") Long id, @RequestBody Faculty faculty);
+    Faculty updateFaculty(@PathVariable("id") Long id, @RequestBody Faculty faculty);
 
     @Operation(
             summary = "Уничтожить факультета",
@@ -79,6 +79,6 @@ public interface FacultyRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Факультета с данным id не существует"),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    void deleteFaculty(Long id);
+    void deleteFaculty(@PathVariable Long id);
 
 }

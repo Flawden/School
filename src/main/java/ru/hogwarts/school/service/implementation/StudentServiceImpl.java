@@ -23,8 +23,8 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.findAll();
     }
 
-    public List<Student> getStudentsByName(String name) {
-        List<Student> studentsByName = studentRepository.findStudentsByName(name);
+    public List<Student> findByNameIgnoreCase(String name) {
+        List<Student> studentsByName = studentRepository.findByNameIgnoreCase(name);
         if (!studentsByName.isEmpty()) {
             return studentsByName;
         }
@@ -37,6 +37,10 @@ public class StudentServiceImpl implements StudentService {
             return studentsByAge;
         }
         throw new EntityNotFoundException("Ошибка! Студентов с данным возрастом не найдено.");
+    }
+
+    public List<Student> findByAgeBetween(Integer min, Integer max) {
+        return studentRepository.findByAgeBetween(min, max);
     }
 
     public Student getStudentsById(Long id) {

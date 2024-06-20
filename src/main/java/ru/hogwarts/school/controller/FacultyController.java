@@ -1,7 +1,6 @@
 package ru.hogwarts.school.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.controller.api.FacultyRestApi;
@@ -24,13 +23,13 @@ public class FacultyController implements FacultyRestApi {
     }
 
     @GetMapping("/name/{facultyName}")
-    public Faculty getFacultiesByName(String facultyName) {
-        return facultyService.getFacultyByName(facultyName);
+    public Faculty getByNameIgnoreCase(String facultyName) {
+        return facultyService.getByNameIgnoreCase(facultyName);
     }
 
     @GetMapping("/color/{color}")
-    public Faculty getFacultiesByColor(String color) {
-        return facultyService.getFacultiesByColor(color);
+    public Faculty getByColorIgnoreCase(String color) {
+        return facultyService.getByColorIgnoreCase(color);
     }
 
     @GetMapping("/{id}")

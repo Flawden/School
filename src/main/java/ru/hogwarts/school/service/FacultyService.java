@@ -8,9 +8,9 @@ public interface FacultyService {
 
     List<Faculty> getFaculties();
 
-    Faculty getFacultyByName(String name);
+    Faculty getByNameIgnoreCase(String name);
 
-    Faculty getFacultiesByColor(String color);
+    Faculty getByColorIgnoreCase(String color);
 
     Faculty getFacultiesById(Long id);
 

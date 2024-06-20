@@ -54,25 +54,25 @@ public class FacultyServiceImplTest {
     @Test
     public void getFacultiesByName() {
         Optional<Faculty> testFaculty = Optional.ofNullable(faculties.getFirst());
-        when(facultyRepository.getFacultyByName(faculties.getFirst().getName())).thenReturn(testFaculty);
-        Assertions.assertEquals(faculties.getFirst(), facultyServiceImpl.getFacultyByName(faculties.getFirst().getName()));
+        when(facultyRepository.getByNameIgnoreCase(faculties.getFirst().getName())).thenReturn(testFaculty);
+        Assertions.assertEquals(faculties.getFirst(), facultyServiceImpl.getByNameIgnoreCase(faculties.getFirst().getName()));
     }
 
     @Test
     public void getFacultiesByNameWithException() {
-        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> facultyServiceImpl.getFacultyByName("Фламма"));
+        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> facultyServiceImpl.getByNameIgnoreCase("Фламма"));
         Assertions.assertEquals("Ошибка! Факультета с данным названием не существует", exception.getMessage());
     }
 
     @Test
     public void getFacultiesByColor() {
-        when(facultyRepository.getFacultyByColor(faculties.getFirst().getColor())).thenReturn(Optional.ofNullable(faculties.getFirst()));
-        Assertions.assertEquals(faculties.getFirst(), facultyServiceImpl.getFacultiesByColor(faculties.getFirst().getColor()));
+        when(facultyRepository.getByColorIgnoreCase(faculties.getFirst().getColor())).thenReturn(Optional.ofNullable(faculties.getFirst()));
+        Assertions.assertEquals(faculties.getFirst(), facultyServiceImpl.getByColorIgnoreCase(faculties.getFirst().getColor()));
     }
 
     @Test
     public void getFacultiesByColorWithException() {
-        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> facultyServiceImpl.getFacultiesByColor("Радужный"));
+        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> facultyServiceImpl.getByColorIgnoreCase("Радужный"));
         Assertions.assertEquals("Ошибка! Факультета с данным цветом не существует", exception.getMessage());
     }
 

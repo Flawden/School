@@ -26,16 +26,16 @@ public class FacultyServiceImpl implements FacultyService {
         return facultyRepository.findAll();
     }
 
-    public Faculty getFacultyByName(String name) {
-        Optional<Faculty> faculty = facultyRepository.getFacultyByName(name);
+    public Faculty getByNameIgnoreCase(String name) {
+        Optional<Faculty> faculty = facultyRepository.getByNameIgnoreCase(name);
             if (faculty.isPresent()) {
                 return faculty.get();
             }
         throw new EntityNotFoundException("Ошибка! Факультета с данным названием не существует");
     }
 
-    public Faculty getFacultiesByColor(String color) {
-        Optional<Faculty> faculty = facultyRepository.getFacultyByColor(color);
+    public Faculty getByColorIgnoreCase(String color) {
+        Optional<Faculty> faculty = facultyRepository.getByColorIgnoreCase(color);
             if (faculty.isPresent()) {
                 return faculty.get();
             }

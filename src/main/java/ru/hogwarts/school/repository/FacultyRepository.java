@@ -10,9 +10,7 @@ import java.util.Optional;
 @Repository
 public interface FacultyRepository extends JpaRepository<Faculty, Long> {
 
-    Optional<Faculty> getFacultyByName(String name);
-    Optional<Faculty> getFacultyByColor(String color);
-
-    List<Faculty> findByNameOrColor(String name, String color);
+    Optional<Faculty> getByNameIgnoreCase(String name);
+    Optional<Faculty> getByColorIgnoreCase(String color);
 
 }

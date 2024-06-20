@@ -48,14 +48,14 @@ public class FacultyControllerTest {
 
     @Test
     public void getFacultiesByName() {
-        when(facultyServiceImpl.getFacultyByName("Гриффиндор")).thenReturn(faculties.getFirst());
-        Assertions.assertEquals(faculties.getFirst(), facultyController.getFacultiesByName("Гриффиндор"));
+        when(facultyServiceImpl.getByNameIgnoreCase("Гриффиндор")).thenReturn(faculties.getFirst());
+        Assertions.assertEquals(faculties.getFirst(), facultyController.getByNameIgnoreCase("Гриффиндор"));
     }
 
     @Test
     public void getFacultiesByColor() {
-        when(facultyServiceImpl.getFacultiesByColor("Красный")).thenReturn(faculties.getFirst());
-        Assertions.assertEquals(faculties.getFirst(), facultyController.getFacultiesByColor("Красный"));
+        when(facultyServiceImpl.getByColorIgnoreCase("Красный")).thenReturn(faculties.getFirst());
+        Assertions.assertEquals(faculties.getFirst(), facultyController.getByColorIgnoreCase("Красный"));
     }
 
     @Test

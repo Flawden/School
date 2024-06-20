@@ -1,6 +1,7 @@
 package ru.hogwarts.school.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.controller.api.StudentRestApi;
@@ -22,14 +23,19 @@ public class StudentController implements StudentRestApi {
         return studentService.getStudents();
     }
 
-    @GetMapping("/{name}")
-    public List<Student> getStudentsByName(String name) {
-        return studentService.getStudentsByName(name);
+    @GetMapping("/name/{name}")
+    public List<Student> findByNameIgnoreCase(String name) {
+        return studentService.findByNameIgnoreCase(name);
     }
 
-    @GetMapping("/{age}")
+    @GetMapping("/age/{age}")
     public List<Student> getStudentsByAge(Integer age) {
         return studentService.getStudentsByAge(age);
+    }
+
+    @GetMapping("/age/between/{min}/{max}")
+    public List<Student> findByAgeBetween(Integer min, Integer max) {
+        return studentService.findByAgeBetween(min, max);
     }
 
     @GetMapping("/{id}")

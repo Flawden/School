@@ -51,8 +51,8 @@ public class StudentControllerTest {
     public void getStudentsByName() {
         List<Student> testStudents = new ArrayList<>();
         testStudents.add(students.getFirst());
-        when(studentServiceImpl.getStudentsByName("Валера")).thenReturn(testStudents);
-        Assertions.assertEquals(testStudents, studentController.getStudentsByName("Валера"));
+        when(studentServiceImpl.findByNameIgnoreCase("Валера")).thenReturn(testStudents);
+        Assertions.assertEquals(testStudents, studentController.findByNameIgnoreCase("Валера"));
     }
 
     @Test

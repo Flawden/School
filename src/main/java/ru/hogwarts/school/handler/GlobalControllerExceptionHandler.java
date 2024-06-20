@@ -14,17 +14,17 @@ public class GlobalControllerExceptionHandler {
 
     @ExceptionHandler(value = IllegalArgumentException.class)
     public ResponseEntity illegalArgument(@NotNull IllegalArgumentException exception) {
-        return new ResponseEntity(exception.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = FacultySaveException.class)
     public ResponseEntity facultySaveException(@NotNull FacultySaveException exception) {
-        return new ResponseEntity(exception.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = FacultyUpdateException.class)
     public ResponseEntity facultyUpdateException(@NotNull FacultyUpdateException exception) {
-        return new ResponseEntity(exception.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = EntityNotFoundException.class)

@@ -60,18 +60,20 @@ public class FacultyServiceImpl implements FacultyService {
         }
     }
 
+    @Transactional
     public Faculty updateFaculty(Long id, Faculty changedFaculty) {
-        Faculty faculty = facultyRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Ошибка! Факультета с данным id не существует"));
+        Faculty faculty = getFacultiesById(id);
         faculty.setName(changedFaculty.getName());
         faculty.setColor(changedFaculty.getColor());
         try {
-            return facultyRepository.save(faculty);
+            return addFaculty(faculty);
         } catch (DataIntegrityViolationException e) {
             throw new FacultyUpdateException("Ошибка! Факультет с переданными именем или цветом уже существуют");
         }
 
     }
 
+    @Transactional
     public void deleteFaculty(Long id) {
         facultyRepository.delete(getFacultiesById(id));
     }

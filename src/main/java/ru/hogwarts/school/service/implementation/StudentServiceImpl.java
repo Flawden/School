@@ -48,17 +48,19 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Transactional
-    public Student addStudent(String name, Integer age) {
-        return studentRepository.save(new Student(name, age));
-    }
-
-    public Student updateStudent(Long id, Student changedStudent) {
-        Student student = studentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Ошибка! Студента с данным id не найдено."));
-        student.setName(changedStudent.getName());
-        student.setAge(changedStudent.getAge());
+    public Student addStudent(Student student) {
         return studentRepository.save(student);
     }
 
+    @Transactional
+    public Student updateStudent(Long id, Student changedStudent) {
+        Student student = getStudentsById(id);
+        student.setName(changedStudent.getName());
+        student.setAge(changedStudent.getAge());
+        return addStudent(student);
+    }
+
+    @Transactional
     public void deleteStudent(Long id) {
         studentRepository.delete(getStudentsById(id));
     }

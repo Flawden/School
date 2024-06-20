@@ -14,7 +14,7 @@ public interface StudentService {
 
     Student getStudentsById(Long id);
 
-    Student addStudent(String name, Integer age);
+    Student addStudent(Student student);
 
     Student updateStudent(Long id, Student student);
 

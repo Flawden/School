@@ -95,7 +95,7 @@ public class StudentServiceImplTest {
     public void addStudent() {
         Student testStudent = new Student("Глеб", 12);
         when(studentRepository.save(testStudent)).thenReturn(testStudent);
-        Assertions.assertEquals(testStudent, studentServiceImpl.addStudent("Глеб", 12));
+        Assertions.assertEquals(testStudent, studentServiceImpl.addStudent(new Student("Глеб", 12)));
     }
 
     @Test

@@ -1,6 +1,7 @@
 package ru.hogwarts.school.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.controller.api.FacultyRestApi;
@@ -22,33 +23,33 @@ public class FacultyController implements FacultyRestApi {
         return facultyService.getFaculties();
     }
 
-    @GetMapping("/name")
-    public Faculty getFacultiesByName(@RequestParam String facultyName) {
+    @GetMapping("/name/{facultyName}")
+    public Faculty getFacultiesByName(String facultyName) {
         return facultyService.getFacultyByName(facultyName);
     }
 
-    @GetMapping("/color")
-    public Faculty getFacultiesByColor(@RequestParam String color) {
+    @GetMapping("/color/{color}")
+    public Faculty getFacultiesByColor(String color) {
         return facultyService.getFacultiesByColor(color);
     }
 
-    @GetMapping("/id")
-    public Faculty getFacultiesById(@RequestParam Long id) {
+    @GetMapping("/id/{id}")
+    public Faculty getFacultiesById(Long id) {
         return facultyService.getFacultiesById(id);
     }
 
     @PostMapping
-    public Faculty addFaculty(@RequestBody Faculty faculty) {
+    public Faculty addFaculty(Faculty faculty) {
         return facultyService.addFaculty(faculty);
     }
 
-    @PatchMapping
-    public Faculty updateFaculty(@RequestParam Long id, @RequestBody Faculty faculty) {
+    @PatchMapping("/id/{id}")
+    public Faculty updateFaculty(Long id, Faculty faculty) {
         return facultyService.updateFaculty(id, faculty);
     }
 
-    @DeleteMapping
-    public void deleteFaculty(@RequestParam Long id) {
+    @DeleteMapping("/id/{id}")
+    public void deleteFaculty(Long id) {
         facultyService.deleteFaculty(id);
     }
 }

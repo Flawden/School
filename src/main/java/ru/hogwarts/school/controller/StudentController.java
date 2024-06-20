@@ -1,9 +1,9 @@
 package ru.hogwarts.school.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.school.controller.api.StudentRestApi;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("/api/v1/students")
 @RequiredArgsConstructor
 @Tag(name="StudentController", description="Предоставляет перечень студентов и операций над ними")
-public class StudentController {
+public class StudentController implements StudentRestApi {
 
     private final StudentService studentService;
 
@@ -38,8 +38,8 @@ public class StudentController {
     }
 
     @PostMapping
-    public Student addStudents(String name, Integer age) {
-        return studentService.addStudent(name, age);
+    public Student addStudent(Student student) {
+        return studentService.addStudent(student);
     }
 
     @PatchMapping

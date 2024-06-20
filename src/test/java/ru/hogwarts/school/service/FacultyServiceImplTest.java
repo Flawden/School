@@ -92,7 +92,7 @@ public class FacultyServiceImplTest {
     @Test
     public void addFaculty() {
         Faculty testFaculty = new Faculty(0L, "Стеблхвост", "Черный");
-        when(facultyRepository.save(testFaculty)).thenReturn(new Faculty("Стеблхвост", "Черный"));
+        when(facultyRepository.save(testFaculty)).thenReturn(testFaculty);
         Assertions.assertEquals(testFaculty, facultyServiceImpl.addFaculty(testFaculty));
     }
 

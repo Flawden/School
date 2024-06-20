@@ -1,5 +1,6 @@
 package ru.hogwarts.school.model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,11 +12,23 @@ import java.util.Objects;
 @NoArgsConstructor
 @Getter
 @Setter
+@Entity
 public class Faculty {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true, nullable = false)
     private String name;
+
+    @Column(unique = true, nullable = false)
     private String color;
+
+    public Faculty(String name, String color) {
+        this.name = name;
+        this.color = color;
+    }
 
     @Override
     public boolean equals(Object o) {

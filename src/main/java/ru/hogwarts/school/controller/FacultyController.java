@@ -1,85 +1,55 @@
 package ru.hogwarts.school.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.websocket.server.PathParam;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.school.controller.api.FacultyRestApi;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.service.FacultyService;
 
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/faculty")
+@RequestMapping("/api/v1/faculties")
+@RequiredArgsConstructor
 @Tag(name="FacultyController", description="Предоставляет перечень факультетов и операций над ними")
-public class FacultyController {
+public class FacultyController implements FacultyRestApi {
 
     private final FacultyService facultyService;
 
-    public FacultyController(FacultyService facultyService) {
-        this.facultyService = facultyService;
-    }
-
     @GetMapping
-    @Operation(
-            summary = "Получить все факультеты",
-            description = "Позволяет получить все факультеты"
-    )
-    public HashMap<Long, Faculty> getFaculties() {
+    public List<Faculty> getFaculties() {
         return facultyService.getFaculties();
     }
 
-    @GetMapping("/name")
-    @Operation(
-            summary = "Получить факультет по названию",
-            description = "Позволяет получить факультет по названию"
-    )
-    public Faculty getFacultiesByName(@RequestParam String facultyName) {
-        return facultyService.getFacultiesByName(facultyName);
+    @GetMapping("/name/{facultyName}")
+    public Faculty getFacultiesByName(String facultyName) {
+        return facultyService.getFacultyByName(facultyName);
     }
 
-    @GetMapping("/color")
-    @Operation(
-            summary = "Получить факультет по цвету",
-            description = "Позволяет получить факультет по цвету"
-    )
-    public Faculty getFacultiesByColor(@RequestParam String color) {
+    @GetMapping("/color/{color}")
+    public Faculty getFacultiesByColor(String color) {
         return facultyService.getFacultiesByColor(color);
     }
 
-    @GetMapping("/id")
-    @Operation(
-            summary = "Получить факультет по id",
-            description = "Позволяет получить факультет по id"
-    )
-    public Faculty getFacultiesById(@RequestParam Long id) {
+    @GetMapping("/{id}")
+    public Faculty getFacultiesById(Long id) {
         return facultyService.getFacultiesById(id);
     }
 
     @PostMapping
-    @Operation(
-            summary = "Добавить факультет",
-            description = "Позволяет добавить факультет"
-    )
-    public Faculty addFaculty(@RequestParam String name, @RequestParam String color) {
-        return facultyService.addFaculty(name, color);
+    public Faculty addFaculty(Faculty faculty) {
+        return facultyService.addFaculty(faculty);
     }
 
-    @PatchMapping
-    @Operation(
-            summary = "Исправить данные факультета",
-            description = "Позволяет изменить данные факультета"
-    )
-    public Faculty updateFaculty(@RequestParam Long id, @RequestParam String name, @RequestParam String color) {
-        return facultyService.updateFaculty(id, name, color);
+    @PatchMapping("/{id}")
+    public Faculty updateFaculty(Long id, Faculty faculty) {
+        return facultyService.updateFaculty(id, faculty);
     }
 
-    @DeleteMapping
-    @Operation(
-            summary = "Уничтожить факультета",
-            description = "Позволяет удалить опорочивший свою честь факультет с лица человечества"
-    )
-    public void deleteFaculty(@RequestParam Long id) {
+    @DeleteMapping("/{id}")
+    public void deleteFaculty(Long id) {
         facultyService.deleteFaculty(id);
     }
 }

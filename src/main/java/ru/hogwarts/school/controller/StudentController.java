@@ -22,17 +22,17 @@ public class StudentController implements StudentRestApi {
         return studentService.getStudents();
     }
 
-    @GetMapping("/name")
+    @GetMapping("/{name}")
     public List<Student> getStudentsByName(String name) {
         return studentService.getStudentsByName(name);
     }
 
-    @GetMapping("/age")
+    @GetMapping("/{age}")
     public List<Student> getStudentsByAge(Integer age) {
         return studentService.getStudentsByAge(age);
     }
 
-    @GetMapping("/id")
+    @GetMapping("/{id}")
     public Student getStudentsById(Long id) {
         return studentService.getStudentsById(id);
     }
@@ -42,12 +42,12 @@ public class StudentController implements StudentRestApi {
         return studentService.addStudent(student);
     }
 
-    @PatchMapping
+    @PatchMapping("{id}")
     public Student updateStudents(Long id, Student student) {
         return studentService.updateStudent(id, student);
     }
 
-    @DeleteMapping
+    @DeleteMapping("{id}")
     public void deleteStudent(Long id) {
         studentService.deleteStudent(id);
     }

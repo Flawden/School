@@ -33,7 +33,7 @@ public class FacultyController implements FacultyRestApi {
         return facultyService.getFacultiesByColor(color);
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}")
     public Faculty getFacultiesById(Long id) {
         return facultyService.getFacultiesById(id);
     }
@@ -43,12 +43,12 @@ public class FacultyController implements FacultyRestApi {
         return facultyService.addFaculty(faculty);
     }
 
-    @PatchMapping("/id/{id}")
+    @PatchMapping("/{id}")
     public Faculty updateFaculty(Long id, Faculty faculty) {
         return facultyService.updateFaculty(id, faculty);
     }
 
-    @DeleteMapping("/id/{id}")
+    @DeleteMapping("/{id}")
     public void deleteFaculty(Long id) {
         facultyService.deleteFaculty(id);
     }

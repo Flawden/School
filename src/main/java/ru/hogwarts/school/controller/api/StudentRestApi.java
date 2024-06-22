@@ -17,7 +17,7 @@ public interface StudentRestApi {
             summary = "Найти всех студентов",
             description = "Позволяет совершить поиск всех студентов"
     )
-    List<Student> getStudents();
+    List<StudentDTO> getStudents();
 
     @Operation(
             summary = "Найти студента по имени",
@@ -27,7 +27,7 @@ public interface StudentRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Студентов с данным именем не найдено."),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    List<Student> findByNameIgnoreCase(@PathVariable("name") String name);
+    List<StudentDTO> findByNameIgnoreCase(@PathVariable("name") String name);
 
     @Operation(
             summary = "Найти студентов по возрасту",
@@ -37,13 +37,13 @@ public interface StudentRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Студентов с данным возврастом не найдено."),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    List<Student> getStudentsByAge(@PathVariable Integer age);
+    List<StudentDTO> getStudentsByAge(@PathVariable Integer age);
 
     @Operation(
             summary = "Получить студентов по диапазону возврастов",
             description = "Получить всех студентов, чей диапазов возврастов попадает в заданные значения"
     )
-    List<Student> findByAgeBetween(@PathVariable("min") Integer min, @PathVariable("max") Integer max);
+    List<StudentDTO> findByAgeBetween(@PathVariable("min") Integer min, @PathVariable("max") Integer max);
 
     @Operation(
             summary = "Найти студента по Id",
@@ -53,20 +53,20 @@ public interface StudentRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Студентов с данным id не найдено."),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    Student getStudentsById(@PathVariable("id") Long id);
+    StudentDTO getStudentsById(@PathVariable("id") Long id);
 
     @PostMapping
     @Operation(
             summary = "Добавить студента",
             description = "Записать имя человека в студенты школы магии и волшебства"
     )
-    Student addStudent(@RequestBody StudentDTO student);
+    StudentDTO addStudent(@RequestBody StudentDTO student);
 
     @Operation(
             summary = "Обновить студента",
             description = "Переписать биографию студента с чистого листа"
     )
-    Student updateStudents(@PathVariable("id") Long id, @RequestBody StudentDTO student);
+    StudentDTO updateStudents(@PathVariable("id") Long id, @RequestBody StudentDTO student);
 
     @Operation(
             summary = "Удалить студента",

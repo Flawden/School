@@ -9,6 +9,7 @@ import ru.hogwarts.school.dto.FacultyDTO;
 import ru.hogwarts.school.dto.StudentDTO;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.ArrayList;
@@ -44,6 +45,16 @@ public class FacultyController implements FacultyRestApi {
     @Override
     public FacultyDTO getByColorIgnoreCase(String color) {
         return mapper.map(facultyService.getByColorIgnoreCase(color), FacultyDTO.class);
+    }
+
+    @Override
+    public List<StudentDTO> getStudentsOfFaculty(FacultyDTO faculty) {
+        List<Student> students = facultyService.getStudentsOfFaculty(mapper.map(faculty, Faculty.class));
+        List<StudentDTO> studentDTOS = new ArrayList<>();
+        for (Student student: students) {
+            studentDTOS.add(mapper.map(student, StudentDTO.class));
+        }
+        return studentDTOS;
     }
 
     @GetMapping("/{id}")

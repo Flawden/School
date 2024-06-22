@@ -1,16 +1,16 @@
 package ru.hogwarts.school.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.controller.api.StudentRestApi;
 import ru.hogwarts.school.dto.FacultyDTO;
 import ru.hogwarts.school.dto.StudentDTO;
-import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.dto.StudentWithFacultyDTO;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
+import ru.hogwarts.school.util.StudentMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,7 @@ public class StudentController implements StudentRestApi {
 
     private final StudentService studentService;
     private final ModelMapper mapper;
+    private final StudentMapper studentMapper;
 
     @GetMapping
     @Override
@@ -44,6 +45,12 @@ public class StudentController implements StudentRestApi {
             studentDTOS.add(mapper.map(student, StudentDTO.class));
         }
         return studentDTOS;
+    }
+
+    @Override
+    @GetMapping("/faculty")
+    public FacultyDTO getFacultyOfStudent(StudentDTO student) {
+        return mapper.map(studentService.getFacultyOfStudent(mapper.map(student, Student.class)), FacultyDTO.class);
     }
 
     @GetMapping("/age/{age}")
@@ -82,8 +89,8 @@ public class StudentController implements StudentRestApi {
     }
 
     @PatchMapping("{id}")
-    public StudentDTO updateStudents(Long id, StudentDTO student) {
-        return mapper.map(studentService.updateStudent(id, mapper.map(student, Student.class)), StudentDTO.class);
+    public StudentWithFacultyDTO updateStudents(Long id, StudentWithFacultyDTO student) {
+        return mapper.map(studentService.updateStudent(id, studentMapper.studentWithFacultyToStudent(student)), StudentWithFacultyDTO.class);
     }
 
     @DeleteMapping("{id}")

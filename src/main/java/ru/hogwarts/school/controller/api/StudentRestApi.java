@@ -6,7 +6,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import ru.hogwarts.school.dto.FacultyDTO;
 import ru.hogwarts.school.dto.StudentDTO;
+import ru.hogwarts.school.dto.StudentWithFacultyDTO;
 import ru.hogwarts.school.model.Student;
 
 import java.util.List;
@@ -40,6 +42,12 @@ public interface StudentRestApi {
     List<StudentDTO> getStudentsByAge(@PathVariable Integer age);
 
     @Operation(
+            summary = "Найти факультет студента",
+            description = "Позволяет совершить поиск факультета по студенту"
+    )
+    FacultyDTO getFacultyOfStudent(@RequestBody StudentDTO student);
+
+    @Operation(
             summary = "Получить студентов по диапазону возврастов",
             description = "Получить всех студентов, чей диапазов возврастов попадает в заданные значения"
     )
@@ -66,7 +74,7 @@ public interface StudentRestApi {
             summary = "Обновить студента",
             description = "Переписать биографию студента с чистого листа"
     )
-    StudentDTO updateStudents(@PathVariable("id") Long id, @RequestBody StudentDTO student);
+    StudentWithFacultyDTO updateStudents(@PathVariable("id") Long id, @RequestBody StudentWithFacultyDTO student);
 
     @Operation(
             summary = "Удалить студента",

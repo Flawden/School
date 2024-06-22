@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.dto.StudentDTO;
 import ru.hogwarts.school.exception.FacultySaveException;
 import ru.hogwarts.school.exception.FacultyUpdateException;
 import ru.hogwarts.school.model.Faculty;
@@ -32,8 +33,13 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public Faculty getFacultyOfStudent(Student student) {
-        return facultyRepository.getFacultyByStudentsContaining(student).get();
+    public Faculty getFacultyById(Long id) {
+        return facultyRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Ошибка! Факультета с данным id не найдено"));
+    }
+
+    @Override
+    public List<Student> getStudentsOfFaculty(Faculty faculty) {
+        return getByNameIgnoreCase(faculty.getName()).getStudents();
     }
 
     @Override
@@ -51,7 +57,6 @@ public class FacultyServiceImpl implements FacultyService {
             if (faculty.isPresent()) {
                 return faculty.get();
             }
-
         throw new EntityNotFoundException("Ошибка! Факультета с данным цветом не существует");
     }
 
@@ -104,4 +109,8 @@ public class FacultyServiceImpl implements FacultyService {
         return facultyRepository.save(faculty);
     }
 
+    @Override
+    public Long getNumberOfFaculties() {
+        return facultyRepository.count();
+    }
 }

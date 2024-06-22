@@ -40,6 +40,7 @@ public interface FacultyRestApi {
     })
     FacultyDTO getByColorIgnoreCase(@PathVariable("color") String color);
 
+    List<StudentDTO> getStudentsOfFaculty(@RequestBody FacultyDTO faculty);
 
     @Operation(
             summary = "Получить факультет по id",

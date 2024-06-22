@@ -8,6 +8,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import ru.hogwarts.school.dto.StudentDTO;
+import ru.hogwarts.school.dto.StudentWithFacultyDTO;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.implementation.StudentServiceImpl;
 
@@ -85,7 +87,7 @@ public class StudentControllerTest {
     public void updateStudents() {
         Student testStudent = new Student(0L, "Сережа", 25);
         when(studentServiceImpl.updateStudent(0L, new Student("Сережа", 25))).thenReturn(testStudent);
-        Assertions.assertEquals(testStudent, studentController.updateStudents(0L, new StudentDTO("Сережа", 25, 123L)));
+        Assertions.assertEquals(testStudent, studentController.updateStudents(0L, new StudentWithFacultyDTO("Сережа", 25, 123L, new Faculty())));
     }
 
 }

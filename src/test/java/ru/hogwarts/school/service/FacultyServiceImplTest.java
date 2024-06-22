@@ -26,12 +26,14 @@ public class FacultyServiceImplTest {
 
     @Mock
     private FacultyRepository facultyRepository;
+    @Mock
+    private StudentService studentService;
 
     private static List<Faculty> faculties;
 
     @BeforeEach
     public void setUp() {
-        facultyServiceImpl = new FacultyServiceImpl(facultyRepository);
+        facultyServiceImpl = new FacultyServiceImpl(facultyRepository, studentService);
     }
 
     @BeforeEach

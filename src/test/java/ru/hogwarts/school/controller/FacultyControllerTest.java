@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
+import ru.hogwarts.school.dto.FacultyDTO;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.service.implementation.FacultyServiceImpl;
 
@@ -24,9 +26,11 @@ public class FacultyControllerTest {
 
     private static List<Faculty> faculties;
 
+    private static ModelMapper mapper = new ModelMapper();
+
     @BeforeEach
     public void setUp() {
-        facultyController = new FacultyController(facultyServiceImpl);
+        facultyController = new FacultyController(facultyServiceImpl, mapper);
     }
 
     @BeforeEach
@@ -68,14 +72,14 @@ public class FacultyControllerTest {
     public void addFaculty() {
         Faculty testFaculty = new Faculty(faculties.size() + 1L, "Светлодуй", "Голубой");
         when(facultyServiceImpl.addFaculty(new Faculty("Светлодуй", "Голубой"))).thenReturn(testFaculty);
-        Assertions.assertEquals(testFaculty, facultyController.addFaculty(new Faculty("Светлодуй", "Голубой")));
+        Assertions.assertEquals(testFaculty, facultyController.addFaculty(new FacultyDTO("Светлодуй", "Голубой")));
     }
 
     @Test
     public void updateFaculty() {
         Faculty testFaculty = new Faculty(0L, "Светлодуй", "Голубой");
         when(facultyServiceImpl.updateFaculty(0L, new Faculty("Светлодуй", "Голубой"))).thenReturn(testFaculty);
-        Assertions.assertEquals(testFaculty, facultyController.updateFaculty(0L, new Faculty("Светлодуй", "Голубой")));
+        Assertions.assertEquals(testFaculty, facultyController.updateFaculty(0L, new FacultyDTO("Светлодуй", "Голубой")));
     }
 
 }

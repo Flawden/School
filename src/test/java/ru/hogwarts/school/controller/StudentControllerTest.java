@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
+import ru.hogwarts.school.dto.StudentDTO;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.implementation.StudentServiceImpl;
 
@@ -25,9 +27,11 @@ public class StudentControllerTest {
 
     private StudentController studentController;
 
+    private static ModelMapper mapper = new ModelMapper();
+
     @BeforeEach
     public void setUp() {
-        studentController = new StudentController(studentServiceImpl);
+        studentController = new StudentController(studentServiceImpl, mapper);
     }
 
     @BeforeEach
@@ -74,14 +78,14 @@ public class StudentControllerTest {
     public void addStudents() {
         Student testStudent = new Student(students.size() + 1L, "Сережа", 25);
         when(studentServiceImpl.addStudent(new Student("Сережа", 25))).thenReturn(testStudent);
-        Assertions.assertEquals(testStudent, studentController.addStudent(new Student("Сережа", 25)));
+        Assertions.assertEquals(testStudent, studentController.addStudent(new StudentDTO("Сережа", 25, 123L)));
     }
 
     @Test
     public void updateStudents() {
         Student testStudent = new Student(0L, "Сережа", 25);
         when(studentServiceImpl.updateStudent(0L, new Student("Сережа", 25))).thenReturn(testStudent);
-        Assertions.assertEquals(testStudent, studentController.updateStudents(0L, new Student("Сережа", 25)));
+        Assertions.assertEquals(testStudent, studentController.updateStudents(0L, new StudentDTO("Сережа", 25, 123L)));
     }
 
 }

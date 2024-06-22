@@ -14,6 +14,8 @@ public interface StudentService {
 
     List<Student> findByAgeBetween(Integer min, Integer max);
 
+    Student getStudentsByStudentIdNumber(Long studentIdNumber);
+
     Student getStudentsById(Long id);
 
     Student addStudent(Student student);

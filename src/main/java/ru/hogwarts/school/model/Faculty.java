@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -25,9 +26,24 @@ public class Faculty {
     @Column(unique = true, nullable = false)
     private String color;
 
+    @OneToMany(mappedBy = "faculty", cascade = CascadeType.ALL)
+    private List<Student> students;
+
     public Faculty(String name, String color) {
         this.name = name;
         this.color = color;
+    }
+
+    public Faculty(Long id, String name, String color) {
+        this.id = id;
+        this.name = name;
+        this.color = color;
+    }
+
+    public Faculty(String name, String color, List<Student> students) {
+        this.name = name;
+        this.color = color;
+        this.students = students;
     }
 
     @Override

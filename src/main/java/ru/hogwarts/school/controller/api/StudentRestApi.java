@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import ru.hogwarts.school.dto.StudentDTO;
 import ru.hogwarts.school.model.Student;
 
 import java.util.List;
@@ -59,13 +60,13 @@ public interface StudentRestApi {
             summary = "Добавить студента",
             description = "Записать имя человека в студенты школы магии и волшебства"
     )
-    Student addStudent(@RequestBody Student student);
+    Student addStudent(@RequestBody StudentDTO student);
 
     @Operation(
             summary = "Обновить студента",
             description = "Переписать биографию студента с чистого листа"
     )
-    Student updateStudents(@PathVariable("id") Long id, @RequestBody Student student);
+    Student updateStudents(@PathVariable("id") Long id, @RequestBody StudentDTO student);
 
     @Operation(
             summary = "Удалить студента",

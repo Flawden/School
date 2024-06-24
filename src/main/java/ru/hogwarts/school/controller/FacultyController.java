@@ -1,13 +1,18 @@
 package ru.hogwarts.school.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.controller.api.FacultyRestApi;
+import ru.hogwarts.school.dto.FacultyDTO;
+import ru.hogwarts.school.dto.StudentDTO;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.service.FacultyService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -17,38 +22,61 @@ import java.util.List;
 public class FacultyController implements FacultyRestApi {
 
     private final FacultyService facultyService;
+    private final ModelMapper mapper;
 
     @GetMapping
-    public List<Faculty> getFaculties() {
-        return facultyService.getFaculties();
+    @Override
+    public List<FacultyDTO> getFaculties() {
+        List<Faculty> faculties = facultyService.getFaculties();
+        List<FacultyDTO> facultyDTOS = new ArrayList<>();
+        for(Faculty faculty: faculties) {
+            facultyDTOS.add(mapper.map(faculty, FacultyDTO.class));
+        }
+        return facultyDTOS;
     }
 
     @GetMapping("/name/{facultyName}")
-    public Faculty getFacultiesByName(String facultyName) {
-        return facultyService.getFacultyByName(facultyName);
+    @Override
+    public FacultyDTO getByNameIgnoreCase(String facultyName) {
+        return mapper.map(facultyService.getByNameIgnoreCase(facultyName), FacultyDTO.class);
     }
 
     @GetMapping("/color/{color}")
-    public Faculty getFacultiesByColor(String color) {
-        return facultyService.getFacultiesByColor(color);
+    @Override
+    public FacultyDTO getByColorIgnoreCase(String color) {
+        return mapper.map(facultyService.getByColorIgnoreCase(color), FacultyDTO.class);
+    }
+
+    @Override
+    public List<StudentDTO> getStudentsOfFaculty(FacultyDTO faculty) {
+        List<Student> students = facultyService.getStudentsOfFaculty(mapper.map(faculty, Faculty.class));
+        List<StudentDTO> studentDTOS = new ArrayList<>();
+        for (Student student: students) {
+            studentDTOS.add(mapper.map(student, StudentDTO.class));
+        }
+        return studentDTOS;
     }
 
     @GetMapping("/{id}")
-    public Faculty getFacultiesById(Long id) {
-        return facultyService.getFacultiesById(id);
+    @Override
+    public FacultyDTO getFacultiesById(Long id) {
+        return mapper.map(facultyService.getFacultiesById(id), FacultyDTO.class);
     }
 
     @PostMapping
-    public Faculty addFaculty(Faculty faculty) {
-        return facultyService.addFaculty(faculty);
+    @Override
+    public FacultyDTO addFaculty(FacultyDTO faculty) {
+        return mapper.map(facultyService.addFaculty(mapper.map(faculty, Faculty.class)), FacultyDTO.class);
     }
 
     @PatchMapping("/{id}")
-    public Faculty updateFaculty(Long id, Faculty faculty) {
-        return facultyService.updateFaculty(id, faculty);
+    @Override
+    public FacultyDTO updateFaculty(Long id, FacultyDTO faculty) {
+        return mapper.map(facultyService.updateFaculty(id, mapper.map(faculty, Faculty.class)), FacultyDTO.class);
     }
 
     @DeleteMapping("/{id}")
+    @Override
     public void deleteFaculty(Long id) {
         facultyService.deleteFaculty(id);
     }

@@ -29,6 +29,9 @@ public class Student {
     @ManyToOne
     @JoinColumn(name = "faculty_id", referencedColumnName = "id")
     private Faculty faculty;
+
+    @OneToOne
+    private Avatar avatar;
     public Student(String name, Integer age) {
         this.name = name;
         this.age = age;

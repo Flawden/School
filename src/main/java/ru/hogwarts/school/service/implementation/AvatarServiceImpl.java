@@ -50,17 +50,12 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     @Override
-    public Avatar getAvatarByFilePathIgnoreCase(String filePath) {
-        return avatarRepository.findAvatarByFilePath(filePath).orElseThrow(() -> new EntityNotFoundException("Ошибка! Аватар по данному пути не обнаружен."));
-    }
-
-    @Override
     public List<Avatar> getAvatarByFileSize(Long fileSize) {
         return avatarRepository.findAvatarsByFileSize(fileSize);
     }
 
     @Override
-    public Avatar addAvatar(Long studentId, MultipartFile file) throws IOException {
+    public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
         Student student = studentService.getStudentsById(studentId);
 
         Path filePath = Path.of(uploadPath, studentId + "." + getExtension(file.getOriginalFilename()));
@@ -79,7 +74,7 @@ public class AvatarServiceImpl implements AvatarService {
         avatar.setMediaType(file.getContentType());
         avatar.setData(generateImagePreview(filePath));
         avatar.setStudent(student);
-        return avatarRepository.save(avatar);
+        avatarRepository.save(avatar);
     }
 
     public Avatar findAvatarIdByStudentId(Long studentId) {
@@ -96,24 +91,6 @@ public class AvatarServiceImpl implements AvatarService {
             graphics.drawImage(image, 0, 0, 100, height, null);
             return baos.toByteArray();
              }
-    }
-
-    @Override
-    public Avatar updateAvatar(Long studentId, MultipartFile updatedAvatar) throws IOException {
-        Student student = studentService.getStudentsById(studentId);
-        Path filePath = Path.of(uploadPath, studentId + "." + getExtension(updatedAvatar.getOriginalFilename()));
-        Avatar avatar = getAvatarById(studentId);
-        avatar.setFilePath(filePath.toString());
-        avatar.setFileSize(updatedAvatar.getSize());
-        avatar.setMediaType(updatedAvatar.getContentType());
-        avatar.setData(updatedAvatar.getBytes());
-        avatar.setStudent(student);
-
-        try {
-            return addAvatar(null, null);
-        } catch (DataIntegrityViolationException e) {
-            throw new FacultyUpdateException("Ошибка! Данный аватар уже существует");
-        }
     }
 
     @Override

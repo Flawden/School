@@ -30,7 +30,7 @@ public class Avatar {
     @Lob
     private byte[] data;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Student student;
 
 }

@@ -18,7 +18,7 @@ public class StudentMapper {
     }
 
     public Student studentWithFacultyToStudent(StudentWithFacultyDTO studentWithFacultyDTO) {
-        return new Student(null, studentWithFacultyDTO.getName(), studentWithFacultyDTO.getAge(), studentWithFacultyDTO.getStudentIdNumber(), mapper.map(studentWithFacultyDTO.getFaculty(), Faculty.class));
+        return new Student(null, studentWithFacultyDTO.getName(), studentWithFacultyDTO.getAge(), studentWithFacultyDTO.getStudentIdNumber(), mapper.map(studentWithFacultyDTO.getFaculty(), Faculty.class), null);
     }
 
     public StudentWithFacultyDTO studentToStudentWithFaculty(Student student) {

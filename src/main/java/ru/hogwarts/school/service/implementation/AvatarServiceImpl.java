@@ -19,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
@@ -38,26 +39,15 @@ public class AvatarServiceImpl implements AvatarService {
         this.studentService = studentService;
     }
 
-
-    @Override
-    public List<Avatar> getAvatars() {
-        return avatarRepository.findAll();
-    }
-
     @Override
     public Avatar getAvatarById(Long id) {
         return avatarRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Ошибка! Аватара с данным id не найдено."));
     }
 
     @Override
-    public List<Avatar> getAvatarByFileSize(Long fileSize) {
-        return avatarRepository.findAvatarsByFileSize(fileSize);
-    }
-
-    @Override
     public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
         Student student = studentService.getStudentsById(studentId);
-
+        byte[] bytes = null;
         Path filePath = Path.of(uploadPath, studentId + "." + getExtension(file.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
@@ -72,25 +62,13 @@ public class AvatarServiceImpl implements AvatarService {
         avatar.setFilePath(filePath.toString());
         avatar.setFileSize(file.getSize());
         avatar.setMediaType(file.getContentType());
-        avatar.setData(generateImagePreview(filePath));
+        avatar.setData(file.getBytes());
         avatar.setStudent(student);
         avatarRepository.save(avatar);
     }
 
     public Avatar findAvatarIdByStudentId(Long studentId) {
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
-    }
-
-    private byte[] generateImagePreview(Path filePath) throws IOException {
-        try (BufferedInputStream bis = new BufferedInputStream(Files.newInputStream(filePath), 1024);
-             ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-                 BufferedImage image = ImageIO.read(bis);
-                 int height = image.getHeight() / (image.getWidth() / 100);
-                 BufferedImage preview = new BufferedImage(100, height, image.getType());
-            Graphics2D graphics = preview.createGraphics();
-            graphics.drawImage(image, 0, 0, 100, height, null);
-            return baos.toByteArray();
-             }
     }
 
     @Override

@@ -3,22 +3,24 @@ package ru.hogwarts.school.controller;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.controller.api.AvatarRestApi;
+import ru.hogwarts.school.dto.AvatarDTO;
+import ru.hogwarts.school.dto.StudentDTO;
 import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.service.AvatarService;
+import ru.hogwarts.school.util.AvatarMapper;
+import ru.hogwarts.school.util.StudentMapper;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
-
-import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @RestController
 @RequestMapping("/api/v1/avatars")
@@ -27,23 +29,13 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 public class AvatarController implements AvatarRestApi {
 
     private final AvatarService avatarService;
+    private final AvatarMapper mapper;
 
     @Override
-    @GetMapping("/fromDisk/{id}")
-    public Avatar getAvatarFromDiskById(Long avatarId) {
-        return avatarService.getAvatarFromDiskById();
-    }
-
-    @Override
-    @GetMapping
-    public List<Avatar> getAvatars() {
-        return avatarService.getAvatars();
-    }
-
-    @Override
-    @GetMapping("/bySize/{fileSize}")
-    public List<Avatar> getAvatarByFileSize(Long fileSize) {
-        return avatarService.getAvatarByFileSize(fileSize);
+    @GetMapping("/fromDB/{avatarId}")
+    public AvatarDTO getAvatarFromDBById(Long avatarId) {
+        Avatar avatar = avatarService.getAvatarById(avatarId);
+        return mapper.avatarToAvatarDTO(avatar);
     }
 
     @Override

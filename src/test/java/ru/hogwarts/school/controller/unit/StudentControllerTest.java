@@ -1,4 +1,4 @@
-package ru.hogwarts.school.controller;
+package ru.hogwarts.school.controller.unit;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,11 +7,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import ru.hogwarts.school.controller.StudentController;
+import ru.hogwarts.school.dto.FacultyDTO;
 import ru.hogwarts.school.dto.StudentDTO;
 import ru.hogwarts.school.dto.StudentWithFacultyDTO;
-import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.implementation.StudentServiceImpl;
+import ru.hogwarts.school.util.StudentMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +32,11 @@ public class StudentControllerTest {
     private StudentController studentController;
 
     private static ModelMapper mapper = new ModelMapper();
+    private static StudentMapper studentMapper = new StudentMapper(mapper);
 
     @BeforeEach
     public void setUp() {
-        studentController = new StudentController(studentServiceImpl, mapper);
+        studentController = new StudentController(studentServiceImpl, mapper, studentMapper);
     }
 
     @BeforeEach
@@ -87,7 +90,7 @@ public class StudentControllerTest {
     public void updateStudents() {
         Student testStudent = new Student(0L, "Сережа", 25);
         when(studentServiceImpl.updateStudent(0L, new Student("Сережа", 25))).thenReturn(testStudent);
-        Assertions.assertEquals(testStudent, studentController.updateStudents(0L, new StudentWithFacultyDTO("Сережа", 25, 123L, new Faculty())));
+        Assertions.assertEquals(testStudent, studentController.updateStudents(0L, new StudentWithFacultyDTO("Сережа", 25, 123L, new FacultyDTO())));
     }
 
 }

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.implementation.StudentServiceImpl;
 
@@ -24,13 +25,13 @@ public class StudentServiceImplTest {
     private StudentRepository studentRepository;
 
     @Mock
-    private FacultyService facultyService;
+    private FacultyRepository facultyRepository;
 
     private static List<Student> students;
 
     @BeforeEach
     public void setUp() {
-        studentServiceImpl = new StudentServiceImpl(facultyService, studentRepository);
+        studentServiceImpl = new StudentServiceImpl(facultyRepository, studentRepository);
     }
 
 

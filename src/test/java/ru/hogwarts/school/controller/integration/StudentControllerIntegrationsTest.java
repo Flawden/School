@@ -4,6 +4,9 @@ package ru.hogwarts.school.controller.integration;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +15,15 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlConfig;
 import ru.hogwarts.school.model.Student;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.test.context.jdbc.SqlConfig.TransactionMode.ISOLATED;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource(locations = "classpath:applicationTest.properties")
-@Sql({"/fillDBtoTest.sql"})
 public class StudentControllerIntegrationsTest {
 
     @LocalServerPort
@@ -28,10 +32,10 @@ public class StudentControllerIntegrationsTest {
     @Autowired
     private TestRestTemplate testRestTemplate;
 
+
     @Test
     public void getStudents() {
-        Student student = new Student(0L, "Валера", 20);
-        this.testRestTemplate.postForObject("http://localhost:" + port + "/api/v1/students", student, String.class);
+        System.out.println(this.testRestTemplate.getForObject("http://localhost:" + port + "/api/v1/students", String.class));
     }
 
     @Test

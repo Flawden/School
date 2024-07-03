@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource(locations = "classpath:applicationTest.properties")
 public class FacultyControllerIntegrationsTest {
 
     @LocalServerPort
@@ -28,18 +27,6 @@ public class FacultyControllerIntegrationsTest {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
-
-    private static List<Faculty> faculties;
-
-    @BeforeEach
-    public void reposInit() {
-        faculties = new ArrayList<>();
-        faculties.add(new Faculty(0L, "Гриффиндор", "Красный"));
-        faculties.add(new Faculty(1L, "Слизерин", "Зеленый"));
-        faculties.add(new Faculty(2L, "Пуффендуй", "Желтый"));
-        faculties.add(new Faculty(3L, "Когтевран", "Синий"));
-        faculties.add(new Faculty(4L, "Волжский политехнический техникум", "Серый"));
-    }
 
     public void getFaculties() {
 

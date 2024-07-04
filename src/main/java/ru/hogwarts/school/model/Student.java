@@ -49,6 +49,14 @@ public class Student {
         this.studentIdNumber = studentIdNumber;
     }
 
+    public Student(Long id, String name, Integer age, Faculty faculty, Long studentIdNumber) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.faculty = faculty;
+        this.studentIdNumber = studentIdNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -3,10 +3,7 @@ package ru.hogwarts.school.controller.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.websocket.server.PathParam;
 import org.springframework.web.bind.annotation.*;
-import ru.hogwarts.school.dto.FacultyDTO;
-import ru.hogwarts.school.dto.StudentDTO;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 
@@ -18,7 +15,7 @@ public interface FacultyRestApi {
             summary = "Получить все факультеты",
             description = "Позволяет получить все факультеты"
     )
-    List<FacultyDTO> getFaculties();
+    List<Faculty> getFaculties();
 
     @Operation(
             summary = "Получить факультет по названию",
@@ -28,7 +25,7 @@ public interface FacultyRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Студента с данным именем не найдено"),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    FacultyDTO getByNameIgnoreCase(@PathVariable("facultyName") String facultyName);
+    Faculty getByNameIgnoreCase(@PathVariable("facultyName") String facultyName);
 
     @Operation(
             summary = "Получить факультет по цвету",
@@ -38,9 +35,9 @@ public interface FacultyRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Студента с данным цветом не найдено"),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    FacultyDTO getByColorIgnoreCase(@PathVariable("color") String color);
+    Faculty getByColorIgnoreCase(@PathVariable("color") String color);
 
-    List<StudentDTO> getStudentsOfFaculty(@RequestBody FacultyDTO faculty);
+    List<Student> getStudentsOfFaculty(@RequestBody Faculty faculty);
 
     @Operation(
             summary = "Получить факультет по id",
@@ -50,7 +47,7 @@ public interface FacultyRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Факультета с данным id не найдено"),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    FacultyDTO getFacultiesById(@PathVariable("id") Long id);
+    Faculty getFacultiesById(@PathVariable("id") Long id);
 
     @Operation(
             summary = "Добавить факультет",
@@ -60,7 +57,7 @@ public interface FacultyRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Факультета с переданными именем или цветом уже существуют"),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    FacultyDTO addFaculty(@RequestBody FacultyDTO faculty);
+    Faculty addFaculty(@RequestBody Faculty faculty);
 
     @Operation(
             summary = "Исправить данные факультета",
@@ -70,7 +67,7 @@ public interface FacultyRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Факультета с переданными именем или цветом уже существуют"),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    FacultyDTO updateFaculty(@PathVariable("name") String name, @RequestBody FacultyDTO faculty);
+    Faculty updateFaculty(@PathVariable("name") String name, @RequestBody Faculty faculty);
 
     @Operation(
             summary = "Уничтожить факультета",

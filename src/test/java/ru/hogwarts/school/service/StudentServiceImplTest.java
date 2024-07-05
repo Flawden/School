@@ -83,15 +83,15 @@ public class StudentServiceImplTest {
     }
 
     @Test
-    public void getStudentsById() {
+    public void getStudentById() {
         when(studentRepository.findById(0L)).thenReturn(Optional.ofNullable(students.getFirst()));
-        Assertions.assertEquals(students.getFirst(), studentServiceImpl.getStudentsById(0L));
+        Assertions.assertEquals(students.getFirst(), studentServiceImpl.getStudentById(0L));
     }
 
     @Test
-    public void getStudentsByIdWithException() {
+    public void getStudentByIdWithException() {
         when(studentRepository.findById(students.size() + 1L)).thenReturn(Optional.empty());
-        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> studentServiceImpl.getStudentsById(students.size() + 1L));
+        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> studentServiceImpl.getStudentById(students.size() + 1L));
         Assertions.assertEquals("Ошибка! Студента с данным id не найдено", exception.getMessage());
     }
 

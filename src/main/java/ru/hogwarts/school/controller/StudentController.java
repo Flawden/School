@@ -2,17 +2,12 @@ package ru.hogwarts.school.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.controller.api.StudentRestApi;
-import ru.hogwarts.school.dto.FacultyDTO;
-import ru.hogwarts.school.dto.StudentDTO;
-import ru.hogwarts.school.dto.StudentWithFacultyDTO;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
-import ru.hogwarts.school.util.StudentMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,75 +17,60 @@ import java.util.List;
 public class StudentController implements StudentRestApi {
 
     private final StudentService studentService;
-    private final ModelMapper mapper;
-    private final StudentMapper studentMapper;
 
     @GetMapping
     @Override
-    public List<StudentDTO> getStudents() {
-        List<Student> students = studentService.getStudents();
-        List<StudentDTO> studentDTOS = new ArrayList<>();
-        for(Student student: students) {
-            studentDTOS.add(mapper.map(student, StudentDTO.class));
-        }
-        return studentDTOS;
+    public List<Student> getStudents() {
+        return studentService.getStudents();
     }
+
+
+
+    @GetMapping("/{id}")
+    @Override
+    public List<Student> findByNameIgnoreCase(Long id) {
+        return List.of();
+    }
+
 
     @GetMapping("/name/{name}")
     @Override
-    public List<StudentDTO> findByNameIgnoreCase(String name) {
-        List<Student> students = studentService.findByNameIgnoreCase(name);
-        List<StudentDTO> studentDTOS = new ArrayList<>();
-        for(Student student: students) {
-            studentDTOS.add(mapper.map(student, StudentDTO.class));
-        }
-        return studentDTOS;
+    public List<Student> findByNameIgnoreCase(String name) {
+        return studentService.findByNameIgnoreCase(name);
     }
 
     @Override
     @GetMapping("/faculty")
-    public FacultyDTO getFacultyOfStudent(StudentDTO student) {
-        return mapper.map(studentService.getFacultyOfStudent(mapper.map(student, Student.class)), FacultyDTO.class);
+    public Faculty getFacultyOfStudent(Student student) {
+        return studentService.getFacultyOfStudent(student);
     }
 
     @GetMapping("/age/{age}")
     @Override
-    public List<StudentDTO> getStudentsByAge(Integer age) {
-        List<Student> students = studentService.getStudentsByAge(age);
-        List<StudentDTO> studentDTOS = new ArrayList<>();
-        for(Student student: students) {
-            studentDTOS.add(mapper.map(student, StudentDTO.class));
-        }
-        return studentDTOS;
+    public List<Student> getStudentsByAge(Integer age) {
+        return studentService.getStudentsByAge(age);
     }
 
     @GetMapping("/age/between/{min}/{max}")
     @Override
-    public List<StudentDTO> findByAgeBetween(Integer min, Integer max) {
-        List<Student> students = studentService.findByAgeBetween(min,max);
-        List<StudentDTO> studentDTOS = new ArrayList<>();
-        for(Student student: students) {
-            studentDTOS.add(mapper.map(student, StudentDTO.class));
-        }
-        return studentDTOS;
+    public List<Student> findByAgeBetween(Integer min, Integer max) {
+        return studentService.findByAgeBetween(min,max);
     }
 
-    @GetMapping("/{id}")
     @Override
-    public StudentDTO getStudentsById(Long id) {
-        return mapper.map(studentService.getStudentsById(id), StudentDTO.class);
+    public Student getStudentsById(Long id) {
+        return studentService.getStudentById(id);
     }
-
 
 
     @PostMapping
-    public StudentDTO addStudent(StudentDTO student) {
-        return mapper.map(studentService.addStudent(mapper.map(student, Student.class)), StudentDTO.class);
+    public Student addStudent(Student student) {
+        return studentService.addStudent(student);
     }
 
     @PatchMapping("{id}")
-    public StudentWithFacultyDTO updateStudents(Long id, StudentWithFacultyDTO student) {
-        return mapper.map(studentService.updateStudent(id, studentMapper.studentWithFacultyToStudent(student)), StudentWithFacultyDTO.class);
+    public Student updateStudents(Long id, Student student) {
+        return studentService.updateStudent(id, student);
     }
 
     @DeleteMapping("{id}")

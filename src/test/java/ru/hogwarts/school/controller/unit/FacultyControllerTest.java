@@ -27,11 +27,9 @@ public class FacultyControllerTest {
 
     private static List<Faculty> faculties;
 
-    private static ModelMapper mapper = new ModelMapper();
-
     @BeforeEach
     public void setUp() {
-        facultyController = new FacultyController(facultyServiceImpl, mapper);
+        facultyController = new FacultyController(facultyServiceImpl);
     }
 
     @BeforeEach
@@ -73,14 +71,14 @@ public class FacultyControllerTest {
     public void addFaculty() {
         Faculty testFaculty = new Faculty(faculties.size() + 1L, "Светлодуй", "Голубой");
         when(facultyServiceImpl.addFaculty(new Faculty("Светлодуй", "Голубой"))).thenReturn(testFaculty);
-        Assertions.assertEquals(testFaculty, facultyController.addFaculty(new FacultyDTO("Светлодуй", "Голубой")));
+        Assertions.assertEquals(testFaculty, facultyController.addFaculty(new Faculty("Светлодуй", "Голубой")));
     }
 
     @Test
     public void updateFaculty() {
         Faculty testFaculty = new Faculty(0L, "Светлодуй", "Голубой");
         when(facultyServiceImpl.updateFaculty(faculties.getFirst().getName(), new Faculty("Светлодуй", "Голубой"))).thenReturn(testFaculty);
-        Assertions.assertEquals(testFaculty, facultyController.updateFaculty(faculties.getFirst().getName(), new FacultyDTO("Светлодуй", "Голубой")));
+        Assertions.assertEquals(testFaculty, facultyController.updateFaculty(faculties.getFirst().getName(), new Faculty("Светлодуй", "Голубой")));
     }
 
 }

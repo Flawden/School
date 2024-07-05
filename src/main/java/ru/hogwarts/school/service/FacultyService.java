@@ -1,7 +1,5 @@
 package ru.hogwarts.school.service;
 
-import ru.hogwarts.school.dto.FacultyDTO;
-import ru.hogwarts.school.dto.StudentDTO;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 

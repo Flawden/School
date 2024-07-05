@@ -1,6 +1,5 @@
 package ru.hogwarts.school.service;
 
-import ru.hogwarts.school.dto.StudentWithFacultyDTO;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 
@@ -16,9 +15,7 @@ public interface StudentService {
 
     List<Student> findByAgeBetween(Integer min, Integer max);
 
-    Student getStudentsByStudentIdNumber(Long studentIdNumber);
-
-    Student getStudentsById(Long id);
+    Student getStudentById(Long id);
 
     Student addStudent(Student student);
 

@@ -1,17 +1,13 @@
 package ru.hogwarts.school.controller.integration;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import ru.hogwarts.school.dto.FacultyDTO;
 import ru.hogwarts.school.model.Faculty;
 
 import java.util.ArrayList;
@@ -30,8 +26,6 @@ public class FacultyControllerIntegrationsTest {
     private TestRestTemplate testRestTemplate;
 
     private static List<Faculty> faculties;
-    @Autowired
-    private ModelMapper mapper;
 
     @BeforeEach
     public void reposInit() {
@@ -45,19 +39,19 @@ public class FacultyControllerIntegrationsTest {
 
     @Test
     public void getFaculties() {
-        FacultyDTO testFacultyDTO = mapper.map(faculties.getFirst(), FacultyDTO.class);
-        FacultyDTO testFacultyDTO2 = mapper.map(faculties.get(1), FacultyDTO.class);
+        Faculty testFacultyDTO = faculties.getFirst();
+        Faculty testFacultyDTO2 = faculties.get(1);
         testRestTemplate.postForEntity(
                 appLink + port + "/api/v1/faculties",
                 testFacultyDTO,
-                FacultyDTO.class
+                Faculty.class
         );
         testRestTemplate.postForEntity(
                 appLink + port + "/api/v1/faculties",
                 testFacultyDTO2,
-                FacultyDTO.class
+                Faculty.class
         );
-        ArrayList<FacultyDTO> facultyDTOS = new ArrayList<>();
+        ArrayList<Faculty> facultyDTOS = new ArrayList<>();
         facultyDTOS.add(testFacultyDTO);
         facultyDTOS.add(testFacultyDTO2);
         ResponseEntity<ArrayList> findResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/faculties", ArrayList.class);
@@ -68,39 +62,39 @@ public class FacultyControllerIntegrationsTest {
 
     @Test
     public void getByNameIgnoreCase() {
-        ResponseEntity<FacultyDTO> facultyResponseEntity = testRestTemplate.postForEntity(
+        ResponseEntity<Faculty> facultyResponseEntity = testRestTemplate.postForEntity(
                 appLink + port + "/api/v1/faculties",
-                mapper.map(faculties.getFirst(), FacultyDTO.class),
-                FacultyDTO.class
+                faculties.getFirst(),
+                Faculty.class
         );
         String savedFacultyName = Objects.requireNonNull(facultyResponseEntity.getBody()).getName();
-        ResponseEntity<FacultyDTO> findResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/faculties/name/" + faculties.getFirst().getName(), FacultyDTO.class);
+        ResponseEntity<Faculty> findResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/faculties/name/" + faculties.getFirst().getName(), Faculty.class);
         Assertions.assertEquals(Objects.requireNonNull(findResponse.getBody()).getName(), savedFacultyName);
         testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + savedFacultyName);
     }
 
     @Test
     public void getByColorIgnoreCase() {
-        ResponseEntity<FacultyDTO> facultyResponseEntity = testRestTemplate.postForEntity(
+        ResponseEntity<Faculty> facultyResponseEntity = testRestTemplate.postForEntity(
                 appLink + port + "/api/v1/faculties",
-                mapper.map(faculties.getFirst(), FacultyDTO.class),
-                FacultyDTO.class
+                faculties.getFirst(),
+                Faculty.class
         );
         String savedFacultyColor = Objects.requireNonNull(facultyResponseEntity.getBody()).getColor();
-        ResponseEntity<FacultyDTO> findResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/faculties/name/" + faculties.getFirst().getName(), FacultyDTO.class);
+        ResponseEntity<Faculty> findResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/faculties/name/" + faculties.getFirst().getName(), Faculty.class);
         Assertions.assertEquals(Objects.requireNonNull(findResponse.getBody()).getColor(), savedFacultyColor);
         testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + savedFacultyColor);
     }
 
     @Test
     public void addFaculty() {
-        ResponseEntity<FacultyDTO> facultyResponseEntity = testRestTemplate.postForEntity(
+        ResponseEntity<Faculty> facultyResponseEntity = testRestTemplate.postForEntity(
                 appLink + port + "/api/v1/faculties",
-                mapper.map(faculties.getFirst(), FacultyDTO.class),
-                FacultyDTO.class
+                faculties.getFirst(),
+                Faculty.class
         );
         String savedFacultyName = Objects.requireNonNull(facultyResponseEntity.getBody()).getName();
-        ResponseEntity<FacultyDTO> findResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/faculties/name/" + faculties.getFirst().getName(), FacultyDTO.class);
+        ResponseEntity<Faculty> findResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/faculties/name/" + faculties.getFirst().getName(), Faculty.class);
         Assertions.assertEquals(Objects.requireNonNull(findResponse.getBody()).getName(), savedFacultyName);
 
         testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + savedFacultyName);
@@ -108,19 +102,19 @@ public class FacultyControllerIntegrationsTest {
 
     @Test
     public void deleteFaculty() {
-        ResponseEntity<FacultyDTO> facultyResponseEntity = testRestTemplate.postForEntity(
+        ResponseEntity<Faculty> facultyResponseEntity = testRestTemplate.postForEntity(
                 appLink + port + "/api/v1/faculties",
-                mapper.map(faculties.getFirst(), FacultyDTO.class),
-                FacultyDTO.class
+                faculties.getFirst(),
+                Faculty.class
         );
         String savedFacultyName = Objects.requireNonNull(facultyResponseEntity.getBody()).getName();
-        ResponseEntity<FacultyDTO> findResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/faculties/name/" + faculties.getFirst().getName(), FacultyDTO.class);
+        ResponseEntity<Faculty> findResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/faculties/name/" + faculties.getFirst().getName(), Faculty.class);
         Assertions.assertEquals(Objects.requireNonNull(findResponse.getBody()).getName(), savedFacultyName);
 
         testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + savedFacultyName);
-        ResponseEntity<FacultyDTO> oneMoreFindResponse = null;
+        ResponseEntity<Faculty> oneMoreFindResponse = null;
         try {
-            oneMoreFindResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/faculties/name/" + savedFacultyName, FacultyDTO.class);
+            oneMoreFindResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/faculties/name/" + savedFacultyName, Faculty.class);
         } catch (Exception e) {}
 
         Assertions.assertNull(oneMoreFindResponse);

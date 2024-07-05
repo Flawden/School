@@ -3,18 +3,13 @@ package ru.hogwarts.school.controller;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.controller.api.AvatarRestApi;
-import ru.hogwarts.school.dto.AvatarDTO;
-import ru.hogwarts.school.dto.StudentDTO;
 import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.service.AvatarService;
-import ru.hogwarts.school.util.AvatarMapper;
-import ru.hogwarts.school.util.StudentMapper;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -29,13 +24,11 @@ import java.nio.file.Path;
 public class AvatarController implements AvatarRestApi {
 
     private final AvatarService avatarService;
-    private final AvatarMapper mapper;
 
     @Override
     @GetMapping("/fromDB/{avatarId}")
-    public AvatarDTO getAvatarFromDBById(Long avatarId) {
-        Avatar avatar = avatarService.getAvatarById(avatarId);
-        return mapper.avatarToAvatarDTO(avatar);
+    public Avatar getAvatarFromDBById(Long avatarId) {
+        return avatarService.getAvatarById(avatarId);
     }
 
     @Override

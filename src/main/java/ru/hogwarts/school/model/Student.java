@@ -23,8 +23,6 @@ public class Student {
     private String name;
     @Column(nullable = false)
     private Integer age;
-    @Column(unique = true, nullable = false)
-    private Long studentIdNumber;
 
     @ManyToOne
     @JoinColumn(name = "faculty_id", referencedColumnName = "id")
@@ -43,18 +41,12 @@ public class Student {
         this.age = age;
     }
 
-    public Student(String name, Integer age, Long studentIdNumber) {
-        this.name = name;
-        this.age = age;
-        this.studentIdNumber = studentIdNumber;
-    }
 
-    public Student(Long id, String name, Integer age, Faculty faculty, Long studentIdNumber) {
+    public Student(Long id, String name, Integer age, Faculty faculty) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.faculty = faculty;
-        this.studentIdNumber = studentIdNumber;
     }
 
     @Override

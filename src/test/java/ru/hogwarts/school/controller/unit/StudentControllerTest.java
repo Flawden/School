@@ -6,14 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.modelmapper.ModelMapper;
 import ru.hogwarts.school.controller.StudentController;
-import ru.hogwarts.school.dto.FacultyDTO;
-import ru.hogwarts.school.dto.StudentDTO;
-import ru.hogwarts.school.dto.StudentWithFacultyDTO;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.implementation.StudentServiceImpl;
-import ru.hogwarts.school.util.StudentMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +26,10 @@ public class StudentControllerTest {
 
     private StudentController studentController;
 
-    private static ModelMapper mapper = new ModelMapper();
-    private static StudentMapper studentMapper = new StudentMapper(mapper);
 
     @BeforeEach
     public void setUp() {
-        studentController = new StudentController(studentServiceImpl, mapper, studentMapper);
+        studentController = new StudentController(studentServiceImpl);
     }
 
     @BeforeEach
@@ -75,7 +68,7 @@ public class StudentControllerTest {
 
     @Test
     public void getStudentsById() {
-        when(studentServiceImpl.getStudentsById(0L)).thenReturn(students.getFirst());
+        when(studentServiceImpl.getStudentById(0L)).thenReturn(students.getFirst());
         Assertions.assertEquals(students.getFirst(), studentController.getStudentsById(0L));
     }
 
@@ -83,14 +76,14 @@ public class StudentControllerTest {
     public void addStudents() {
         Student testStudent = new Student(students.size() + 1L, "Сережа", 25);
         when(studentServiceImpl.addStudent(new Student("Сережа", 25))).thenReturn(testStudent);
-        Assertions.assertEquals(testStudent, studentController.addStudent(new StudentDTO("Сережа", 25, 123L)));
+        Assertions.assertEquals(testStudent, studentController.addStudent(new Student(students.size() + 1L, "Сережа", 25)));
     }
 
     @Test
     public void updateStudents() {
         Student testStudent = new Student(0L, "Сережа", 25);
         when(studentServiceImpl.updateStudent(0L, new Student("Сережа", 25))).thenReturn(testStudent);
-        Assertions.assertEquals(testStudent, studentController.updateStudents(0L, new StudentWithFacultyDTO("Сережа", 25, 123L, new FacultyDTO())));
+        Assertions.assertEquals(testStudent, studentController.updateStudents(0L, new Student(0L, "Сережа", 25)));
     }
 
 }

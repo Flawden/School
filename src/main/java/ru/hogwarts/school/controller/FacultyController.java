@@ -60,9 +60,11 @@ public class FacultyController implements FacultyRestApi {
         return facultyService.updateFaculty(name, faculty);
     }
 
-    @DeleteMapping("/{name}")
+    @DeleteMapping("/{id}")
     @Override
-    public void deleteFaculty(String name) {
-        facultyService.deleteFaculty(name);
+    public void deleteFaculty(Long id) {
+        facultyService.deleteFaculty(id);
     }
+
+
 }

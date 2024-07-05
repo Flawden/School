@@ -20,16 +20,6 @@ public interface StudentRestApi {
     List<Student> getStudents();
 
     @Operation(
-            summary = "Найти студента по id",
-            description = "Позволяет совершить поиск всех студентов по id"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "400", description = "Ошибка! Студентов с данным id не найдено."),
-            @ApiResponse(responseCode = "200", description = "OK")
-    })
-    List<Student> findByNameIgnoreCase(@PathVariable("id") Long id);
-
-    @Operation(
             summary = "Найти студента по имени",
             description = "Позволяет совершить поиск всех студентов по имени"
     )
@@ -69,7 +59,7 @@ public interface StudentRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Студентов с данным id не найдено."),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    Student getStudentsById(@PathVariable("id") Long id);
+    Student getStudentById(@PathVariable("id") Long id);
 
     @PostMapping
     @Operation(

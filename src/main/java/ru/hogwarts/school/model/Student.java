@@ -49,6 +49,12 @@ public class Student {
         this.faculty = faculty;
     }
 
+    public Student(String name, Integer age, Faculty faculty) {
+        this.name = name;
+        this.age = age;
+        this.faculty = faculty;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

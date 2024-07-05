@@ -25,14 +25,6 @@ public class StudentController implements StudentRestApi {
     }
 
 
-
-    @GetMapping("/{id}")
-    @Override
-    public List<Student> findByNameIgnoreCase(Long id) {
-        return List.of();
-    }
-
-
     @GetMapping("/name/{name}")
     @Override
     public List<Student> findByNameIgnoreCase(String name) {
@@ -57,8 +49,9 @@ public class StudentController implements StudentRestApi {
         return studentService.findByAgeBetween(min,max);
     }
 
+    @GetMapping("/{id}")
     @Override
-    public Student getStudentsById(Long id) {
+    public Student getStudentById(Long id) {
         return studentService.getStudentById(id);
     }
 

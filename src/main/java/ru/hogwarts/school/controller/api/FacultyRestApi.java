@@ -77,6 +77,6 @@ public interface FacultyRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Факультета с данным id не существует"),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    void deleteFaculty(@PathVariable String name);
+    void deleteFaculty(@PathVariable Long id);
 
 }

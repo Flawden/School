@@ -5,12 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:applicationTest.properties")
@@ -32,18 +34,18 @@ public class StudentControllerIntegrationsTest {
     @BeforeEach
     public void reposInit() {
         faculties = new ArrayList<>();
-        faculties.add(new Faculty(0L, "Гриффиндор", "Красный"));
-        faculties.add(new Faculty(1L, "Слизерин", "Зеленый"));
-        faculties.add(new Faculty(2L, "Пуффендуй", "Желтый"));
-        faculties.add(new Faculty(3L, "Когтевран", "Синий"));
-        faculties.add(new Faculty(4L, "Волжский политехнический техникум", "Серый"));
+        faculties.add(new Faculty("Гриффиндор", "Красный"));
+        faculties.add(new Faculty("Слизерин", "Зеленый"));
+        faculties.add(new Faculty("Пуффендуй", "Желтый"));
+        faculties.add(new Faculty("Когтевран", "Синий"));
+        faculties.add(new Faculty("Волжский политехнический техникум", "Серый"));
         students = new ArrayList<>();
-        students.add(new Student(0L, "Валера", 20, faculties.getFirst()));
-        students.add(new Student(1L, "Сережа", 15, faculties.get(1)));
-        students.add(new Student(2L, "Вова", 14, faculties.get(2)));
-        students.add(new Student(3L, "Стас", 20, faculties.get(3)));
-        students.add(new Student(4L, "Боб", 43, faculties.get(4)));
-        students.add(new Student(5L, "Авраам", 56,faculties.get(2)));
+        students.add(new Student("Валера", 20));
+        students.add(new Student("Сережа", 15, faculties.get(1)));
+        students.add(new Student("Вова", 14, faculties.get(2)));
+        students.add(new Student("Стас", 20, faculties.get(3)));
+        students.add(new Student("Боб", 43, faculties.get(4)));
+        students.add(new Student("Авраам", 56,faculties.get(2)));
     }
 
     @Test
@@ -68,12 +70,40 @@ public class StudentControllerIntegrationsTest {
 
     @Test
     public void getStudentsById() {
-
+        ResponseEntity<Faculty> facultyResponseEntity = testRestTemplate.postForEntity(
+                appLink + port + "/api/v1/faculties",
+                faculties.getFirst(),
+                Faculty.class
+        );
+        ResponseEntity<Student> studentResponseEntity = testRestTemplate.postForEntity(
+                appLink + port + "/api/v1/students",
+                students.getFirst(),
+                Student.class
+        );
+        Long savedStudentId = Objects.requireNonNull(facultyResponseEntity.getBody()).getId();
+        ResponseEntity<Student> findResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/students/" + studentResponseEntity.getBody().getId(), Student.class);
+        Assertions.assertEquals(Objects.requireNonNull(findResponse.getBody()).getId(), savedStudentId);
+        testRestTemplate.delete(appLink + port + "/api/v1/students/" + studentResponseEntity.getBody().getId());
+        testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + facultyResponseEntity.getBody().getId());
     }
 
     @Test
     public void addStudent() {
-
+        ResponseEntity<Faculty> facultyResponseEntity = testRestTemplate.postForEntity(
+                appLink + port + "/api/v1/faculties",
+                faculties.getFirst(),
+                Faculty.class
+        );
+        ResponseEntity<Student> studentResponseEntity = testRestTemplate.postForEntity(
+                appLink + port + "/api/v1/students",
+                students.getFirst(),
+                Student.class
+        );
+        Long savedStudentId = Objects.requireNonNull(facultyResponseEntity.getBody()).getId();
+        ResponseEntity<Student> findResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/students/" + studentResponseEntity.getBody().getId(), Student.class);
+        Assertions.assertEquals(Objects.requireNonNull(findResponse.getBody()).getId(), savedStudentId);
+        testRestTemplate.delete(appLink + port + "/api/v1/students/" + studentResponseEntity.getBody().getId());
+        testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + facultyResponseEntity.getBody().getId());
     }
 
     @Test
@@ -83,7 +113,27 @@ public class StudentControllerIntegrationsTest {
 
     @Test
     void deleteStudent() {
+        ResponseEntity<Faculty> facultyResponseEntity = testRestTemplate.postForEntity(
+                appLink + port + "/api/v1/faculties",
+                faculties.getFirst(),
+                Faculty.class
+        );
+        ResponseEntity<Student> studentResponseEntity = testRestTemplate.postForEntity(
+                appLink + port + "/api/v1/students",
+                students.getFirst(),
+                Student.class
+        );
+        Long savedStudentId = Objects.requireNonNull(facultyResponseEntity.getBody()).getId();
+        ResponseEntity<Student> findResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/students/" + studentResponseEntity.getBody().getId(), Student.class);
+        Assertions.assertEquals(Objects.requireNonNull(findResponse.getBody()).getId(), savedStudentId);
+        testRestTemplate.delete(appLink + port + "/api/v1/students/" + studentResponseEntity.getBody().getId());
+        testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + facultyResponseEntity.getBody().getId());
+        ResponseEntity<Student> oneMoreFindResponse = null;
+        try {
+            oneMoreFindResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/students/" + savedStudentId, Student.class);
+        } catch (Exception e) {}
 
+        Assertions.assertNull(oneMoreFindResponse);
     }
 
 }

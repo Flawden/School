@@ -30,34 +30,36 @@ public class FacultyControllerIntegrationsTest {
     @BeforeEach
     public void reposInit() {
         faculties = new ArrayList<>();
-        faculties.add(new Faculty(0L, "Гриффиндор", "Красный"));
-        faculties.add(new Faculty(1L, "Слизерин", "Зеленый"));
-        faculties.add(new Faculty(2L, "Пуффендуй", "Желтый"));
-        faculties.add(new Faculty(3L, "Когтевран", "Синий"));
-        faculties.add(new Faculty(4L, "Волжский политехнический техникум", "Серый"));
+        faculties.add(new Faculty("Гриффиндор", "Красный"));
+        faculties.add(new Faculty("Слизерин", "Зеленый"));
+        faculties.add(new Faculty("Пуффендуй", "Желтый"));
+        faculties.add(new Faculty("Когтевран", "Синий"));
+        faculties.add(new Faculty("Волжский политехнический техникум", "Серый"));
     }
 
     @Test
     public void getFaculties() {
-        Faculty testFacultyDTO = faculties.getFirst();
-        Faculty testFacultyDTO2 = faculties.get(1);
-        testRestTemplate.postForEntity(
+        Faculty testFaculty = faculties.getFirst();
+        Faculty testFaculty2 = faculties.get(1);
+        ResponseEntity<Faculty> testFacultyResponse = testRestTemplate.postForEntity(
                 appLink + port + "/api/v1/faculties",
-                testFacultyDTO,
+                testFaculty,
                 Faculty.class
         );
-        testRestTemplate.postForEntity(
+        ResponseEntity<Faculty> testFacultyResponse2 = testRestTemplate.postForEntity(
                 appLink + port + "/api/v1/faculties",
-                testFacultyDTO2,
+                testFaculty2,
                 Faculty.class
         );
-        ArrayList<Faculty> facultyDTOS = new ArrayList<>();
-        facultyDTOS.add(testFacultyDTO);
-        facultyDTOS.add(testFacultyDTO2);
+        testFaculty = testFacultyResponse.getBody();
+        testFaculty2 = testFacultyResponse2.getBody();
+        ArrayList<Faculty> facultiesTest = new ArrayList<>();
+        facultiesTest.add(testFaculty);
+        facultiesTest.add(testFaculty2);
         ResponseEntity<ArrayList> findResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/faculties", ArrayList.class);
-        Assertions.assertEquals(facultyDTOS.toString(), findResponse.getBody().toString());
-        testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + testFacultyDTO.getName());
-        testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + testFacultyDTO2.getName());
+        Assertions.assertEquals(2, findResponse.getBody().size());
+        testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + testFaculty.getId());
+        testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + testFaculty2.getId());
     }
 
     @Test
@@ -70,7 +72,7 @@ public class FacultyControllerIntegrationsTest {
         String savedFacultyName = Objects.requireNonNull(facultyResponseEntity.getBody()).getName();
         ResponseEntity<Faculty> findResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/faculties/name/" + faculties.getFirst().getName(), Faculty.class);
         Assertions.assertEquals(Objects.requireNonNull(findResponse.getBody()).getName(), savedFacultyName);
-        testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + savedFacultyName);
+        testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + facultyResponseEntity.getBody().getId());
     }
 
     @Test
@@ -83,7 +85,7 @@ public class FacultyControllerIntegrationsTest {
         String savedFacultyColor = Objects.requireNonNull(facultyResponseEntity.getBody()).getColor();
         ResponseEntity<Faculty> findResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/faculties/name/" + faculties.getFirst().getName(), Faculty.class);
         Assertions.assertEquals(Objects.requireNonNull(findResponse.getBody()).getColor(), savedFacultyColor);
-        testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + savedFacultyColor);
+        testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + facultyResponseEntity.getBody().getId());
     }
 
     @Test
@@ -97,7 +99,7 @@ public class FacultyControllerIntegrationsTest {
         ResponseEntity<Faculty> findResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/faculties/name/" + faculties.getFirst().getName(), Faculty.class);
         Assertions.assertEquals(Objects.requireNonNull(findResponse.getBody()).getName(), savedFacultyName);
 
-        testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + savedFacultyName);
+        testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + facultyResponseEntity.getBody().getId());
     }
 
     @Test
@@ -111,7 +113,7 @@ public class FacultyControllerIntegrationsTest {
         ResponseEntity<Faculty> findResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/faculties/name/" + faculties.getFirst().getName(), Faculty.class);
         Assertions.assertEquals(Objects.requireNonNull(findResponse.getBody()).getName(), savedFacultyName);
 
-        testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + savedFacultyName);
+        testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + facultyResponseEntity.getBody().getId());
         ResponseEntity<Faculty> oneMoreFindResponse = null;
         try {
             oneMoreFindResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/faculties/name/" + savedFacultyName, Faculty.class);

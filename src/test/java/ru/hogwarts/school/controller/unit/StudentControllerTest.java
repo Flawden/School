@@ -67,9 +67,9 @@ public class StudentControllerTest {
     }
 
     @Test
-    public void getStudentsById() {
+    public void getStudentById() {
         when(studentServiceImpl.getStudentById(0L)).thenReturn(students.getFirst());
-        Assertions.assertEquals(students.getFirst(), studentController.getStudentsById(0L));
+        Assertions.assertEquals(students.getFirst(), studentController.getStudentById(0L));
     }
 
     @Test

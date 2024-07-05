@@ -144,7 +144,7 @@ public class FacultyServiceImplTest {
     @Test
     public void deleteFacultyWithException() {
         when(facultyRepository.findById(0L)).thenReturn(Optional.empty());
-        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> facultyServiceImpl.deleteFaculty("Блабладор"));
+        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> facultyServiceImpl.deleteFaculty(990L));
         Assertions.assertEquals("Ошибка! Факультета с данным названием не существует", exception.getMessage());
     }
 

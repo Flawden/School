@@ -96,14 +96,14 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Transactional
     @Override
-    public void deleteFaculty(String name) {
-        facultyRepository.deleteByName(getByNameIgnoreCase(name).getName());
+    public void deleteFaculty(Long id) {
+        facultyRepository.deleteById(id);
     }
 
     @Override
-    public Faculty addStudentToFacultyById(Long studentIdNumber, String facultyName) {
+    public Faculty addStudentToFacultyById(Long id, String facultyName) {
         Faculty faculty = facultyRepository.getByNameIgnoreCase(facultyName).orElseThrow(() -> new EntityNotFoundException("Ошибка! Факультета с данным названием не существует"));
-        Student student = studentService.getStudentsByStudentIdNumber(studentIdNumber);
+        Student student = studentService.getStudentById(id);
         faculty.getStudents().add(student);
         return facultyRepository.save(faculty);
     }

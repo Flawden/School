@@ -1,5 +1,6 @@
 package ru.hogwarts.school.controller.integration;
 
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -50,22 +51,62 @@ public class StudentControllerIntegrationsTest {
 
     @Test
     public void getStudents() {
-
+        ResponseEntity<Faculty> facultyResponseEntity = testRestTemplate.postForEntity(
+                appLink + port + "/api/v1/faculties",
+                faculties.getFirst(),
+                Faculty.class
+        );
+        ResponseEntity<Student> studentResponseEntity = testRestTemplate.postForEntity(
+                appLink + port + "/api/v1/students",
+                students.getFirst(),
+                Student.class
+        );
+        ArrayList<Student> studentsForTest = new ArrayList<>();
+        studentsForTest.add(studentResponseEntity.getBody());
+        ResponseEntity<ArrayList> findResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/students", ArrayList.class);
+        Assertions.assertEquals(1, findResponse.getBody().size());
+        testRestTemplate.delete(appLink + port + "/api/v1/students/" + studentResponseEntity.getBody().getId());
+        testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + facultyResponseEntity.getBody().getId());
     }
 
     @Test
     public void findByNameIgnoreCase() {
-
+        ResponseEntity<Faculty> facultyResponseEntity = testRestTemplate.postForEntity(
+                appLink + port + "/api/v1/faculties",
+                faculties.getFirst(),
+                Faculty.class
+        );
+        ResponseEntity<Student> studentResponseEntity = testRestTemplate.postForEntity(
+                appLink + port + "/api/v1/students",
+                students.getFirst(),
+                Student.class
+        );
+        ArrayList<Student> studentsForTest = new ArrayList<>();
+        studentsForTest.add(studentResponseEntity.getBody());
+        ResponseEntity<ArrayList> findResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/students/name/" + studentResponseEntity.getBody().getName(), ArrayList.class);
+        Assertions.assertTrue(findResponse.getBody().getFirst().toString().contains(studentResponseEntity.getBody().getName()));
+        testRestTemplate.delete(appLink + port + "/api/v1/students/" + studentResponseEntity.getBody().getId());
+        testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + facultyResponseEntity.getBody().getId());
     }
 
     @Test
     public void getStudentsByAge() {
-
-    }
-
-    @Test
-    public void findByAgeBetween() {
-
+        ResponseEntity<Faculty> facultyResponseEntity = testRestTemplate.postForEntity(
+                appLink + port + "/api/v1/faculties",
+                faculties.getFirst(),
+                Faculty.class
+        );
+        ResponseEntity<Student> studentResponseEntity = testRestTemplate.postForEntity(
+                appLink + port + "/api/v1/students",
+                students.getFirst(),
+                Student.class
+        );
+        ArrayList<Student> studentsForTest = new ArrayList<>();
+        studentsForTest.add(studentResponseEntity.getBody());
+        ResponseEntity<ArrayList> findResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/students/age/" + studentResponseEntity.getBody().getAge(), ArrayList.class);
+        Assertions.assertTrue(findResponse.getBody().getFirst().toString().contains(studentResponseEntity.getBody().getAge().toString()));
+        testRestTemplate.delete(appLink + port + "/api/v1/students/" + studentResponseEntity.getBody().getId());
+        testRestTemplate.delete(appLink + port + "/api/v1/faculties/" + facultyResponseEntity.getBody().getId());
     }
 
     @Test

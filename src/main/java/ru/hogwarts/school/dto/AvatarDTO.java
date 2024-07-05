@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.hogwarts.school.model.Student;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -25,5 +28,16 @@ public class AvatarDTO {
 
     private StudentDTO student;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AvatarDTO avatarDTO = (AvatarDTO) o;
+        return Objects.equals(id, avatarDTO.id) && Objects.equals(filePath, avatarDTO.filePath) && Objects.equals(fileSize, avatarDTO.fileSize) && Objects.equals(mediaType, avatarDTO.mediaType) && Objects.deepEquals(data, avatarDTO.data) && Objects.equals(student, avatarDTO.student);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, filePath, fileSize, mediaType, Arrays.hashCode(data), student);
+    }
 }

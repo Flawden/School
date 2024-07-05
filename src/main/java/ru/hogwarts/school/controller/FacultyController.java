@@ -69,15 +69,15 @@ public class FacultyController implements FacultyRestApi {
         return mapper.map(facultyService.addFaculty(mapper.map(faculty, Faculty.class)), FacultyDTO.class);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{name}")
     @Override
-    public FacultyDTO updateFaculty(Long id, FacultyDTO faculty) {
-        return mapper.map(facultyService.updateFaculty(id, mapper.map(faculty, Faculty.class)), FacultyDTO.class);
+    public FacultyDTO updateFaculty(String name, FacultyDTO faculty) {
+        return mapper.map(facultyService.updateFaculty(name, mapper.map(faculty, Faculty.class)), FacultyDTO.class);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{name}")
     @Override
-    public void deleteFaculty(Long id) {
-        facultyService.deleteFaculty(id);
+    public void deleteFaculty(String name) {
+        facultyService.deleteFaculty(name);
     }
 }

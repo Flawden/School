@@ -83,8 +83,8 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Transactional
     @Override
-    public Faculty updateFaculty(Long id, Faculty changedFaculty) {
-        Faculty faculty = getFacultiesById(id);
+    public Faculty updateFaculty(String name, Faculty changedFaculty) {
+        Faculty faculty = getByNameIgnoreCase(name);
         faculty.setName(changedFaculty.getName());
         faculty.setColor(changedFaculty.getColor());
         try {
@@ -97,8 +97,8 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Transactional
     @Override
-    public void deleteFaculty(Long id) {
-        facultyRepository.delete(getFacultiesById(id));
+    public void deleteFaculty(String name) {
+        facultyRepository.deleteByName(getByNameIgnoreCase(name).getName());
     }
 
     @Override

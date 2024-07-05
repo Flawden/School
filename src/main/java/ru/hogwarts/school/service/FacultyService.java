@@ -21,9 +21,9 @@ public interface FacultyService {
 
     Faculty addFaculty(Faculty faculty);
 
-    Faculty updateFaculty(Long id, Faculty faculty);
+    Faculty updateFaculty(String name, Faculty faculty);
 
-    void deleteFaculty(Long id);
+    void deleteFaculty(String name);
 
     Faculty addStudentToFacultyById(Long studentIdNumber, String facultyName);
 

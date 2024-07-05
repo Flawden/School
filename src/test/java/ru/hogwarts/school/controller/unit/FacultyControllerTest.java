@@ -79,8 +79,8 @@ public class FacultyControllerTest {
     @Test
     public void updateFaculty() {
         Faculty testFaculty = new Faculty(0L, "Светлодуй", "Голубой");
-        when(facultyServiceImpl.updateFaculty(0L, new Faculty("Светлодуй", "Голубой"))).thenReturn(testFaculty);
-        Assertions.assertEquals(testFaculty, facultyController.updateFaculty(0L, new FacultyDTO("Светлодуй", "Голубой")));
+        when(facultyServiceImpl.updateFaculty(faculties.getFirst().getName(), new Faculty("Светлодуй", "Голубой"))).thenReturn(testFaculty);
+        Assertions.assertEquals(testFaculty, facultyController.updateFaculty(faculties.getFirst().getName(), new FacultyDTO("Светлодуй", "Голубой")));
     }
 
 }

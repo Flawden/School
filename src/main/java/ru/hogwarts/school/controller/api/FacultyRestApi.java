@@ -70,7 +70,7 @@ public interface FacultyRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Факультета с переданными именем или цветом уже существуют"),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    FacultyDTO updateFaculty(@PathVariable("id") Long id, @RequestBody FacultyDTO faculty);
+    FacultyDTO updateFaculty(@PathVariable("name") String name, @RequestBody FacultyDTO faculty);
 
     @Operation(
             summary = "Уничтожить факультета",
@@ -80,6 +80,6 @@ public interface FacultyRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Факультета с данным id не существует"),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    void deleteFaculty(@PathVariable Long id);
+    void deleteFaculty(@PathVariable String name);
 
 }

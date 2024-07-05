@@ -1,4 +1,4 @@
-package ru.hogwarts.school.controller.integration;
+package ru.hogwarts.school.controller.integration.testRestTemplate;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

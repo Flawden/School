@@ -1,6 +1,5 @@
-package ru.hogwarts.school.controller.integration;
+package ru.hogwarts.school.controller.integration.testRestTemplate;
 
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

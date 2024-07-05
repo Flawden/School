@@ -11,6 +11,7 @@ import ru.hogwarts.school.exception.FacultySaveException;
 import ru.hogwarts.school.exception.FacultyUpdateException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
+import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.implementation.FacultyServiceImpl;
 
 import java.util.ArrayList;
@@ -27,13 +28,13 @@ public class FacultyServiceImplTest {
     @Mock
     private FacultyRepository facultyRepository;
     @Mock
-    private StudentService studentService;
+    private StudentRepository studentRepository;
 
     private static List<Faculty> faculties;
 
     @BeforeEach
     public void setUp() {
-        facultyServiceImpl = new FacultyServiceImpl(facultyRepository, studentService);
+        facultyServiceImpl = new FacultyServiceImpl(facultyRepository, studentRepository);
     }
 
     @BeforeEach

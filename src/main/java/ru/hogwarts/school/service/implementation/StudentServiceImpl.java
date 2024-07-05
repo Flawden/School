@@ -74,14 +74,6 @@ public class StudentServiceImpl implements StudentService {
     @Transactional
     @Override
     public Student addStudent(Student student) {
-        Long facultyCount = facultyRepository.count();
-//        if (facultyCount <= 0) {
-//            throw new RuntimeException("Ошибка! Невозможно создать студента. Факультетов не найдено.");
-//        } else if (facultyCount == 1) {
-//            student.setFaculty(facultyRepository.findById(1L).orElseThrow(() -> new EntityNotFoundException("Ошибка! Факультет с данным id не найден")));
-//        } else {
-//            student.setFaculty(facultyRepository.findById(random.nextLong(1, facultyCount)).orElseThrow(() -> new RuntimeException("Ошибка и все тут")));
-//        }
         return studentRepository.save(student);
     }
 

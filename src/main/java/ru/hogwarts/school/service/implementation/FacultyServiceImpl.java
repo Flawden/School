@@ -9,6 +9,7 @@ import ru.hogwarts.school.exception.FacultyUpdateException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
+import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.FacultyService;
 import ru.hogwarts.school.service.StudentService;
 
@@ -19,11 +20,11 @@ import java.util.Optional;
 public class FacultyServiceImpl implements FacultyService {
 
     private final FacultyRepository facultyRepository;
-    private final StudentService studentService;
+    private final StudentRepository studentRepository;
 
-    public FacultyServiceImpl(FacultyRepository facultyRepository, StudentService studentService) {
+    public FacultyServiceImpl(FacultyRepository facultyRepository, StudentRepository studentRepository) {
         this.facultyRepository = facultyRepository;
-        this.studentService = studentService;
+        this.studentRepository = studentRepository;
     }
 
     @Override
@@ -103,7 +104,7 @@ public class FacultyServiceImpl implements FacultyService {
     @Override
     public Faculty addStudentToFacultyById(Long id, String facultyName) {
         Faculty faculty = facultyRepository.getByNameIgnoreCase(facultyName).orElseThrow(() -> new EntityNotFoundException("Ошибка! Факультета с данным названием не существует"));
-        Student student = studentService.getStudentById(id);
+        Student student = studentRepository.findById(id).get();
         faculty.getStudents().add(student);
         return facultyRepository.save(faculty);
     }

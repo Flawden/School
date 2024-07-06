@@ -27,6 +27,8 @@ public class Student {
     @JoinColumn(name = "faculty_id", referencedColumnName = "id")
     private Faculty faculty;
 
+
+
     public Student(String name, Integer age) {
         this.name = name;
         this.age = age;

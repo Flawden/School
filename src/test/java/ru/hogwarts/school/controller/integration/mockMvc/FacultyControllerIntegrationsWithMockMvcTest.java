@@ -50,18 +50,16 @@ public class FacultyControllerIntegrationsWithMockMvcTest {
     @MockBean
     private StudentRepository studentRepository;
 
-    private String appLink = "http://localhost:";
-
     private static List<Faculty> faculties;
 
     @BeforeEach
     public void reposInit() {
         faculties = new ArrayList<>();
-        faculties.add(new Faculty("Гриффиндор", "Красный"));
-        faculties.add(new Faculty("Слизерин", "Зеленый"));
-        faculties.add(new Faculty("Пуффендуй", "Желтый"));
-        faculties.add(new Faculty("Когтевран", "Синий"));
-        faculties.add(new Faculty("Волжский политехнический техникум", "Серый"));
+        faculties.add(new Faculty(0L, "Гриффиндор", "Красный"));
+        faculties.add(new Faculty(1L, "Слизерин", "Зеленый"));
+        faculties.add(new Faculty(2L, "Пуффендуй", "Желтый"));
+        faculties.add(new Faculty(3L, "Когтевран", "Синий"));
+        faculties.add(new Faculty(4L, "Волжский политехнический техникум", "Серый"));
     }
 
     @Test
@@ -72,17 +70,42 @@ public class FacultyControllerIntegrationsWithMockMvcTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/v1/faculties")
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value("0"))
+                .andExpect(jsonPath("$[0].color").value("Красный"))
+                .andExpect(jsonPath("$[0].name").value("Гриффиндор"))
+                .andExpect(jsonPath("$[1].id").value("1"))
+                .andExpect(jsonPath("$[1].color").value("Зеленый"))
+                .andExpect(jsonPath("$[1].name").value("Слизерин"));
+
     }
 
     @Test
-    public void getByNameIgnoreCase() {
+    public void getByNameIgnoreCase() throws Exception {
+        String testWord = faculties.getFirst().getName();
+        when(facultyRepository.getByNameIgnoreCase(testWord)).thenReturn(Optional.ofNullable(faculties.getFirst()));
 
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/v1/faculties/name/" + testWord)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("0"))
+                .andExpect(jsonPath("$.color").value("Красный"))
+                .andExpect(jsonPath("$.name").value("Гриффиндор"));
     }
 
     @Test
-    public void getByColorIgnoreCase() {
+    public void getByColorIgnoreCase() throws Exception {
+        String testWord = faculties.getFirst().getColor();
+        when(facultyRepository.getByColorIgnoreCase(testWord)).thenReturn(Optional.ofNullable(faculties.getFirst()));
 
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/v1/faculties/color/" + testWord)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("0"))
+                .andExpect(jsonPath("$.color").value("Красный"))
+                .andExpect(jsonPath("$.name").value("Гриффиндор"));
     }
 
     @Test
@@ -122,8 +145,11 @@ public class FacultyControllerIntegrationsWithMockMvcTest {
     }
 
     @Test
-    public void deleteFaculty() {
-
+    public void deleteFaculty() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/api/v1/faculties/1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
 }

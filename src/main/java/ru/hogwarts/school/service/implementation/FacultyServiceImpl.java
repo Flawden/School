@@ -4,12 +4,12 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import ru.hogwarts.school.dto.StudentDTO;
 import ru.hogwarts.school.exception.FacultySaveException;
 import ru.hogwarts.school.exception.FacultyUpdateException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
+import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.FacultyService;
 import ru.hogwarts.school.service.StudentService;
 
@@ -20,11 +20,11 @@ import java.util.Optional;
 public class FacultyServiceImpl implements FacultyService {
 
     private final FacultyRepository facultyRepository;
-    private final StudentService studentService;
+    private final StudentRepository studentRepository;
 
-    public FacultyServiceImpl(FacultyRepository facultyRepository, StudentService studentService) {
+    public FacultyServiceImpl(FacultyRepository facultyRepository, StudentRepository studentRepository) {
         this.facultyRepository = facultyRepository;
-        this.studentService = studentService;
+        this.studentRepository = studentRepository;
     }
 
     @Override
@@ -83,8 +83,8 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Transactional
     @Override
-    public Faculty updateFaculty(Long id, Faculty changedFaculty) {
-        Faculty faculty = getFacultiesById(id);
+    public Faculty updateFaculty(String name, Faculty changedFaculty) {
+        Faculty faculty = getByNameIgnoreCase(name);
         faculty.setName(changedFaculty.getName());
         faculty.setColor(changedFaculty.getColor());
         try {
@@ -98,13 +98,13 @@ public class FacultyServiceImpl implements FacultyService {
     @Transactional
     @Override
     public void deleteFaculty(Long id) {
-        facultyRepository.delete(getFacultiesById(id));
+        facultyRepository.deleteById(id);
     }
 
     @Override
-    public Faculty addStudentToFacultyById(Long studentIdNumber, String facultyName) {
+    public Faculty addStudentToFacultyById(Long id, String facultyName) {
         Faculty faculty = facultyRepository.getByNameIgnoreCase(facultyName).orElseThrow(() -> new EntityNotFoundException("Ошибка! Факультета с данным названием не существует"));
-        Student student = studentService.getStudentsByStudentIdNumber(studentIdNumber);
+        Student student = studentRepository.findById(id).get();
         faculty.getStudents().add(student);
         return facultyRepository.save(faculty);
     }

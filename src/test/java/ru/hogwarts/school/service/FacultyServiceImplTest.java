@@ -11,6 +11,7 @@ import ru.hogwarts.school.exception.FacultySaveException;
 import ru.hogwarts.school.exception.FacultyUpdateException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
+import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.implementation.FacultyServiceImpl;
 
 import java.util.ArrayList;
@@ -27,13 +28,13 @@ public class FacultyServiceImplTest {
     @Mock
     private FacultyRepository facultyRepository;
     @Mock
-    private StudentService studentService;
+    private StudentRepository studentRepository;
 
     private static List<Faculty> faculties;
 
     @BeforeEach
     public void setUp() {
-        facultyServiceImpl = new FacultyServiceImpl(facultyRepository, studentService);
+        facultyServiceImpl = new FacultyServiceImpl(facultyRepository, studentRepository);
     }
 
     @BeforeEach
@@ -121,7 +122,7 @@ public class FacultyServiceImplTest {
         Faculty testFaculty = new Faculty(1L, "Стеблехвост", "Черный");
         when(facultyRepository.save(testFaculty)).thenReturn(testFaculty);
         when(facultyRepository.findById(1L)).thenReturn(Optional.ofNullable(faculties.get(1)));
-        Assertions.assertEquals(testFaculty, facultyServiceImpl.updateFaculty(1L, new Faculty("Стеблехвост", "Черный")));
+        Assertions.assertEquals(testFaculty, facultyServiceImpl.updateFaculty("Стеблехвост", new Faculty("Стеблехвост", "Черный")));
     }
 
 
@@ -130,22 +131,22 @@ public class FacultyServiceImplTest {
         Faculty testFacultyAllMatch = new Faculty(0L, faculties.getFirst().getName(), faculties.getFirst().getColor());
         when(facultyRepository.findById(0L)).thenReturn(Optional.ofNullable(faculties.getFirst()));
         when(facultyRepository.save(testFacultyAllMatch)).thenThrow(new FacultyUpdateException("Ошибка! Факультет с переданными именем или цветом уже существуют"));
-        FacultyUpdateException exception = Assertions.assertThrows(FacultyUpdateException.class, () -> facultyServiceImpl.updateFaculty(0L, new Faculty(testFacultyAllMatch.getName(), testFacultyAllMatch.getColor())));
+        FacultyUpdateException exception = Assertions.assertThrows(FacultyUpdateException.class, () -> facultyServiceImpl.updateFaculty(faculties.getFirst().getName(), new Faculty(testFacultyAllMatch.getName(), testFacultyAllMatch.getColor())));
         Assertions.assertEquals("Ошибка! Факультет с переданными именем или цветом уже существуют", exception.getMessage());
     }
 
     @Test
     public void updateFacultyWithExceptionCantFind() {
         when(facultyRepository.findById(990L)).thenThrow(new EntityNotFoundException("Ошибка! Факультета с данным id не существует"));
-        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> facultyServiceImpl.updateFaculty(990L, new Faculty(faculties.getFirst().getName(), faculties.getFirst().getColor())));
+        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> facultyServiceImpl.updateFaculty("Блабладор", new Faculty(faculties.getFirst().getName(), faculties.getFirst().getColor())));
         Assertions.assertEquals("Ошибка! Факультета с данным id не существует", exception.getMessage());
     }
 
     @Test
     public void deleteFacultyWithException() {
         when(facultyRepository.findById(0L)).thenReturn(Optional.empty());
-        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> facultyServiceImpl.deleteFaculty(0L));
-        Assertions.assertEquals("Ошибка! Факультета с данным id не существует", exception.getMessage());
+        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> facultyServiceImpl.deleteFaculty(990L));
+        Assertions.assertEquals("Ошибка! Факультета с данным названием не существует", exception.getMessage());
     }
 
 }

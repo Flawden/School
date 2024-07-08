@@ -3,12 +3,10 @@ package ru.hogwarts.school.service.implementation;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import ru.hogwarts.school.dto.FacultyDTO;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
-import ru.hogwarts.school.service.FacultyService;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.List;
@@ -32,6 +30,8 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> getStudents() {
         return studentRepository.findAll();
     }
+
+
 
     @Override
     public List<Student> findByNameIgnoreCase(String name) {
@@ -57,16 +57,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student getStudentsByStudentIdNumber(Long studentIdNumber) {
-        Optional<Student> student = studentRepository.findStudentByStudentIdNumber(studentIdNumber);
-        if (student.isEmpty()) {
-            throw new EntityNotFoundException("Ошибка! Студента с данным номером студенческого не найдено");
-        }
-        return student.get();
-    }
-
-    @Override
-    public Student getStudentsById(Long id) {
+    public Student getStudentById(Long id) {
         Optional<Student> student = studentRepository.findById(id);
         if (student.isEmpty()) {
             throw new EntityNotFoundException("Ошибка! Студента с данным id не найдено");
@@ -76,28 +67,20 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Faculty getFacultyOfStudent(Student student) {
-        student = studentRepository.findStudentByStudentIdNumber(student.getStudentIdNumber()).orElseThrow(() -> new EntityNotFoundException("Ошибка! Студента с данным номером студенческого не найдено"));
+        student = studentRepository.findById(student.getId()).orElseThrow(() -> new EntityNotFoundException("Ошибка! Студента с данным id не найдено"));
         return student.getFaculty();
     }
 
     @Transactional
     @Override
     public Student addStudent(Student student) {
-        Long facultyCount = facultyRepository.count();
-        if (facultyCount <= 0) {
-            throw new RuntimeException("Ошибка! Невозможно создать студента. Факультетов не найдено.");
-        } else if (facultyCount == 1) {
-            student.setFaculty(facultyRepository.findById(1L).orElseThrow(() -> new EntityNotFoundException("Ошибка! Факультет с данным id не найден")));
-        } else {
-            student.setFaculty(facultyRepository.findById(random.nextLong(1, facultyCount)).orElseThrow(() -> new RuntimeException("Ошибка и все тут")));
-        }
         return studentRepository.save(student);
     }
 
     @Transactional
     @Override
     public Student updateStudent(Long id, Student changedStudent) {
-        Student student = getStudentsById(id);
+        Student student = getStudentById(id);
         student.setName(changedStudent.getName());
         student.setAge(changedStudent.getAge());
         return addStudent(student);
@@ -106,7 +89,7 @@ public class StudentServiceImpl implements StudentService {
     @Transactional
     @Override
     public void deleteStudent(Long id) {
-        studentRepository.delete(getStudentsById(id));
+        studentRepository.delete(getStudentById(id));
     }
 
 

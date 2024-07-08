@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
 
 import java.util.Objects;
 
@@ -23,15 +22,13 @@ public class Student {
     private String name;
     @Column(nullable = false)
     private Integer age;
-    @Column(unique = true, nullable = false)
-    private Long studentIdNumber;
 
     @ManyToOne
     @JoinColumn(name = "faculty_id", referencedColumnName = "id")
     private Faculty faculty;
 
-    @OneToOne
-    private Avatar avatar;
+
+
     public Student(String name, Integer age) {
         this.name = name;
         this.age = age;
@@ -43,10 +40,11 @@ public class Student {
         this.age = age;
     }
 
-    public Student(String name, Integer age, Long studentIdNumber) {
+
+    public Student(String name, Integer age, Faculty faculty) {
         this.name = name;
         this.age = age;
-        this.studentIdNumber = studentIdNumber;
+        this.faculty = faculty;
     }
 
     @Override

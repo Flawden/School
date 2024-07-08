@@ -26,7 +26,7 @@ public class Faculty {
     @Column(unique = true, nullable = false)
     private String color;
 
-    @OneToMany(mappedBy = "faculty", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "faculty")
     private List<Student> students;
 
     public Faculty(String name, String color) {
@@ -61,10 +61,11 @@ public class Faculty {
 
     @Override
     public String toString() {
-        return "Faculty{" +
+        return "{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", color='" + color + '\'' +
+                ", name=" + name +
+                ", color=" + color +
+                ", students=" + students +
                 '}';
     }
 }

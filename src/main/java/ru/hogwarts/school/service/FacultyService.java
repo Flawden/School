@@ -1,7 +1,5 @@
 package ru.hogwarts.school.service;
 
-import ru.hogwarts.school.dto.FacultyDTO;
-import ru.hogwarts.school.dto.StudentDTO;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 
@@ -21,7 +19,7 @@ public interface FacultyService {
 
     Faculty addFaculty(Faculty faculty);
 
-    Faculty updateFaculty(Long id, Faculty faculty);
+    Faculty updateFaculty(String name, Faculty faculty);
 
     void deleteFaculty(Long id);
 

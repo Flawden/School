@@ -24,6 +24,21 @@ public class StudentController implements StudentRestApi {
         return studentService.getStudents();
     }
 
+    @Override
+    public Integer getCountOfStudents() {
+        return studentService.getCountOfStudents();
+    }
+
+    @Override
+    public Integer getAverageAgeOfStudents() {
+        return studentService.getAverageAgeOfStudents();
+    }
+
+    @Override
+    public List<Student> getLastFiveStudents() {
+        return studentService.getLastFiveStudents();
+    }
+
 
     @GetMapping("/name/{name}")
     @Override

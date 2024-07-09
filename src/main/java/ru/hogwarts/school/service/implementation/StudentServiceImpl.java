@@ -31,7 +31,20 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.findAll();
     }
 
+    @Override
+    public Integer getCountOfStudents() {
+        return studentRepository.getCountOfStudents();
+    }
 
+    @Override
+    public Integer getAverageAgeOfStudents() {
+        return studentRepository.getAverageAgeOfStudents();
+    }
+
+    @Override
+    public List<Student> getLastFiveStudents() {
+        return studentRepository.getLastFiveStudents();
+    }
 
     @Override
     public List<Student> findByNameIgnoreCase(String name) {

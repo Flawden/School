@@ -20,6 +20,24 @@ public interface StudentRestApi {
     List<Student> getStudents();
 
     @Operation(
+            summary = "Получить число студентов",
+            description = "Позволяет получить число студентов"
+    )
+    Integer getCountOfStudents();
+
+    @Operation(
+            summary = "Получить средний возвраст студентов",
+            description = "Позволяет получить средний возвраст студентов"
+    )
+    Integer getAverageAgeOfStudents();
+
+    @Operation(
+            summary = "Получить 5 последних студентов",
+            description = "Позволяет 5 последнихо студентов"
+    )
+    List<Student> getLastFiveStudents();
+
+    @Operation(
             summary = "Найти студента по имени",
             description = "Позволяет совершить поиск всех студентов по имени"
     )

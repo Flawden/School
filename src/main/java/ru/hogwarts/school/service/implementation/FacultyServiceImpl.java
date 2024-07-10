@@ -15,6 +15,7 @@ import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.FacultyService;
 import ru.hogwarts.school.service.StudentService;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +42,14 @@ public class FacultyServiceImpl implements FacultyService {
         Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
         logger.info("Был вызван метод: getFacultyById");
         return facultyRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Ошибка! Факультета с данным id не найдено"));
+    }
+
+    @Override
+    public String getTheLongestNameOfFaculty() {
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length))
+                .orElseThrow(() -> new NullPointerException("Ошибка! Студентов не найдено!"));
     }
 
     @Override

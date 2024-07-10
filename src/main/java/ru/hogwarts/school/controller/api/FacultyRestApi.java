@@ -18,6 +18,12 @@ public interface FacultyRestApi {
     List<Faculty> getFaculties();
 
     @Operation(
+            summary = "Получить самое длинное название факультеты",
+            description = "Позволяет получить самое длинное название факультеты"
+    )
+    String getTheLongestNameOfFaculty();
+
+    @Operation(
             summary = "Получить факультет по названию",
             description = "Позволяет получить факультет по названию"
     )

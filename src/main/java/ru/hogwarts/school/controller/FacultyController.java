@@ -27,6 +27,11 @@ public class FacultyController implements FacultyRestApi {
         return facultyService.getFaculties();
     }
 
+    @Override
+    public String getTheLongestNameOfFaculty() {
+        return facultyService.getTheLongestNameOfFaculty();
+    }
+
     @GetMapping("/name/{facultyName}")
     @Override
     public Faculty getByNameIgnoreCase(String facultyName) {

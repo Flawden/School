@@ -37,8 +37,13 @@ public class StudentController implements StudentRestApi {
 
     @GetMapping("/getAverage")
     @Override
-    public Integer getAverageAgeOfStudents() {
+    public Double getAverageAgeOfStudents() {
         return studentService.getAverageAgeOfStudents();
+    }
+
+    @Override
+    public Double getAverageAgeOfStudentsWithStreamApi() {
+        return studentService.getAverageAgeOfStudentsWithStreamApi();
     }
 
     @GetMapping("/getFive")

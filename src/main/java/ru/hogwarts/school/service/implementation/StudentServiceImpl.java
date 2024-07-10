@@ -55,10 +55,18 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Integer getAverageAgeOfStudents() {
+    public Double getAverageAgeOfStudents() {
         Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
         logger.info("Был вызван метод: getAverageAgeOfStudents");
         return studentRepository.getAverageAgeOfStudents();
+    }
+
+    @Override
+    public Double getAverageAgeOfStudentsWithStreamApi() {
+        return studentRepository.findAll().stream()
+                .map(Student::getAge)
+                .mapToInt(age -> age)
+                .average().orElse(Double.NaN);
     }
 
     @Override

@@ -35,7 +35,13 @@ public interface StudentRestApi {
             summary = "Получить средний возвраст студентов",
             description = "Позволяет получить средний возвраст студентов"
     )
-    Integer getAverageAgeOfStudents();
+    Double getAverageAgeOfStudents();
+
+    @Operation(
+            summary = "Получить средний возвраст студентов",
+            description = "Позволяет получить средний возвраст студентов (Эндпоинт выполнен в целях решения домашнего задания)"
+    )
+    Double getAverageAgeOfStudentsWithStreamApi();
 
     @Operation(
             summary = "Получить 5 последних студентов",

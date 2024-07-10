@@ -11,3 +11,5 @@ spring.jpa.properties.hibernate.format_sql=true
 upload.path=
 
 server.error.include-message=
+
+spring.liquibase.change-log=classpath:liquibase/changelog-master.yml

@@ -2,6 +2,8 @@ package ru.hogwarts.school.service.implementation;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
@@ -28,26 +30,36 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> getStudents() {
+        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+        logger.info("Был вызван метод: getStudents");
         return studentRepository.findAll();
     }
 
     @Override
     public Integer getCountOfStudents() {
+        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+        logger.info("Был вызван метод: getCountOfStudents");
         return studentRepository.getCountOfStudents();
     }
 
     @Override
     public Integer getAverageAgeOfStudents() {
+        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+        logger.info("Был вызван метод: getAverageAgeOfStudents");
         return studentRepository.getAverageAgeOfStudents();
     }
 
     @Override
     public List<Student> getLastFiveStudents() {
+        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+        logger.info("Был вызван метод: getLastFiveStudents");
         return studentRepository.getLastFiveStudents();
     }
 
     @Override
     public List<Student> findByNameIgnoreCase(String name) {
+        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+        logger.info("Был вызван метод: findByNameIgnoreCase");
         List<Student> studentsByName = studentRepository.findByNameIgnoreCase(name);
         if (!studentsByName.isEmpty()) {
             return studentsByName;
@@ -57,6 +69,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> getStudentsByAge(Integer age) {
+        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+        logger.info("Был вызван метод: getStudentsByAge");
         List<Student> studentsByAge = studentRepository.findStudentsByAge(age);
         if (!studentsByAge.isEmpty()) {
             return studentsByAge;
@@ -66,11 +80,15 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> findByAgeBetween(Integer min, Integer max) {
+        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+        logger.info("Был вызван метод: findByAgeBetween");
         return studentRepository.findByAgeBetween(min, max);
     }
 
     @Override
     public Student getStudentById(Long id) {
+        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+        logger.info("Был вызван метод: getStudentById");
         Optional<Student> student = studentRepository.findById(id);
         if (student.isEmpty()) {
             throw new EntityNotFoundException("Ошибка! Студента с данным id не найдено");
@@ -80,6 +98,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Faculty getFacultyOfStudent(Student student) {
+        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+        logger.info("Был вызван метод: getFacultyOfStudent");
         student = studentRepository.findById(student.getId()).orElseThrow(() -> new EntityNotFoundException("Ошибка! Студента с данным id не найдено"));
         return student.getFaculty();
     }
@@ -87,12 +107,16 @@ public class StudentServiceImpl implements StudentService {
     @Transactional
     @Override
     public Student addStudent(Student student) {
+        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+        logger.info("Был вызван метод: addStudent");
         return studentRepository.save(student);
     }
 
     @Transactional
     @Override
     public Student updateStudent(Long id, Student changedStudent) {
+        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+        logger.info("Был вызван метод: updateStudent");
         Student student = getStudentById(id);
         student.setName(changedStudent.getName());
         student.setAge(changedStudent.getAge());
@@ -102,6 +126,8 @@ public class StudentServiceImpl implements StudentService {
     @Transactional
     @Override
     public void deleteStudent(Long id) {
+        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+        logger.info("Был вызван метод: deleteStudent");
         studentRepository.delete(getStudentById(id));
     }
 

@@ -17,6 +17,9 @@ public class InfoController {
         this.webServerAppCtxt = webServerAppCtxt;
     }
 
+    //Я не уверен могу ли я считать это задание выполненным.
+    //Технически у меня есть 2 конфигурационных файла.
+    //И эндпоинт вернет любое значение порта...
     @GetMapping("/getPort")
     public String getPort() {
         return "Ваше приложение работает на следующем порту: " + webServerAppCtxt.getWebServer().getPort();

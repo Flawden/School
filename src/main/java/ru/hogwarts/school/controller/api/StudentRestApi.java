@@ -20,6 +20,12 @@ public interface StudentRestApi {
     List<Student> getStudents();
 
     @Operation(
+            summary = "Найти имена всех студентов с указанной буквы",
+            description = "Позволяет найти имена всех студентов с указанной буквы"
+    )
+    List<String> getStudentsWhoseNameStartsWith(String startWith);
+
+    @Operation(
             summary = "Получить число студентов",
             description = "Позволяет получить число студентов"
     )

@@ -11,9 +11,11 @@ import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.StudentService;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -33,6 +35,16 @@ public class StudentServiceImpl implements StudentService {
         Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
         logger.info("Был вызван метод: getStudents");
         return studentRepository.findAll();
+    }
+
+    @Override
+    public List<String> getStudentsWhoseNameStartsWith(String startWith) {
+        return studentRepository.findAll().stream()
+                .map(Student::getName)
+                .filter(student -> student.startsWith(startWith))
+                .sorted(String::compareTo)
+                .map(String::toUpperCase)
+                .collect(Collectors.toList());
     }
 
     @Override

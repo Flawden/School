@@ -24,6 +24,11 @@ public class StudentController implements StudentRestApi {
         return studentService.getStudents();
     }
 
+    @Override
+    public List<String> getStudentsWhoseNameStartsWith(String startWith) {
+        return studentService.getStudentsWhoseNameStartsWith(startWith);
+    }
+
     @GetMapping("/count")
     @Override
     public Integer getCountOfStudents() {

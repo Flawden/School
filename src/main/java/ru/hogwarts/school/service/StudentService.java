@@ -10,6 +10,8 @@ public interface StudentService {
 
     List<Student> getStudents();
 
+    List<String> getStudentsWhoseNameStartsWith(String startWith);
+
     Integer getCountOfStudents();
 
     Integer getAverageAgeOfStudents();

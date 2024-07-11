@@ -4,12 +4,14 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.StudentService;
+import ru.hogwarts.school.util.SoutUtil;
 
 import java.util.Comparator;
 import java.util.List;
@@ -27,6 +29,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     private final Random random = new Random();
+    private final SoutUtil soutUtil = new SoutUtil();
 
     private final StudentRepository studentRepository;
 
@@ -63,10 +66,52 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Double getAverageAgeOfStudentsWithStreamApi() {
+        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+        logger.info("Был вызван метод: getAverageAgeOfStudentsWithStreamApi");
         return studentRepository.findAll().stream()
                 .map(Student::getAge)
                 .mapToInt(age -> age)
                 .average().orElse(Double.NaN);
+    }
+
+    @Override
+    public void getSixStudentsByParallel() {
+        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+        logger.info("Был вызван метод: getSixStudentsByParallel");
+        List<Student> sixStudents = studentRepository.findAll();
+
+        System.out.println(sixStudents.get(0).getName());
+        System.out.println(sixStudents.get(1).getName());
+
+        new Thread(() -> {
+            System.out.println(sixStudents.get(2).getName());
+            System.out.println(sixStudents.get(3).getName());
+        }).start();
+
+        new Thread(() -> {
+            System.out.println(sixStudents.get(4).getName());
+            System.out.println(sixStudents.get(5).getName());
+        }).start();
+    }
+
+    @Override
+    public void getSixStudentsByParallelWithSynchronized() {
+        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+        logger.info("Был вызван метод: getSixStudentsByParallelWithSynchronized");
+        List<Student> students = studentRepository.findAll();
+
+        System.out.println(students.get(0).getName());
+        System.out.println(students.get(1).getName());
+
+        new Thread(() -> {
+            soutUtil.printer(students.get(2).getName());
+            soutUtil.printer(students.get(3).getName());
+        }).start();
+
+        new Thread(() -> {
+            soutUtil.printer(students.get(4).getName());
+            soutUtil.printer(students.get(5).getName());
+        }).start();
     }
 
     @Override

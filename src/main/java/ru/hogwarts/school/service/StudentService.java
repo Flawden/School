@@ -12,6 +12,10 @@ public interface StudentService {
 
     List<String> getStudentsWhoseNameStartsWith(String startWith);
 
+    void getSixStudentsByParallel();
+
+    void getSixStudentsByParallelWithSynchronized();
+
     Integer getCountOfStudents();
 
     Double getAverageAgeOfStudents();

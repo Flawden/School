@@ -29,6 +29,18 @@ public class StudentController implements StudentRestApi {
         return studentService.getStudentsWhoseNameStartsWith(startWith);
     }
 
+    @GetMapping("/sixStudents")
+    @Override
+    public void getSixStudentsByParallel() {
+        studentService.getSixStudentsByParallel();
+    }
+
+    @GetMapping("/get-six-students-with-synch")
+    @Override
+    public void getSixStudentsByParallelWithSynchronized() {
+       studentService.getSixStudentsByParallelWithSynchronized();
+    }
+
     @GetMapping("/count")
     @Override
     public Integer getCountOfStudents() {

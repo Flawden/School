@@ -26,6 +26,18 @@ public interface StudentRestApi {
     List<String> getStudentsWhoseNameStartsWith(String startWith);
 
     @Operation(
+            summary = "Получить 6 студентов",
+            description = "Эндпоинт, для выполнения задания №4.6.1"
+    )
+    void getSixStudentsByParallel();
+
+    @Operation(
+            summary = "Получить 6 студентов",
+            description = "Эндпоинт, для выполнения задания №4.6.2"
+    )
+    void getSixStudentsByParallelWithSynchronized();
+
+    @Operation(
             summary = "Получить число студентов",
             description = "Позволяет получить число студентов"
     )

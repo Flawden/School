@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +28,7 @@ public class AvatarServiceImpl implements AvatarService {
 
     private final AvatarRepository avatarRepository;
     private final StudentService studentService;
+    private final Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -38,22 +40,20 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public Avatar getAvatarById(Long id) {
-        Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
         logger.info("Был вызван метод: getAvatarById");
         return avatarRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Ошибка! Аватара с данным id не найдено."));
     }
 
     @Override
     public List<Avatar> getAvatarsFromDBWithPagination(Integer numberOfPage, Integer sizeOfPage) {
-        Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
         logger.info("Был вызван метод: getAvatarsFromDBWithPagination");
         PageRequest paging = PageRequest.of(numberOfPage, sizeOfPage);
-        return avatarRepository.findAll(paging).stream().toList();
+        Page<Avatar> pagedResult = avatarRepository.findAll(paging);
+        return pagedResult.getContent();
     }
 
     @Override
     public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
-        Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
         logger.info("Был вызван метод: uploadAvatar");
         Student student = studentService.getStudentById(studentId);
         byte[] bytes = null;
@@ -77,20 +77,17 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     public Avatar findAvatarIdByStudentId(Long studentId) {
-        Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
         logger.info("Был вызван метод: findAvatarIdByStudentId");
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
     @Override
     public void deleteAvatar(Long id) {
-        Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
         logger.info("Был вызван метод: deleteAvatar");
         avatarRepository.deleteById(id);
     }
 
     private String getExtension(String fileName) {
-        Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
         logger.info("Был вызван метод: getExtension");
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }

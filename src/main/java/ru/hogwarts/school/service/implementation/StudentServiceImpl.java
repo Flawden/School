@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 public class StudentServiceImpl implements StudentService {
 
     private final FacultyRepository facultyRepository;
+
     public StudentServiceImpl(FacultyRepository facultyRepository, StudentRepository studentRepository) {
         this.facultyRepository = facultyRepository;
         this.studentRepository = studentRepository;
@@ -30,18 +31,19 @@ public class StudentServiceImpl implements StudentService {
 
     private final Random random = new Random();
     private final SoutUtil soutUtil = new SoutUtil();
+    private final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
 
     private final StudentRepository studentRepository;
 
     @Override
     public List<Student> getStudents() {
-        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
         logger.info("Был вызван метод: getStudents");
         return studentRepository.findAll();
     }
 
     @Override
     public List<String> getStudentsWhoseNameStartsWith(String startWith) {
+        logger.info("Был вызван метод: getStudentsWhoseNameStartsWith");
         return studentRepository.findAll().stream()
                 .map(Student::getName)
                 .filter(student -> student.startsWith(startWith))
@@ -52,21 +54,18 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Integer getCountOfStudents() {
-        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
         logger.info("Был вызван метод: getCountOfStudents");
         return studentRepository.getCountOfStudents();
     }
 
     @Override
     public Double getAverageAgeOfStudents() {
-        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
         logger.info("Был вызван метод: getAverageAgeOfStudents");
         return studentRepository.getAverageAgeOfStudents();
     }
 
     @Override
     public Double getAverageAgeOfStudentsWithStreamApi() {
-        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
         logger.info("Был вызван метод: getAverageAgeOfStudentsWithStreamApi");
         return studentRepository.findAll().stream()
                 .map(Student::getAge)
@@ -76,7 +75,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void getSixStudentsByParallel() {
-        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
         logger.info("Был вызван метод: getSixStudentsByParallel");
         List<Student> sixStudents = studentRepository.findAll();
 
@@ -96,7 +94,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void getSixStudentsByParallelWithSynchronized() {
-        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
         logger.info("Был вызван метод: getSixStudentsByParallelWithSynchronized");
         List<Student> students = studentRepository.findAll();
 
@@ -116,14 +113,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> getLastFiveStudents() {
-        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
         logger.info("Был вызван метод: getLastFiveStudents");
         return studentRepository.getLastFiveStudents();
     }
 
     @Override
     public List<Student> findByNameIgnoreCase(String name) {
-        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
         logger.info("Был вызван метод: findByNameIgnoreCase");
         List<Student> studentsByName = studentRepository.findByNameIgnoreCase(name);
         if (!studentsByName.isEmpty()) {
@@ -134,7 +129,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> getStudentsByAge(Integer age) {
-        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
         logger.info("Был вызван метод: getStudentsByAge");
         List<Student> studentsByAge = studentRepository.findStudentsByAge(age);
         if (!studentsByAge.isEmpty()) {
@@ -145,14 +139,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> findByAgeBetween(Integer min, Integer max) {
-        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
         logger.info("Был вызван метод: findByAgeBetween");
         return studentRepository.findByAgeBetween(min, max);
     }
 
     @Override
     public Student getStudentById(Long id) {
-        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
         logger.info("Был вызван метод: getStudentById");
         Optional<Student> student = studentRepository.findById(id);
         if (student.isEmpty()) {
@@ -163,7 +155,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Faculty getFacultyOfStudent(Student student) {
-        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
         logger.info("Был вызван метод: getFacultyOfStudent");
         student = studentRepository.findById(student.getId()).orElseThrow(() -> new EntityNotFoundException("Ошибка! Студента с данным id не найдено"));
         return student.getFaculty();
@@ -172,7 +163,6 @@ public class StudentServiceImpl implements StudentService {
     @Transactional
     @Override
     public Student addStudent(Student student) {
-        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
         logger.info("Был вызван метод: addStudent");
         return studentRepository.save(student);
     }
@@ -180,7 +170,6 @@ public class StudentServiceImpl implements StudentService {
     @Transactional
     @Override
     public Student updateStudent(Long id, Student changedStudent) {
-        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
         logger.info("Был вызван метод: updateStudent");
         Student student = getStudentById(id);
         student.setName(changedStudent.getName());
@@ -191,7 +180,6 @@ public class StudentServiceImpl implements StudentService {
     @Transactional
     @Override
     public void deleteStudent(Long id) {
-        Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
         logger.info("Был вызван метод: deleteStudent");
         studentRepository.delete(getStudentById(id));
     }

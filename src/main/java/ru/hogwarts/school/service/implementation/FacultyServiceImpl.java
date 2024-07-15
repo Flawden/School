@@ -24,6 +24,7 @@ public class FacultyServiceImpl implements FacultyService {
 
     private final FacultyRepository facultyRepository;
     private final StudentRepository studentRepository;
+    private final Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
 
     public FacultyServiceImpl(FacultyRepository facultyRepository, StudentRepository studentRepository) {
         this.facultyRepository = facultyRepository;
@@ -32,14 +33,12 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public List<Faculty> getFaculties() {
-        Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
         logger.info("Был вызван метод: getFaculties");
         return facultyRepository.findAll();
     }
 
     @Override
     public Faculty getFacultyById(Long id) {
-        Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
         logger.info("Был вызван метод: getFacultyById");
         return facultyRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Ошибка! Факультета с данным id не найдено"));
     }
@@ -54,14 +53,12 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public List<Student> getStudentsOfFaculty(Faculty faculty) {
-        Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
         logger.info("Был вызван метод: getStudentsOfFaculty");
         return getByNameIgnoreCase(faculty.getName()).getStudents();
     }
 
     @Override
     public Faculty getByNameIgnoreCase(String name) {
-        Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
         logger.info("Был вызван метод: getByNameIgnoreCase");
         Optional<Faculty> faculty = facultyRepository.getByNameIgnoreCase(name);
             if (faculty.isPresent()) {
@@ -72,7 +69,6 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Faculty getByColorIgnoreCase(String color) {
-        Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
         logger.info("Был вызван метод: getByColorIgnoreCase");
         Optional<Faculty> faculty = facultyRepository.getByColorIgnoreCase(color);
             if (faculty.isPresent()) {
@@ -83,7 +79,6 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Faculty getFacultiesById(Long id) {
-        Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
         logger.info("Был вызван метод: getFacultiesById");
         Optional<Faculty> faculty = facultyRepository.findById(id);
         if (faculty.isEmpty()) {
@@ -95,7 +90,6 @@ public class FacultyServiceImpl implements FacultyService {
     @Transactional
     @Override
     public Faculty addFaculty(Faculty faculty) {
-        Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
         logger.info("Был вызван метод: addFaculty");
         try {
             return facultyRepository.save(faculty);
@@ -109,7 +103,6 @@ public class FacultyServiceImpl implements FacultyService {
     @Transactional
     @Override
     public Faculty updateFaculty(String name, Faculty changedFaculty) {
-        Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
         logger.info("Был вызван метод: updateFaculty");
         Faculty faculty = getByNameIgnoreCase(name);
         faculty.setName(changedFaculty.getName());
@@ -125,14 +118,12 @@ public class FacultyServiceImpl implements FacultyService {
     @Transactional
     @Override
     public void deleteFaculty(Long id) {
-        Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
         logger.info("Был вызван метод: deleteFaculty");
         facultyRepository.deleteById(id);
     }
 
     @Override
     public Faculty addStudentToFacultyById(Long id, String facultyName) {
-        Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
         logger.info("Был вызван метод: addStudentToFacultyById");
         Faculty faculty = facultyRepository.getByNameIgnoreCase(facultyName).orElseThrow(() -> new EntityNotFoundException("Ошибка! Факультета с данным названием не существует"));
         Student student = studentRepository.findById(id).get();
@@ -142,7 +133,6 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Long getNumberOfFaculties() {
-        Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
         logger.info("Был вызван метод: getNumberOfFaculties");
         return facultyRepository.count();
     }

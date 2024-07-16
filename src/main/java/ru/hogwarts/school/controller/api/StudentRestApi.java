@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 
@@ -23,7 +24,7 @@ public interface StudentRestApi {
             summary = "Найти имена всех студентов с указанной буквы",
             description = "Позволяет найти имена всех студентов с указанной буквы"
     )
-    List<String> getStudentsWhoseNameStartsWith(String startWith);
+    List<String> getStudentsWhoseNameStartsWith(@PathVariable String startWith);
 
     @Operation(
             summary = "Получить 6 студентов",
@@ -91,7 +92,7 @@ public interface StudentRestApi {
             summary = "Получить студентов по диапазону возврастов",
             description = "Получить всех студентов, чей диапазов возврастов попадает в заданные значения"
     )
-    List<Student> findByAgeBetween(@PathVariable("min") Integer min, @PathVariable("max") Integer max);
+    List<Student> findByAgeBetween(@RequestParam(defaultValue = "0") Integer min, @RequestParam(defaultValue = "0") Integer max);
 
     @Operation(
             summary = "Найти студента по Id",

@@ -3,6 +3,7 @@ package ru.hogwarts.school.controller;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,31 +23,40 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/avatars")
 @RequiredArgsConstructor
-@Tag(name="AvatarController", description="Предоставляет перечень аватарок и операций над ними")
+@Tag(name="avatar", description="Предоставляет перечень аватарок и операций над ними")
 public class AvatarController implements AvatarRestApi {
 
     private final AvatarService avatarService;
 
     @Override
-    @GetMapping("/fromDB/{avatarId}")
+    @GetMapping("/from-db/{avatarId}")
     public Avatar getAvatarFromDBById(Long avatarId) {
         return avatarService.getAvatarById(avatarId);
     }
 
     @Override
-    @GetMapping("/withPagination/{numberOfPage}/{sizeOfPage}")
-    public void getAvatarsFromDBByIdWithPagination(Integer numberOfPage, Integer sizeOfPage, HttpServletResponse response) throws IOException {
+    @GetMapping("/with-pagination")
+    public ResponseEntity<?> getAvatarsFromDBByIdWithPagination(Integer numberOfPage, Integer sizeOfPage, HttpServletResponse response) throws IOException {
         List<Avatar> avatars = avatarService.getAvatarsFromDBWithPagination(numberOfPage, sizeOfPage);
 
-        for (Avatar avatar: avatars) {
-            Path path = Path.of(avatar.getFilePath());
-            try (BufferedInputStream bis = new BufferedInputStream(Files.newInputStream(path), 1024);
-            BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream(), 1024);) {
-                response.setContentType(avatar.getMediaType());
-                response.setContentLength(Math.toIntExact(avatar.getFileSize()));
-                bis.transferTo(bos);
-            }
+        if (avatars.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
+
+        List<ResponseEntity<byte[]>> responses = new ArrayList<>();
+
+        for (Avatar avatar : avatars) {
+            Path path = Path.of(avatar.getFilePath());
+            byte[] content = Files.readAllBytes(path);
+
+            responses.add(ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(avatar.getMediaType()))
+                    .contentLength(avatar.getFileSize())
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + path.getFileName().toString() + "\"")
+                    .body(content));
+        }
+
+        return ResponseEntity.ok(responses);
     }
 
     @Override
@@ -60,17 +70,29 @@ public class AvatarController implements AvatarRestApi {
     }
 
     @Override
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/download")
     public void downloadAvatar(Long id, HttpServletResponse response) throws IOException {
         Avatar avatar = avatarService.getAvatarById(id);
 
+        if (avatar == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Avatar not found");
+            return;
+        }
+
         Path path = Path.of(avatar.getFilePath());
 
+        if (!Files.exists(path)) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
+            return;
+        }
+
         try (BufferedInputStream bis = new BufferedInputStream(Files.newInputStream(path), 1024);
-             BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream(), 1024);) {
-                response.setContentType(avatar.getMediaType());
-                response.setContentLength(Math.toIntExact(avatar.getFileSize()));
-                bis.transferTo(bos);
+             BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream(), 1024)) {
+            response.setContentType(avatar.getMediaType());
+            response.setContentLength(Math.toIntExact(avatar.getFileSize()));
+            bis.transferTo(bos);
+        } catch (IOException e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while processing the file");
         }
     }
 

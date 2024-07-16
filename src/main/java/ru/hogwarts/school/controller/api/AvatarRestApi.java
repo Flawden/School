@@ -14,7 +14,7 @@ public interface AvatarRestApi {
 
     Avatar getAvatarFromDBById(@PathVariable Long avatarId);
 
-    void getAvatarsFromDBByIdWithPagination(@PathVariable Integer numberOfPage, @PathVariable Integer sizeOfPage, HttpServletResponse response) throws IOException;
+    ResponseEntity<?> getAvatarsFromDBByIdWithPagination(@RequestParam(defaultValue = "0") Integer numberOfPage, @RequestParam(defaultValue = "1") Integer sizeOfPage, HttpServletResponse response) throws IOException;
 
     ResponseEntity<String> uploadAvatar(@PathVariable Long studentId, @RequestParam MultipartFile avatar) throws IOException;
 

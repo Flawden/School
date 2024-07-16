@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/faculties")
-@Tag(name="FacultyController", description="Предоставляет перечень факультетов и операций над ними")
+@Tag(name="faculty", description="Предоставляет перечень факультетов и операций над ними")
 public class FacultyController implements FacultyRestApi {
 
     private final FacultyService facultyService;
@@ -45,6 +45,7 @@ public class FacultyController implements FacultyRestApi {
     }
 
     @Override
+    @GetMapping("/by-faculty")
     public List<Student> getStudentsOfFaculty(Faculty faculty) {
         return  facultyService.getStudentsOfFaculty(faculty);
 

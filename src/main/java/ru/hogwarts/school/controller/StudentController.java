@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/students")
 @RequiredArgsConstructor
-@Tag(name="StudentController", description="Предоставляет перечень студентов и операций над ними")
+@Tag(name="student", description="Предоставляет перечень студентов и операций над ними")
 public class StudentController implements StudentRestApi {
 
     private final StudentService studentService;
@@ -25,11 +25,12 @@ public class StudentController implements StudentRestApi {
     }
 
     @Override
+    @GetMapping("/start-with")
     public List<String> getStudentsWhoseNameStartsWith(String startWith) {
         return studentService.getStudentsWhoseNameStartsWith(startWith);
     }
 
-    @GetMapping("/sixStudents")
+    @GetMapping("/six-students")
     @Override
     public void getSixStudentsByParallel() {
         studentService.getSixStudentsByParallel();
@@ -47,7 +48,7 @@ public class StudentController implements StudentRestApi {
         return studentService.getCountOfStudents();
     }
 
-    @GetMapping("/getAverage")
+    @GetMapping("/get-average")
     @Override
     public Double getAverageAgeOfStudents() {
         return studentService.getAverageAgeOfStudents();
@@ -58,7 +59,7 @@ public class StudentController implements StudentRestApi {
         return studentService.getAverageAgeOfStudentsWithStreamApi();
     }
 
-    @GetMapping("/getFive")
+    @GetMapping("/get-five")
     @Override
     public List<Student> getLastFiveStudents() {
         return studentService.getLastFiveStudents();
@@ -83,7 +84,7 @@ public class StudentController implements StudentRestApi {
         return studentService.getStudentsByAge(age);
     }
 
-    @GetMapping("/age/between/{min}/{max}")
+    @GetMapping("/age/between")
     @Override
     public List<Student> findByAgeBetween(Integer min, Integer max) {
         return studentService.findByAgeBetween(min,max);

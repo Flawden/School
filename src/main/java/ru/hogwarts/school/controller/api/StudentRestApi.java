@@ -24,7 +24,7 @@ public interface StudentRestApi {
             summary = "Найти имена всех студентов с указанной буквы",
             description = "Позволяет найти имена всех студентов с указанной буквы"
     )
-    List<String> getStudentsWhoseNameStartsWith(@PathVariable String startWith);
+    List<String> getStudentsWhoseNameStartsWith(String startWith);
 
     @Operation(
             summary = "Получить 6 студентов",
@@ -70,7 +70,7 @@ public interface StudentRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Студентов с данным именем не найдено."),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    List<Student> findByNameIgnoreCase(@PathVariable("name") String name);
+    List<Student> findByNameIgnoreCase(String name);
 
     @Operation(
             summary = "Найти студентов по возрасту",
@@ -80,19 +80,19 @@ public interface StudentRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Студентов с данным возврастом не найдено."),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    List<Student> getStudentsByAge(@PathVariable Integer age);
+    List<Student> getStudentsByAge(Integer age);
 
     @Operation(
             summary = "Найти факультет студента",
             description = "Позволяет совершить поиск факультета по студенту"
     )
-    Faculty getFacultyOfStudent(@RequestBody Student student);
+    Faculty getFacultyOfStudent(Student student);
 
     @Operation(
             summary = "Получить студентов по диапазону возврастов",
             description = "Получить всех студентов, чей диапазов возврастов попадает в заданные значения"
     )
-    List<Student> findByAgeBetween(@RequestParam(defaultValue = "0") Integer min, @RequestParam(defaultValue = "0") Integer max);
+    List<Student> findByAgeBetween(Integer min, Integer max);
 
     @Operation(
             summary = "Найти студента по Id",
@@ -102,25 +102,25 @@ public interface StudentRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Студентов с данным id не найдено."),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    Student getStudentById(@PathVariable("id") Long id);
+    Student getStudentById(Long id);
 
     @PostMapping
     @Operation(
             summary = "Добавить студента",
             description = "Записать имя человека в студенты школы магии и волшебства"
     )
-    Student addStudent(@RequestBody Student student);
+    Student addStudent(Student student);
 
     @Operation(
             summary = "Обновить студента",
             description = "Переписать биографию студента с чистого листа"
     )
-    Student updateStudents(@PathVariable("id") Long id, @RequestBody Student student);
+    Student updateStudents(Long id, Student student);
 
     @Operation(
             summary = "Удалить студента",
             description = "Стереть имя студента с лица земли и вычеркнуть из учебников истории"
     )
-    void deleteStudent(@PathVariable("id") Long id);
+    void deleteStudent(Long id);
 
 }

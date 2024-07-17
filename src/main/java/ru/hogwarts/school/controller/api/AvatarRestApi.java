@@ -12,13 +12,13 @@ import java.util.List;
 
 public interface AvatarRestApi {
 
-    Avatar getAvatarFromDBById(@PathVariable Long avatarId);
+    Avatar getAvatarFromDBById(Long avatarId);
 
-    ResponseEntity<?> getAvatarsFromDBByIdWithPagination(@RequestParam(defaultValue = "0") Integer numberOfPage, @RequestParam(defaultValue = "1") Integer sizeOfPage, HttpServletResponse response) throws IOException;
+    ResponseEntity<?> getAvatarsFromDBByIdWithPagination(Integer numberOfPage, Integer sizeOfPage, HttpServletResponse response) throws IOException;
 
-    ResponseEntity<String> uploadAvatar(@PathVariable Long studentId, @RequestParam MultipartFile avatar) throws IOException;
+    ResponseEntity<String> uploadAvatar(Long studentId, MultipartFile avatar) throws IOException;
 
-    void downloadAvatar(@PathVariable Long id, HttpServletResponse response) throws IOException;
+    void downloadAvatar(Long id, HttpServletResponse response) throws IOException;
 
     void deleteAvatar(Long id);
 

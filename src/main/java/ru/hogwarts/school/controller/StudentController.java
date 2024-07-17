@@ -26,7 +26,7 @@ public class StudentController implements StudentRestApi {
 
     @Override
     @GetMapping("/start-with")
-    public List<String> getStudentsWhoseNameStartsWith(String startWith) {
+    public List<String> getStudentsWhoseNameStartsWith(@PathVariable String startWith) {
         return studentService.getStudentsWhoseNameStartsWith(startWith);
     }
 
@@ -68,47 +68,47 @@ public class StudentController implements StudentRestApi {
 
     @GetMapping("/name/{name}")
     @Override
-    public List<Student> findByNameIgnoreCase(String name) {
+    public List<Student> findByNameIgnoreCase(@PathVariable("name") String name) {
         return studentService.findByNameIgnoreCase(name);
     }
 
     @Override
     @GetMapping("/faculty")
-    public Faculty getFacultyOfStudent(Student student) {
+    public Faculty getFacultyOfStudent(@RequestBody Student student) {
         return studentService.getFacultyOfStudent(student);
     }
 
     @GetMapping("/age/{age}")
     @Override
-    public List<Student> getStudentsByAge(Integer age) {
+    public List<Student> getStudentsByAge(@PathVariable Integer age) {
         return studentService.getStudentsByAge(age);
     }
 
     @GetMapping("/age/between")
     @Override
-    public List<Student> findByAgeBetween(Integer min, Integer max) {
+    public List<Student> findByAgeBetween(@RequestParam(defaultValue = "0") Integer min, @RequestParam(defaultValue = "0") Integer max) {
         return studentService.findByAgeBetween(min,max);
     }
 
     @GetMapping("/{id}")
     @Override
-    public Student getStudentById(Long id) {
+    public Student getStudentById(@PathVariable("id") Long id) {
         return studentService.getStudentById(id);
     }
 
 
     @PostMapping
-    public Student addStudent(Student student) {
+    public Student addStudent(@RequestBody Student student) {
         return studentService.addStudent(student);
     }
 
     @PatchMapping("{id}")
-    public Student updateStudents(Long id, Student student) {
+    public Student updateStudents(@PathVariable("id") Long id, @RequestBody Student student) {
         return studentService.updateStudent(id, student);
     }
 
     @DeleteMapping("{id}")
-    public void deleteStudent(Long id) {
+    public void deleteStudent(@PathVariable("id") Long id) {
         studentService.deleteStudent(id);
     }
 

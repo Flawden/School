@@ -31,7 +31,7 @@ public interface FacultyRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Студента с данным именем не найдено"),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    Faculty getByNameIgnoreCase(@PathVariable("facultyName") String facultyName);
+    Faculty getByNameIgnoreCase(String facultyName);
 
     @Operation(
             summary = "Получить факультет по цвету",
@@ -41,9 +41,9 @@ public interface FacultyRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Студента с данным цветом не найдено"),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    Faculty getByColorIgnoreCase(@PathVariable("color") String color);
+    Faculty getByColorIgnoreCase(String color);
 
-    List<Student> getStudentsOfFaculty(@RequestBody Faculty faculty);
+    List<Student> getStudentsOfFaculty(Faculty faculty);
 
     @Operation(
             summary = "Получить факультет по id",
@@ -53,7 +53,7 @@ public interface FacultyRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Факультета с данным id не найдено"),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    Faculty getFacultiesById(@PathVariable("id") Long id);
+    Faculty getFacultiesById(Long id);
 
     @Operation(
             summary = "Добавить факультет",
@@ -63,7 +63,7 @@ public interface FacultyRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Факультета с переданными именем или цветом уже существуют"),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    Faculty addFaculty(@RequestBody Faculty faculty);
+    Faculty addFaculty(Faculty faculty);
 
     @Operation(
             summary = "Исправить данные факультета",
@@ -73,7 +73,7 @@ public interface FacultyRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Факультета с переданными именем или цветом уже существуют"),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    Faculty updateFaculty(@PathVariable("name") String name, @RequestBody Faculty faculty);
+    Faculty updateFaculty(String name, Faculty faculty);
 
     @Operation(
             summary = "Уничтожить факультета",
@@ -83,6 +83,6 @@ public interface FacultyRestApi {
             @ApiResponse(responseCode = "400", description = "Ошибка! Факультета с данным id не существует"),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    void deleteFaculty(@PathVariable Long id);
+    void deleteFaculty(Long id);
 
 }

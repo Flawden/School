@@ -30,13 +30,13 @@ public class AvatarController implements AvatarRestApi {
 
     @Override
     @GetMapping("/from-db/{avatarId}")
-    public Avatar getAvatarFromDBById(Long avatarId) {
+    public Avatar getAvatarFromDBById(@PathVariable Long avatarId) {
         return avatarService.getAvatarById(avatarId);
     }
 
     @Override
     @GetMapping("/with-pagination")
-    public ResponseEntity<?> getAvatarsFromDBByIdWithPagination(Integer numberOfPage, Integer sizeOfPage, HttpServletResponse response) throws IOException {
+    public ResponseEntity<?> getAvatarsFromDBByIdWithPagination(@RequestParam(defaultValue = "0") Integer numberOfPage, @RequestParam(defaultValue = "1") Integer sizeOfPage, HttpServletResponse response) throws IOException {
         List<Avatar> avatars = avatarService.getAvatarsFromDBWithPagination(numberOfPage, sizeOfPage);
 
         if (avatars.isEmpty()) {
@@ -61,7 +61,7 @@ public class AvatarController implements AvatarRestApi {
 
     @Override
     @PostMapping(value = "/{studentId}/cover", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> uploadAvatar(Long studentId, MultipartFile avatar) throws IOException {
+    public ResponseEntity<String> uploadAvatar(@PathVariable Long studentId, @RequestParam MultipartFile avatar) throws IOException {
         if (avatar.getSize() > 1024 * 300) {
             return ResponseEntity.badRequest().body("File is too big");
         }
@@ -71,7 +71,7 @@ public class AvatarController implements AvatarRestApi {
 
     @Override
     @GetMapping("/{id}/download")
-    public void downloadAvatar(Long id, HttpServletResponse response) throws IOException {
+    public void downloadAvatar(@PathVariable Long id, HttpServletResponse response) throws IOException {
         Avatar avatar = avatarService.getAvatarById(id);
 
         if (avatar == null) {
@@ -98,7 +98,7 @@ public class AvatarController implements AvatarRestApi {
 
     @Override
     @DeleteMapping("/{id}")
-    public void deleteAvatar(Long id) {
+    public void deleteAvatar(@PathVariable Long id) {
         avatarService.deleteAvatar(id);
     }
 

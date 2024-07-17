@@ -34,46 +34,45 @@ public class FacultyController implements FacultyRestApi {
 
     @GetMapping("/name/{facultyName}")
     @Override
-    public Faculty getByNameIgnoreCase(String facultyName) {
+    public Faculty getByNameIgnoreCase(@PathVariable("facultyName") String facultyName) {
         return facultyService.getByNameIgnoreCase(facultyName);
     }
 
     @GetMapping("/color/{color}")
     @Override
-    public Faculty getByColorIgnoreCase(String color) {
+    public Faculty getByColorIgnoreCase(@PathVariable("color") String color) {
         return facultyService.getByColorIgnoreCase(color);
     }
 
     @Override
     @GetMapping("/by-faculty")
-    public List<Student> getStudentsOfFaculty(Faculty faculty) {
+    public List<Student> getStudentsOfFaculty(@RequestBody Faculty faculty) {
         return  facultyService.getStudentsOfFaculty(faculty);
 
     }
 
     @GetMapping("/{id}")
     @Override
-    public Faculty getFacultiesById(Long id) {
+    public Faculty getFacultiesById(@PathVariable("id") Long id) {
         return facultyService.getFacultiesById(id);
     }
 
     @PostMapping
     @Override
-    public Faculty addFaculty(Faculty faculty) {
+    public Faculty addFaculty(@RequestBody Faculty faculty) {
         return facultyService.addFaculty(faculty);
     }
 
     @PatchMapping("/{name}")
     @Override
-    public Faculty updateFaculty(String name, Faculty faculty) {
+    public Faculty updateFaculty(@PathVariable("name") String name, @RequestBody Faculty faculty) {
         return facultyService.updateFaculty(name, faculty);
     }
 
     @DeleteMapping("/{id}")
     @Override
-    public void deleteFaculty(Long id) {
+    public void deleteFaculty(@PathVariable Long id) {
         facultyService.deleteFaculty(id);
     }
-
 
 }

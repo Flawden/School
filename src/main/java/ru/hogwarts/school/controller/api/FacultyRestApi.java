@@ -76,7 +76,7 @@ public interface FacultyRestApi {
     Faculty updateFaculty(String name, Faculty faculty);
 
     @Operation(
-            summary = "Уничтожить факультета",
+            summary = "Уничтожить факультет",
             description = "Позволяет удалить опорочивший свою честь факультет с лица человечества"
     )
     @ApiResponses(value = {

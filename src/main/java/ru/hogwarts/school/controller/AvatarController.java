@@ -30,13 +30,13 @@ public class AvatarController implements AvatarRestApi {
 
     @Override
     @GetMapping("/from-db/{avatarId}")
-    public Avatar getAvatarFromDBById(@PathVariable Long avatarId) {
+    public Avatar getAvatarFromDB(@PathVariable Long avatarId) {
         return avatarService.getAvatarById(avatarId);
     }
 
     @Override
     @GetMapping("/with-pagination")
-    public ResponseEntity<?> getAvatarsFromDBByIdWithPagination(@RequestParam(defaultValue = "0") Integer numberOfPage, @RequestParam(defaultValue = "1") Integer sizeOfPage, HttpServletResponse response) throws IOException {
+    public ResponseEntity<?> getAvatarsFromDBWithPagination(@RequestParam(defaultValue = "0") Integer numberOfPage, @RequestParam(defaultValue = "1") Integer sizeOfPage, HttpServletResponse response) throws IOException {
         List<Avatar> avatars = avatarService.getAvatarsFromDBWithPagination(numberOfPage, sizeOfPage);
 
         if (avatars.isEmpty()) {

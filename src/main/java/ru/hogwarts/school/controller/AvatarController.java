@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/avatars")
 @RequiredArgsConstructor
-@Tag(name="avatar", description="Предоставляет перечень аватарок и операций над ними")
+@Tag(name = "avatar", description = "Предоставляет перечень аватарок и операций над ними")
 public class AvatarController implements AvatarRestApi {
 
     private final AvatarService avatarService;

@@ -1,6 +1,5 @@
 package ru.hogwarts.school.service;
 
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.model.Avatar;
 

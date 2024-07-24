@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/v1/info")
-@Tag(name="info", description="Предоставляет различную служебную информацию")
+@Tag(name = "info", description = "Предоставляет различную служебную информацию")
 public class InfoController {
 
     private final ServletWebServerApplicationContext webServerAppCtxt;
@@ -29,7 +29,7 @@ public class InfoController {
 
     @GetMapping("/get-strange-number")
     public Integer getStrangeNumber() {
-        return Stream.iterate(1, a -> a +1).limit(1_000_000).parallel().reduce(0, Integer::sum);
+        return Stream.iterate(1, a -> a + 1).limit(1_000_000).parallel().reduce(0, Integer::sum);
     }
 
 }

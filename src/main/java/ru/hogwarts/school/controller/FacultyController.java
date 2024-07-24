@@ -1,7 +1,6 @@
 package ru.hogwarts.school.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.controller.api.FacultyRestApi;
 import ru.hogwarts.school.model.Faculty;
@@ -12,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/faculties")
-@Tag(name="faculty", description="Предоставляет перечень факультетов и операций над ними")
+@Tag(name = "faculty", description = "Предоставляет перечень факультетов и операций над ними")
 public class FacultyController implements FacultyRestApi {
 
     private final FacultyService facultyService;
@@ -47,7 +46,7 @@ public class FacultyController implements FacultyRestApi {
     @Override
     @GetMapping("/by-faculty")
     public List<Student> getStudentsOfFaculty(@RequestBody Faculty faculty) {
-        return  facultyService.getStudentsOfFaculty(faculty);
+        return facultyService.getStudentsOfFaculty(faculty);
 
     }
 

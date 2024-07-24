@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/students")
 @RequiredArgsConstructor
-@Tag(name="student", description="Предоставляет перечень студентов и операций над ними")
+@Tag(name = "student", description = "Предоставляет перечень студентов и операций над ними")
 public class StudentController implements StudentRestApi {
 
     private final StudentService studentService;
@@ -39,7 +39,7 @@ public class StudentController implements StudentRestApi {
     @GetMapping("/get-six-students-with-synch")
     @Override
     public void getSixStudentsByParallelWithSynchronized() {
-       studentService.getSixStudentsByParallelWithSynchronized();
+        studentService.getSixStudentsByParallelWithSynchronized();
     }
 
     @GetMapping("/count")
@@ -87,7 +87,7 @@ public class StudentController implements StudentRestApi {
     @GetMapping("/age/between")
     @Override
     public List<Student> findByAgeBetween(@RequestParam(defaultValue = "0") Integer min, @RequestParam(defaultValue = "0") Integer max) {
-        return studentService.findByAgeBetween(min,max);
+        return studentService.findByAgeBetween(min, max);
     }
 
     @GetMapping("/{id}")

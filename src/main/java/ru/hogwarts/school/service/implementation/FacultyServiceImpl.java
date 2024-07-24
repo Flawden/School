@@ -13,7 +13,6 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.FacultyService;
-import ru.hogwarts.school.service.StudentService;
 
 import java.util.Comparator;
 import java.util.List;
@@ -61,9 +60,9 @@ public class FacultyServiceImpl implements FacultyService {
     public Faculty getByNameIgnoreCase(String name) {
         logger.info("Был вызван метод: getByNameIgnoreCase");
         Optional<Faculty> faculty = facultyRepository.getByNameIgnoreCase(name);
-            if (faculty.isPresent()) {
-                return faculty.get();
-            }
+        if (faculty.isPresent()) {
+            return faculty.get();
+        }
         throw new EntityNotFoundException("Ошибка! Факультета с данным названием не существует");
     }
 
@@ -71,9 +70,9 @@ public class FacultyServiceImpl implements FacultyService {
     public Faculty getByColorIgnoreCase(String color) {
         logger.info("Был вызван метод: getByColorIgnoreCase");
         Optional<Faculty> faculty = facultyRepository.getByColorIgnoreCase(color);
-            if (faculty.isPresent()) {
-                return faculty.get();
-            }
+        if (faculty.isPresent()) {
+            return faculty.get();
+        }
         throw new EntityNotFoundException("Ошибка! Факультета с данным цветом не существует");
     }
 
@@ -97,7 +96,6 @@ public class FacultyServiceImpl implements FacultyService {
             throw new FacultySaveException("Ошибка! Факультет с переданными именем или цветом уже существуют");
         }
     }
-
 
 
     @Transactional

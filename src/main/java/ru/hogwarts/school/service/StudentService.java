@@ -1,6 +1,5 @@
 package ru.hogwarts.school.service;
 
-import io.swagger.v3.oas.annotations.Operation;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 

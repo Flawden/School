@@ -9,6 +9,20 @@ public interface StudentService {
 
     List<Student> getStudents();
 
+    List<String> getStudentsWhoseNameStartsWith(String startWith);
+
+    void getSixStudentsByParallel();
+
+    void getSixStudentsByParallelWithSynchronized();
+
+    Integer getCountOfStudents();
+
+    Double getAverageAgeOfStudents();
+
+    Double getAverageAgeOfStudentsWithStreamApi();
+
+    List<Student> getLastFiveStudents();
+
     List<Student> findByNameIgnoreCase(String name);
 
     List<Student> getStudentsByAge(Integer age);

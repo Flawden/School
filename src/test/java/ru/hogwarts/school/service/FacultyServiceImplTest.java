@@ -101,7 +101,7 @@ public class FacultyServiceImplTest {
 
     @Test
     public void addFacultyWithExceptionsByName() {
-        Faculty testFaculty = new Faculty(faculties.getFirst().getName(),"Серобуромалиновый");
+        Faculty testFaculty = new Faculty(faculties.getFirst().getName(), "Серобуромалиновый");
         when(facultyRepository.save(testFaculty)).thenThrow(new FacultySaveException("Ошибка! Факультет с переданными именем или цветом уже существуют"));
         FacultySaveException exceptionByName = Assertions.assertThrows(FacultySaveException.class, () -> facultyServiceImpl.addFaculty(testFaculty));
         Assertions.assertEquals("Ошибка! Факультет с переданными именем или цветом уже существуют", exceptionByName.getMessage());

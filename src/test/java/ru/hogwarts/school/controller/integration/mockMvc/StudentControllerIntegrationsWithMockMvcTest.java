@@ -1,21 +1,14 @@
 package ru.hogwarts.school.controller.integration.mockMvc;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.hogwarts.school.controller.FacultyController;
@@ -24,13 +17,10 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
-import ru.hogwarts.school.service.StudentService;
-import ru.hogwarts.school.service.implementation.FacultyServiceImpl;
 import ru.hogwarts.school.service.implementation.StudentServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -76,7 +66,7 @@ public class StudentControllerIntegrationsWithMockMvcTest {
         students.add(new Student(2L, "Вова", 14, faculties.get(2)));
         students.add(new Student(3L, "Стас", 20, faculties.get(3)));
         students.add(new Student(4L, "Боб", 43, faculties.get(4)));
-        students.add(new Student(5L, "Авраам", 56,faculties.get(2)));
+        students.add(new Student(5L, "Авраам", 56, faculties.get(2)));
     }
 
     @Test
@@ -100,7 +90,7 @@ public class StudentControllerIntegrationsWithMockMvcTest {
     public void findByNameIgnoreCase() throws Exception {
         String testString = students.getFirst().getName();
         List<Student> testStudentsList = new ArrayList<>();
-        for (Student student: students) {
+        for (Student student : students) {
             if (student.getAge() == 20) {
                 testStudentsList.add(student);
             }
@@ -120,7 +110,7 @@ public class StudentControllerIntegrationsWithMockMvcTest {
     public void getStudentsByAge() throws Exception {
         Integer testAge = students.getFirst().getAge();
         List<Student> testStudentsList = new ArrayList<>();
-        for (Student student: students) {
+        for (Student student : students) {
             if (student.getAge() == 20) {
                 testStudentsList.add(student);
             }

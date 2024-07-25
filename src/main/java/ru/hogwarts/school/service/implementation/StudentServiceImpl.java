@@ -3,26 +3,32 @@ package ru.hogwarts.school.service.implementation;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.annotation.LogNameOfRunningMethod;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.StudentService;
+import ru.hogwarts.school.util.SoutUtil;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
+@LogNameOfRunningMethod
 public class StudentServiceImpl implements StudentService {
 
     private final FacultyRepository facultyRepository;
+
     public StudentServiceImpl(FacultyRepository facultyRepository, StudentRepository studentRepository) {
         this.facultyRepository = facultyRepository;
         this.studentRepository = studentRepository;
     }
 
     private final Random random = new Random();
+    private final SoutUtil soutUtil = new SoutUtil();
 
     private final StudentRepository studentRepository;
 
@@ -31,7 +37,74 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.findAll();
     }
 
+    @Override
+    public List<String> getStudentsWhoseNameStartsWith(String startWith) {
+        return studentRepository.findAll().stream()
+                .map(Student::getName)
+                .filter(student -> student.startsWith(startWith))
+                .sorted(String::compareTo)
+                .map(String::toUpperCase)
+                .collect(Collectors.toList());
+    }
 
+    @Override
+    public Integer getCountOfStudents() {
+        return studentRepository.getCountOfStudents();
+    }
+
+    @Override
+    public Double getAverageAgeOfStudents() {
+        return studentRepository.getAverageAgeOfStudents();
+    }
+
+    @Override
+    public Double getAverageAgeOfStudentsWithStreamApi() {
+        return studentRepository.findAll().stream()
+                .map(Student::getAge)
+                .mapToInt(age -> age)
+                .average().orElse(Double.NaN);
+    }
+
+    @Override
+    public void getSixStudentsByParallel() {
+        List<Student> sixStudents = studentRepository.findAll();
+
+        System.out.println(sixStudents.get(0).getName());
+        System.out.println(sixStudents.get(1).getName());
+
+        new Thread(() -> {
+            System.out.println(sixStudents.get(2).getName());
+            System.out.println(sixStudents.get(3).getName());
+        }).start();
+
+        new Thread(() -> {
+            System.out.println(sixStudents.get(4).getName());
+            System.out.println(sixStudents.get(5).getName());
+        }).start();
+    }
+
+    @Override
+    public void getSixStudentsByParallelWithSynchronized() {
+        List<Student> students = studentRepository.findAll();
+
+        System.out.println(students.get(0).getName());
+        System.out.println(students.get(1).getName());
+
+        new Thread(() -> {
+            soutUtil.printer(students.get(2).getName());
+            soutUtil.printer(students.get(3).getName());
+        }).start();
+
+        new Thread(() -> {
+            soutUtil.printer(students.get(4).getName());
+            soutUtil.printer(students.get(5).getName());
+        }).start();
+    }
+
+    @Override
+    public List<Student> getLastFiveStudents() {
+        return studentRepository.getLastFiveStudents();
+    }
 
     @Override
     public List<Student> findByNameIgnoreCase(String name) {
@@ -91,7 +164,6 @@ public class StudentServiceImpl implements StudentService {
     public void deleteStudent(Long id) {
         studentRepository.delete(getStudentById(id));
     }
-
 
 
 }

@@ -28,7 +28,6 @@ public class Student {
     private Faculty faculty;
 
 
-
     public Student(String name, Integer age) {
         this.name = name;
         this.age = age;

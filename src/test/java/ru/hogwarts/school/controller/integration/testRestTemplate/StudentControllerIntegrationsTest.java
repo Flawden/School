@@ -1,6 +1,8 @@
 package ru.hogwarts.school.controller.integration.testRestTemplate;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -30,7 +32,6 @@ public class StudentControllerIntegrationsTest {
     private static List<Faculty> faculties;
 
 
-
     @BeforeEach
     public void reposInit() {
         faculties = new ArrayList<>();
@@ -45,7 +46,7 @@ public class StudentControllerIntegrationsTest {
         students.add(new Student("Вова", 14, faculties.get(2)));
         students.add(new Student("Стас", 20, faculties.get(3)));
         students.add(new Student("Боб", 43, faculties.get(4)));
-        students.add(new Student("Авраам", 56,faculties.get(2)));
+        students.add(new Student("Авраам", 56, faculties.get(2)));
     }
 
     @Test
@@ -171,7 +172,8 @@ public class StudentControllerIntegrationsTest {
         ResponseEntity<Student> oneMoreFindResponse = null;
         try {
             oneMoreFindResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/students/" + savedStudentId, Student.class);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         Assertions.assertNull(oneMoreFindResponse);
     }

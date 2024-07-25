@@ -11,6 +11,8 @@ public interface FacultyService {
 
     Faculty getFacultyById(Long id);
 
+    String getTheLongestNameOfFaculty();
+
     Faculty getByNameIgnoreCase(String name);
 
     Faculty getByColorIgnoreCase(String color);

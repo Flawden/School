@@ -2,6 +2,7 @@ package ru.hogwarts.school.service.implementation;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,13 +25,13 @@ import java.util.List;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
+@Slf4j
 @Service
 @Transactional
 public class AvatarServiceImpl implements AvatarService {
 
     private final AvatarRepository avatarRepository;
     private final StudentService studentService;
-    private final Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -42,13 +43,13 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public Avatar getAvatarById(Long id) {
-        logger.info("Был вызван метод: getAvatarById");
+        log.info("Был вызван метод: getAvatarById");
         return avatarRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Ошибка! Аватара с данным id не найдено."));
     }
 
     @Override
     public List<Avatar> getAvatarsFromDBWithPagination(Integer numberOfPage, Integer sizeOfPage) {
-        logger.info("Был вызван метод: getAvatarsFromDBWithPagination");
+        log.info("Был вызван метод: getAvatarsFromDBWithPagination");
         PageRequest paging = PageRequest.of(numberOfPage, sizeOfPage);
         Page<Avatar> pagedResult = avatarRepository.findAll(paging);
         return pagedResult.getContent();
@@ -56,7 +57,7 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
-        logger.info("Был вызван метод: uploadAvatar");
+        log.info("Был вызван метод: uploadAvatar");
         Student student = studentService.getStudentById(studentId);
         byte[] bytes = null;
         Path filePath = Path.of(uploadPath, studentId + "." + getExtension(file.getOriginalFilename()));
@@ -79,18 +80,18 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     public Avatar findAvatarIdByStudentId(Long studentId) {
-        logger.info("Был вызван метод: findAvatarIdByStudentId");
+        log.info("Был вызван метод: findAvatarIdByStudentId");
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
     @Override
     public void deleteAvatar(Long id) {
-        logger.info("Был вызван метод: deleteAvatar");
+        log.info("Был вызван метод: deleteAvatar");
         avatarRepository.deleteById(id);
     }
 
     private String getExtension(String fileName) {
-        logger.info("Был вызван метод: getExtension");
+        log.info("Был вызван метод: getExtension");
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 

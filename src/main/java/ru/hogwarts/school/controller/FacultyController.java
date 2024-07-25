@@ -2,6 +2,7 @@ package ru.hogwarts.school.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.school.config.annotation.LogNameOfRunningMethod;
 import ru.hogwarts.school.controller.api.FacultyRestApi;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/faculties")
 @Tag(name = "faculty", description = "Предоставляет перечень факультетов и операций над ними")
+@LogNameOfRunningMethod
 public class FacultyController implements FacultyRestApi {
 
     private final FacultyService facultyService;

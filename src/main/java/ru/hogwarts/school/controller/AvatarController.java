@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.hogwarts.school.config.annotation.LogNameOfRunningMethod;
 import ru.hogwarts.school.controller.api.AvatarRestApi;
 import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.service.AvatarService;
@@ -24,6 +25,7 @@ import java.util.List;
 @RequestMapping("/api/v1/avatars")
 @RequiredArgsConstructor
 @Tag(name = "avatar", description = "Предоставляет перечень аватарок и операций над ними")
+@LogNameOfRunningMethod
 public class AvatarController implements AvatarRestApi {
 
     private final AvatarService avatarService;

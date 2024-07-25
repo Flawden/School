@@ -3,10 +3,9 @@ package ru.hogwarts.school.service.implementation;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.config.annotation.LogNameOfRunningMethod;
 import ru.hogwarts.school.exception.FacultySaveException;
 import ru.hogwarts.school.exception.FacultyUpdateException;
 import ru.hogwarts.school.model.Faculty;
@@ -19,7 +18,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-@Slf4j
+@LogNameOfRunningMethod
 @Service
 public class FacultyServiceImpl implements FacultyService {
 
@@ -33,13 +32,11 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public List<Faculty> getFaculties() {
-        log.info("Был вызван метод: getFaculties");
         return facultyRepository.findAll();
     }
 
     @Override
     public Faculty getFacultyById(Long id) {
-        log.info("Был вызван метод: getFacultyById");
         return facultyRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Ошибка! Факультета с данным id не найдено"));
     }
 
@@ -53,13 +50,11 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public List<Student> getStudentsOfFaculty(Faculty faculty) {
-        log.info("Был вызван метод: getStudentsOfFaculty");
         return getByNameIgnoreCase(faculty.getName()).getStudents();
     }
 
     @Override
     public Faculty getByNameIgnoreCase(String name) {
-        log.info("Был вызван метод: getByNameIgnoreCase");
         Optional<Faculty> faculty = facultyRepository.getByNameIgnoreCase(name);
         if (faculty.isPresent()) {
             return faculty.get();
@@ -69,7 +64,6 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Faculty getByColorIgnoreCase(String color) {
-        log.info("Был вызван метод: getByColorIgnoreCase");
         Optional<Faculty> faculty = facultyRepository.getByColorIgnoreCase(color);
         if (faculty.isPresent()) {
             return faculty.get();
@@ -79,7 +73,6 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Faculty getFacultiesById(Long id) {
-        log.info("Был вызван метод: getFacultiesById");
         Optional<Faculty> faculty = facultyRepository.findById(id);
         if (faculty.isEmpty()) {
             throw new EntityNotFoundException("Ошибка! Факультета с данным id не существует");
@@ -90,7 +83,6 @@ public class FacultyServiceImpl implements FacultyService {
     @Transactional
     @Override
     public Faculty addFaculty(Faculty faculty) {
-        log.info("Был вызван метод: addFaculty");
         try {
             return facultyRepository.save(faculty);
         } catch (DataIntegrityViolationException e) {
@@ -102,7 +94,6 @@ public class FacultyServiceImpl implements FacultyService {
     @Transactional
     @Override
     public Faculty updateFaculty(String name, Faculty changedFaculty) {
-        log.info("Был вызван метод: updateFaculty");
         Faculty faculty = getByNameIgnoreCase(name);
         faculty.setName(changedFaculty.getName());
         faculty.setColor(changedFaculty.getColor());
@@ -117,13 +108,11 @@ public class FacultyServiceImpl implements FacultyService {
     @Transactional
     @Override
     public void deleteFaculty(Long id) {
-        log.info("Был вызван метод: deleteFaculty");
         facultyRepository.deleteById(id);
     }
 
     @Override
     public Faculty addStudentToFacultyById(Long id, String facultyName) {
-        log.info("Был вызван метод: addStudentToFacultyById");
         Faculty faculty = facultyRepository.getByNameIgnoreCase(facultyName).orElseThrow(() -> new EntityNotFoundException("Ошибка! Факультета с данным названием не существует"));
         Student student = studentRepository.findById(id).get();
         faculty.getStudents().add(student);
@@ -132,7 +121,6 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Long getNumberOfFaculties() {
-        log.info("Был вызван метод: getNumberOfFaculties");
         return facultyRepository.count();
     }
 }

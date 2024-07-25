@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.config.annotation.LogNameOfRunningMethod;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
@@ -18,8 +19,8 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
+@LogNameOfRunningMethod
 public class StudentServiceImpl implements StudentService {
 
     private final FacultyRepository facultyRepository;
@@ -36,13 +37,11 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> getStudents() {
-        log.info("Был вызван метод: getStudents");
         return studentRepository.findAll();
     }
 
     @Override
     public List<String> getStudentsWhoseNameStartsWith(String startWith) {
-        log.info("Был вызван метод: getStudentsWhoseNameStartsWith");
         return studentRepository.findAll().stream()
                 .map(Student::getName)
                 .filter(student -> student.startsWith(startWith))
@@ -53,19 +52,16 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Integer getCountOfStudents() {
-        log.info("Был вызван метод: getCountOfStudents");
         return studentRepository.getCountOfStudents();
     }
 
     @Override
     public Double getAverageAgeOfStudents() {
-        log.info("Был вызван метод: getAverageAgeOfStudents");
         return studentRepository.getAverageAgeOfStudents();
     }
 
     @Override
     public Double getAverageAgeOfStudentsWithStreamApi() {
-        log.info("Был вызван метод: getAverageAgeOfStudentsWithStreamApi");
         return studentRepository.findAll().stream()
                 .map(Student::getAge)
                 .mapToInt(age -> age)
@@ -74,7 +70,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void getSixStudentsByParallel() {
-        log.info("Был вызван метод: getSixStudentsByParallel");
         List<Student> sixStudents = studentRepository.findAll();
 
         System.out.println(sixStudents.get(0).getName());
@@ -93,7 +88,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void getSixStudentsByParallelWithSynchronized() {
-        log.info("Был вызван метод: getSixStudentsByParallelWithSynchronized");
         List<Student> students = studentRepository.findAll();
 
         System.out.println(students.get(0).getName());
@@ -112,13 +106,11 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> getLastFiveStudents() {
-        log.info("Был вызван метод: getLastFiveStudents");
         return studentRepository.getLastFiveStudents();
     }
 
     @Override
     public List<Student> findByNameIgnoreCase(String name) {
-        log.info("Был вызван метод: findByNameIgnoreCase");
         List<Student> studentsByName = studentRepository.findByNameIgnoreCase(name);
         if (!studentsByName.isEmpty()) {
             return studentsByName;
@@ -128,7 +120,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> getStudentsByAge(Integer age) {
-        log.info("Был вызван метод: getStudentsByAge");
         List<Student> studentsByAge = studentRepository.findStudentsByAge(age);
         if (!studentsByAge.isEmpty()) {
             return studentsByAge;
@@ -138,13 +129,11 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> findByAgeBetween(Integer min, Integer max) {
-        log.info("Был вызван метод: findByAgeBetween");
         return studentRepository.findByAgeBetween(min, max);
     }
 
     @Override
     public Student getStudentById(Long id) {
-        log.info("Был вызван метод: getStudentById");
         Optional<Student> student = studentRepository.findById(id);
         if (student.isEmpty()) {
             throw new EntityNotFoundException("Ошибка! Студента с данным id не найдено");
@@ -154,7 +143,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Faculty getFacultyOfStudent(Student student) {
-        log.info("Был вызван метод: getFacultyOfStudent");
         student = studentRepository.findById(student.getId()).orElseThrow(() -> new EntityNotFoundException("Ошибка! Студента с данным id не найдено"));
         return student.getFaculty();
     }
@@ -162,14 +150,12 @@ public class StudentServiceImpl implements StudentService {
     @Transactional
     @Override
     public Student addStudent(Student student) {
-        log.info("Был вызван метод: addStudent");
         return studentRepository.save(student);
     }
 
     @Transactional
     @Override
     public Student updateStudent(Long id, Student changedStudent) {
-        log.info("Был вызван метод: updateStudent");
         Student student = getStudentById(id);
         student.setName(changedStudent.getName());
         student.setAge(changedStudent.getAge());
@@ -179,7 +165,6 @@ public class StudentServiceImpl implements StudentService {
     @Transactional
     @Override
     public void deleteStudent(Long id) {
-        log.info("Был вызван метод: deleteStudent");
         studentRepository.delete(getStudentById(id));
     }
 

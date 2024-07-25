@@ -3,7 +3,7 @@ package ru.hogwarts.school.controller;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.hogwarts.school.config.annotation.LogNameOfRunningMethod;
+import ru.hogwarts.school.annotation.LogNameOfRunningMethod;
 import ru.hogwarts.school.controller.api.StudentRestApi;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;

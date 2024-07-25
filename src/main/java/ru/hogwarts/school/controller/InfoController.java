@@ -5,7 +5,7 @@ import org.springframework.boot.web.servlet.context.ServletWebServerApplicationC
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.hogwarts.school.config.annotation.LogNameOfRunningMethod;
+import ru.hogwarts.school.annotation.LogNameOfRunningMethod;
 
 @RestController
 @RequestMapping("/api/v1/info")

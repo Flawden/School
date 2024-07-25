@@ -1,28 +1,25 @@
-package ru.hogwarts.school.config;
+package ru.hogwarts.school.aop;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
-import java.util.logging.Logger;
-
 @Component
 @Aspect
+@Slf4j
 public class LoggingAspect {
 
-    private final Logger logger = Logger.getLogger(LoggingAspect.class.getName());
-
-    @Pointcut("@annotation(ru.hogwarts.school.config.annotation.LogNameOfRunningMethod)")
+    @Pointcut("within(@ru.hogwarts.school.annotation.LogNameOfRunningMethod *) || @annotation(ru.hogwarts.school.annotation.LogNameOfRunningMethod)")
     public void methodNameWritingProcessing() {
-
     }
 
-    @Before("within(@ru.hogwarts.school.config.annotation.LogNameOfRunningMethod *)")
+    @Before("methodNameWritingProcessing()")
     public void logMethodCall(JoinPoint joinPoint) {
         String methodName = joinPoint.getSignature().getName();
         String className = joinPoint.getTarget().getClass().getSimpleName();
-        logger.info("Метод " + methodName + " класса " + className + " был вызван.");
+        log.info("Метод " + methodName + " класса " + className + " был вызван.");
     }
 }

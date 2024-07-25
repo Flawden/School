@@ -2,10 +2,9 @@ package ru.hogwarts.school.service.implementation;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import ru.hogwarts.school.config.annotation.LogNameOfRunningMethod;
+import ru.hogwarts.school.annotation.LogNameOfRunningMethod;
 import ru.hogwarts.school.exception.FacultySaveException;
 import ru.hogwarts.school.exception.FacultyUpdateException;
 import ru.hogwarts.school.model.Faculty;

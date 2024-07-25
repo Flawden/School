@@ -2,11 +2,8 @@ package ru.hogwarts.school.service.implementation;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import ru.hogwarts.school.config.annotation.LogNameOfRunningMethod;
+import ru.hogwarts.school.annotation.LogNameOfRunningMethod;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;

@@ -12,7 +12,10 @@ import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.implementation.StudentServiceImpl;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 
@@ -33,7 +36,6 @@ public class StudentServiceImplTest {
     public void setUp() {
         studentServiceImpl = new StudentServiceImpl(facultyRepository, studentRepository);
     }
-
 
 
     @BeforeEach

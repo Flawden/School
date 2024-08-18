@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.annotation.LogNameOfRunningMethod;
 import ru.hogwarts.school.exception.FacultySaveException;
 import ru.hogwarts.school.exception.FacultyUpdateException;
 import ru.hogwarts.school.model.Faculty;
@@ -11,11 +12,12 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.FacultyService;
-import ru.hogwarts.school.service.StudentService;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+@LogNameOfRunningMethod
 @Service
 public class FacultyServiceImpl implements FacultyService {
 
@@ -38,6 +40,14 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
+    public String getTheLongestNameOfFaculty() {
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length))
+                .orElseThrow(() -> new NullPointerException("Ошибка! Студентов не найдено!"));
+    }
+
+    @Override
     public List<Student> getStudentsOfFaculty(Faculty faculty) {
         return getByNameIgnoreCase(faculty.getName()).getStudents();
     }
@@ -45,18 +55,18 @@ public class FacultyServiceImpl implements FacultyService {
     @Override
     public Faculty getByNameIgnoreCase(String name) {
         Optional<Faculty> faculty = facultyRepository.getByNameIgnoreCase(name);
-            if (faculty.isPresent()) {
-                return faculty.get();
-            }
+        if (faculty.isPresent()) {
+            return faculty.get();
+        }
         throw new EntityNotFoundException("Ошибка! Факультета с данным названием не существует");
     }
 
     @Override
     public Faculty getByColorIgnoreCase(String color) {
         Optional<Faculty> faculty = facultyRepository.getByColorIgnoreCase(color);
-            if (faculty.isPresent()) {
-                return faculty.get();
-            }
+        if (faculty.isPresent()) {
+            return faculty.get();
+        }
         throw new EntityNotFoundException("Ошибка! Факультета с данным цветом не существует");
     }
 
@@ -78,7 +88,6 @@ public class FacultyServiceImpl implements FacultyService {
             throw new FacultySaveException("Ошибка! Факультет с переданными именем или цветом уже существуют");
         }
     }
-
 
 
     @Transactional

@@ -1,6 +1,5 @@
 package ru.hogwarts.school.controller.integration.mockMvc;
 
-import org.hibernate.query.sql.internal.ParameterRecognizerImpl;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,6 @@ import ru.hogwarts.school.controller.StudentController;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
-import ru.hogwarts.school.service.FacultyService;
 import ru.hogwarts.school.service.implementation.FacultyServiceImpl;
 
 import java.util.ArrayList;
@@ -68,8 +66,8 @@ public class FacultyControllerIntegrationsWithMockMvcTest {
                 .thenReturn(faculties);
 
         mockMvc.perform(MockMvcRequestBuilders
-                .get("/api/v1/faculties")
-                .accept(MediaType.APPLICATION_JSON))
+                        .get("/api/v1/faculties")
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value("0"))
                 .andExpect(jsonPath("$[0].color").value("Красный"))
@@ -126,18 +124,18 @@ public class FacultyControllerIntegrationsWithMockMvcTest {
                 .thenReturn(Optional.of(faculty));
 
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/api/v1/faculties")
-                .content(facultyObject.toString())
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .post("/api/v1/faculties")
+                        .content(facultyObject.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value(name))
                 .andExpect(jsonPath("$.color").value(color));
 
         mockMvc.perform(MockMvcRequestBuilders
-                .get("/api/v1/faculties/1")
-                .accept(MediaType.APPLICATION_JSON))
+                        .get("/api/v1/faculties/1")
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value(name))

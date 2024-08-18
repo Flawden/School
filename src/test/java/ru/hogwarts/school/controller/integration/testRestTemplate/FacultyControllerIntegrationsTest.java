@@ -117,7 +117,8 @@ public class FacultyControllerIntegrationsTest {
         ResponseEntity<Faculty> oneMoreFindResponse = null;
         try {
             oneMoreFindResponse = testRestTemplate.getForEntity(appLink + port + "/api/v1/faculties/name/" + savedFacultyName, Faculty.class);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         Assertions.assertNull(oneMoreFindResponse);
     }

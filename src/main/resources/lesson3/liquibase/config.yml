@@ -1,0 +1,2 @@
+databaseChangeLog:
+  - file: liquibase/scripts/lesson-three-migration.sql
